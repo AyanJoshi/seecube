@@ -14,3 +14,5 @@
 12.  Hackster.io / intractables project posting web page
 13.  Labs can post their research opportunities 
 14. Balasooriya
+
+15. 1v1 Competititve programming (timer)

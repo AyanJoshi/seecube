@@ -3,7 +3,8 @@ const mongoDBAtlasUri = "mongodb+srv://admin:admin@cluster0.oxcmc.mongodb.net/cc
 const localMongoDBUri = 'mongodb://localhost:27017/CrudDB';
 mongoose.connect(mongoDBAtlasUri, {
     useUnifiedTopology: true,
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useFindAndModify: false
 } , (err) => {
     if(!err){
         console.log('MongoDB connection succesfull.');

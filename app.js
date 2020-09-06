@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
+const methodOverride = require('method-override');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -19,6 +20,9 @@ app.use(express.static("public"));
 
 //Bodyparser
 app.use(bodyParser.urlencoded({ extended: false }));
+
+//method-override
+app.use(methodOverride('_method'));
 
 // parse application/json
 app.use(bodyParser.json());

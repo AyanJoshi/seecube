@@ -15,6 +15,8 @@ require('./config/passport')(passport);
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
+app.use(express.static("public"));
+
 //Bodyparser
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -47,4 +49,6 @@ app.use((req, res, next) => {
 //Routes
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/user'));
+app.use('', require('./routes/post'));
+
 app.listen(PORT, console.log(`Server started on port ${PORT}`));

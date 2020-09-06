@@ -13,6 +13,9 @@
         <a class="nav-link" href="#">Problems</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="/posts">Posts</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="#">MyProgress</a>
       </li>
       <li class="nav-item">
@@ -42,7 +45,7 @@
             <li class="nav-item active"><a class="nav-link" href="/login">Login<span class="sr-only">(current)</span></a></li>     
         <%}else{%>
              <li class="nav-item active"><a class="nav-link" href="/users/<%=currentUser._id%>">Signed in as <%=currentUser.name%></a></li>
-             <li class="nav-item active"><a class="nav-link" href="/logout">Log out<span class="sr-only">(current)</span></a></li>
+             <li class="nav-item active"><a class="nav-link" href="/users/logout">Log out<span class="sr-only">(current)</span></a></li>
        <% } %>
     </ul>
   </div>

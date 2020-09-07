@@ -1,10 +1,27 @@
+const Post = require('../models/Post');
+
 module.exports = {
     ensureAuthenticated: function(req, res, next){
         if(req.isAuthenticated()){
             return next();
         }else{
-            req.flash('error_msg', 'Please login to view this resource');
+            req.flash('error_msg', 'Oh oh! You need to login before doing that');
             res.redirect('/users/login');
         }
+    },
+    ensureOwnerShip: function(req, res, next){
+        Post.findById(req.params.id, (err, foundPost) => {
+            if(err){
+                req.flash('error', 'Post is not found');
+                res.redirect('/posts');
+            }else{
+                if(foundPost.author.id.equals(req.user._id) /*|| req.user.isAdmin*/){
+                    next();
+                }else{
+                    req.flash('error_msg', 'You do not have permission to do that');
+                    res.redirect('/posts');
+                }
+            }
+        });
     }
 }

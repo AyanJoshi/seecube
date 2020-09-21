@@ -5,7 +5,7 @@ const methodOvverride = require('method-override');
 //Post Model
 const Post = require('../models/Post');
 const { route } = require('.');
-const { ensureAuthenticated, ensureOwnerShip } = require('../config/auth');
+const { ensureAuthenticated, ensurePostOwnerShip } = require('../config/auth');
 
 //Get all Posts
 router.get('/posts', (req, res) => {
@@ -55,7 +55,7 @@ router.get('/posts/:id', (req, res) => {
 });
 
 //Edit Post
-router.get('/posts/:id/edit', ensureAuthenticated, ensureOwnerShip, (req, res) => {
+router.get('/posts/:id/edit', ensureAuthenticated, ensurePostOwnerShip, (req, res) => {
     Post.findById(req.params.id, (err, foundPost)=>{
         if(err){
             alert('cannot find the post');
@@ -67,7 +67,7 @@ router.get('/posts/:id/edit', ensureAuthenticated, ensureOwnerShip, (req, res) =
 });
 
 //Update Post
-router.put('/posts/:id', ensureAuthenticated, ensureOwnerShip, (req, res) => {
+router.put('/posts/:id', ensureAuthenticated, ensurePostOwnerShip, (req, res) => {
     const data = req.body;
     Post.findByIdAndUpdate(req.params.id, data, (err, updatedPost) => {
         if(err){
@@ -81,7 +81,7 @@ router.put('/posts/:id', ensureAuthenticated, ensureOwnerShip, (req, res) => {
 });
 
 //Delete route
-router.delete('/posts/:id', ensureAuthenticated, ensureOwnerShip, (req, res) => {
+router.delete('/posts/:id', ensureAuthenticated, ensurePostOwnerShip, (req, res) => {
     const data = req.body;
     Post.findByIdAndRemove(req.params.id, (err)=>{
         if(err){

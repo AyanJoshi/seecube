@@ -10,16 +10,16 @@
         <a class="nav-link" href="/home">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Problems</a>
+        <a class="nav-link" href="/problems">Problems</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/posts">Posts</a>
+        <a class="nav-link" href="../posts">Posts</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">MyProgress</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">1V1</a>
+        <a class="nav-link" href="#">1v1</a>
       </li>
       <!-- <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
@@ -44,7 +44,7 @@
             <li class="nav-item"><a class="nav-link" href="/users/register">Sign Up<span class="sr-only">(current)</span></a></li>
             <li class="nav-item"><a class="nav-link" href="/users/login">Login<span class="sr-only">(current)</span></a></li>     
         <%}else{%>
-             <li class="nav-item"><a class="nav-link" href="/users/<%=currentUser._id%>">Signed in as <%=currentUser.name%></a></li>
+             <li class="nav-item"><a class="nav-link" href="/home">Signed in as <%=currentUser.name%></a></li>
              <li class="nav-item"><a class="nav-link" href="/users/logout">Log out<span class="sr-only">(current)</span></a></li>
        <% } %>
     </ul>

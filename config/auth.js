@@ -1,4 +1,5 @@
 const Post = require('../models/Post');
+const Comment = require('../models/Comment');
 
 module.exports = {
     ensureAuthenticated: function(req, res, next){
@@ -20,6 +21,22 @@ module.exports = {
                 }else{
                     req.flash('error_msg', 'You do not have permission to do that');
                     res.redirect('/posts');
+                }
+            }
+        });
+    },
+    ensureCommentOwnerShip: function(req, res, next){
+        
+        Comment.findById(req.params.comment_id, (err, foundComment) => {
+            if(err){
+                req.flash('error', 'Comment is not found');
+                res.redirect('back');
+            }else{
+                if(foundComment.author.id.equals(req.user._id) /*|| req.user.isAdmin*/){
+                    next();
+                }else{
+                    req.flash('error_msg', 'You do not have permission to do that');
+                    res.redirect('back');
                 }
             }
         });

@@ -1,5 +1,5 @@
 const Post = require('../models/Post');
-const Problem = require('../models/Problems')
+const Problem = require('../models/Problem')
 
 module.exports = {
     ensureAuthenticated: function(req, res, next){
@@ -22,7 +22,7 @@ module.exports = {
                     req.flash('error_msg', 'You do not have permission to do that');
                     res.redirect('/posts');
                 }
-            }
+            }s
         });
     },
     ensureProblemOwnerShip: function(req, res, next){

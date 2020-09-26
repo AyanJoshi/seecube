@@ -3,7 +3,7 @@ const router = express.Router();
 const methodOvverride = require('method-override');
 
 //problems Model
-const Problems = require('../models/Problems');
+const Problems = require('../models/Problem');
 const { route } = require('.');
 const { ensureAuthenticated, ensureProblemOwnerShip } = require('../config/auth');
 

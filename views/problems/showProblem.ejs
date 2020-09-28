@@ -7,34 +7,34 @@
         <div class="col-lg-8">
 
         <!-- Title -->
-        <h1 class="mt-4"><%= problems.title %></h1>
+        <h1 class="mt-4"><%= problem.title %></h1>
 
         <!-- Author -->
         <p class="lead">
             By
-            <a href="#"><%= problems.author.name %></a>
+            <a href="#"><%= problem.author.name %></a>
         </p>
 
         <hr>
 
         <!-- Date/Time -->
-        <p><%= problems.created.toDateString() %></p>
+        <p><%= problem.created.toDateString() %></p>
         
         <hr>
 
         <!-- Problem Content -->
         <h5>Description</h5>
-        <p class="lead" style="font-size:15px"><%= problems.body.description %></p>
+        <p class="lead" style="font-size:15px"><%= problem.body.description %></p>
 
         <h5>Example</h5>
-        <p class="lead" style="font-size:15px"><%= problems.body.example %></p>
+        <p class="lead" style="font-size:15px"><%= problem.body.example %></p>
 
         <h5>Limits</h5>
-        <p class="lead" style="font-size:15px"><%= problems.body.limits %></p>
+        <p class="lead" style="font-size:15px"><%= problem.body.limits %></p>
 
-        <% if(currentUser && problems.author.id.equals(currentUser._id)){ %>
-            <a href="/problems/<%=problems._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
-            <form style="display: inline;" action="/problems/<%= problems._id %>?_method=DELETE" method="POST">
+        <% if(currentUser && problem.author.id.equals(currentUser._id)){ %>
+            <a href="/problems/<%=problem._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
+            <form style="display: inline;" action="/problems/<%= problem._id %>?_method=DELETE" method="POST">
                 <button type="submit" class="btn btn-outline-danger">Delete</button>
             </form>
         <% } %>
@@ -44,49 +44,49 @@
         <div class="card my-4">
             <h5 class="card-header">Leave a Comment:</h5>
             <div class="card-body">
-            <form>
+            <form action="/problems/<%=problem._id%>/comments" method="POST">
                 <div class="form-group">
-                <textarea class="form-control" rows="3"></textarea>
+                    <textarea class="form-control" rows="3" name="text"></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
             </div>
         </div>
-
-        <!-- Single Comment -->
-        <div class="media mb-4">
-            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-            <div class="media-body">
-                <h5 class="mt-0">Commenter Name</h5>
-                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-            </div>
-        </div>
-
-        <!-- Comment with nested comments -->
-        <div class="media mb-4">
-            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-            <div class="media-body">
-                <h5 class="mt-0">Commenter Name</h5>
-                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-
-                <div class="media mt-4">
+        <% if(problem.comments != undefined){ %>
+            <% problem.comments.slice().reverse().forEach((comment) => {%>
+                <div class="media mb-4">
+               
                     <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
                     <div class="media-body">
-                        <h5 class="mt-0">Commenter Name</h5>
-                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                        <h5 class="mt-0"><%= comment.author.name %> </h5>
+                        <%= comment.text %> 
                     </div>
+                    <% if(currentUser && comment.author.id.equals(currentUser._id) /*|| currentUser && currentUser.isAdmin*/){ %>
+                        
+                        <a  class="btn btn-sm btn-outline-warning float-left mr-2" 
+                            onclick="toggleEditForm(`<%= comment._id %>`)">
+                            <i class="fas fa-edit"></i>
+                        </a>
+
+                       <form id="delete-form" action="/problems/<%=problem._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                           <button class="btn btn-sm btn-outline-danger float-left mr-2"><i class="fas fa-trash-alt"></i></button>
+                       </form>
+                   <% } %>
                 </div>
 
-                <div class="media mt-4">
-                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                    <div class="media-body">
-                        <h5 class="mt-0">Commenter Name</h5>
-                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                    </div>
+                <div id="<%= comment._id %>" style="display: none;">
+                    <form action="/problems/<%= problem._id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
+                        <div class="form-group">
+                            <textarea class="form-control" name="text" id="inputContent" rows="3" placeholder="Type here"><%= comment.text %></textarea>
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Edit Comment">
+                        <br>
+                        <br>
+                    </form>
                 </div>
-
-            </div>
-        </div>
+                
+            <% }); %>
+        <% } %> 
 
         </div>
 
@@ -155,3 +155,14 @@
     <!-- /.row -->
 
 </div>
+
+<script>
+    function toggleEditForm(commentId) { 
+        var x = document.getElementById(""+commentId); 
+        if (x.style.display === "none") { 
+            x.style.display = "block"; 
+        } else { 
+            x.style.display = "none"; 
+        } 
+    } 
+</script>

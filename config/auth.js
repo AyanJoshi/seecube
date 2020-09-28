@@ -1,4 +1,5 @@
 const Post = require('../models/Post');
+const Problem = require('../models/Problem')
 const Comment = require('../models/Comment');
 
 module.exports = {
@@ -10,7 +11,7 @@ module.exports = {
             res.redirect('/users/login');
         }
     },
-    ensureOwnerShip: function(req, res, next){
+    ensurePostOwnerShip: function(req, res, next){
         Post.findById(req.params.id, (err, foundPost) => {
             if(err){
                 req.flash('error', 'Post is not found');
@@ -21,6 +22,21 @@ module.exports = {
                 }else{
                     req.flash('error_msg', 'You do not have permission to do that');
                     res.redirect('/posts');
+                }
+            }s
+        });
+    },
+    ensureProblemOwnerShip: function(req, res, next){
+        Problem.findById(req.params.id, (err, foundProblem) => {
+            if(err){
+                req.flash('error', 'Problem is not found');
+                res.redirect('/problems');
+            }else{
+                if(foundProblem.author.id.equals(req.user._id) /*|| req.user.isAdmin*/){
+                    next();
+                }else{
+                    req.flash('error_msg', 'You do not have permission to do that');
+                    res.redirect('/problems');
                 }
             }
         });

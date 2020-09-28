@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const methodOvverride = require('method-override');
+const methodOverride = require('method-override');
 
 //Post Model
 const Post = require('../models/Post');
@@ -45,7 +45,7 @@ router.post('/posts/', ensureAuthenticated, (req, res)=>{
 
 //Show post
 router.get('/posts/:id', (req, res) => {
-    Post.findById(req.params.id, (err, foundPost)=>{
+    Post.findById(req.params.id).populate("comments").exec((err, foundPost)=>{
         if(err){
             res.redirect("/posts");
         }else{

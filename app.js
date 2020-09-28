@@ -55,5 +55,6 @@ app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/user'));
 app.use('', require('./routes/post'));
 app.use('', require('./routes/problems'));
+app.use('', require('./routes/comment'));
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`));

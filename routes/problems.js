@@ -3,13 +3,13 @@ const router = express.Router();
 const methodOvverride = require('method-override');
 
 //problems Model
-const Problems = require('../models/Problem');
+const Problem = require('../models/Problem');
 const { route } = require('.');
 const { ensureAuthenticated, ensureProblemOwnerShip } = require('../config/auth');
 
 //Get all problems
 router.get('/problems', (req, res) => {
-    Problems.find({}, (err, problems) => {
+    Problem.find({}, (err, problems) => {
         if(err){
             console.log(err);
         }else{
@@ -51,18 +51,18 @@ router.post('/problems/', ensureAuthenticated, (req, res)=>{
 
 //Show Problem
 router.get('/problems/:id', (req, res) => {
-    Problems.findById(req.params.id, (err, foundProblem)=>{
+    Problem.findById(req.params.id).populate("comments").exec((err, foundProblem)=>{
         if(err){
             res.redirect("/problems");
         }else{
-            res.render("./problems/showProblem", {problems: foundProblem});
+            res.render("./problems/showProblem", {problem: foundProblem});
         }
     })
 });
 
 //Edit Problem
 router.get('/problems/:id/edit', ensureAuthenticated, ensureProblemOwnerShip, (req, res) => {
-    Problems.findById(req.params.id, (err, foundProblem)=>{
+    Problem.findById(req.params.id, (err, foundProblem)=>{
         if(err){
             alert('Cannot find the Problem');
             res.redirect("/problems");
@@ -76,7 +76,7 @@ router.get('/problems/:id/edit', ensureAuthenticated, ensureProblemOwnerShip, (r
 router.put('/problems/:id', ensureAuthenticated, ensureProblemOwnerShip, (req, res) => {
     const data = req.body;
     const { title, solved } = req.body;
-    Problems.findByIdAndUpdate(req.params.id, 
+    Problem.findByIdAndUpdate(req.params.id, 
         {
             title: title,
             solved: solved,
@@ -106,7 +106,7 @@ router.put('/problems/:id', ensureAuthenticated, ensureProblemOwnerShip, (req, r
 //Delete route
 router.delete('/problems/:id', ensureAuthenticated, ensureProblemOwnerShip, (req, res) => {
     const data = req.body;
-    Problems.findByIdAndRemove(req.params.id, (err)=>{
+    Problem.findByIdAndRemove(req.params.id, (err)=>{
         if(err){
             req.flash('error_msg', 'There is an error processing your request.');
             res.redirect('/problems');

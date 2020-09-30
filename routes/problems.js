@@ -26,7 +26,7 @@ router.get('/problems/new', ensureAuthenticated, (req, res)=>{
 //Create Problem
 router.post('/problems/', ensureAuthenticated, (req, res)=>{
     const { title, solved } = req.body;
-    const newProblem = new Problems({
+    const newProblem = new Problem({
         title: title,
         solved: solved,
         body: {

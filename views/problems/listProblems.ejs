@@ -1,123 +1,128 @@
 
 <!-- Page Content -->
 <div class="container">
-    <%- include ('../partials/messages') %>
-    <div class="row">
-  
-      <!-- Blog Entries Column -->
-      <div class="col-md-8">
-        <br>
-        <br>
-        <a class="btn btn-outline-primary" href="/problems/new" role="button"><i class="fas fa-plus-square"></i> Add Problem</a>
-        <h1 class="my-4">Recent Problems</h1>
-        <% problems.slice().reverse().forEach((problems) => { %>
-            <!-- Blog Post -->
-            <div class="card mb-4" id="myDIV"> 
-                
-                <div class="card-body">
-                    <h2 class="card-title"><%= problems.title%></h2>
-                    <p class="card-text"><%- problems.body.description %></p>
-                    <a href="/problems/<%= problems._id %>" class="btn btn-primary">Solve &rarr;</a>
-                    <% if(currentUser && problems.author.id.equals(currentUser._id)){ %>
-                        <a href="/problems/<%=problems._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
-                        <form style="display: inline;" action="/problems/<%= problems._id %>?_method=DELETE" method="POST">
-                            <button type="submit" class="btn btn-outline-danger">Delete</button>
-                        </form>
-                    <% } %>
-                </div>
-                
-                <div class="card-footer text-muted">
-                    <%= problems.created.toDateString() %>
-                    <a href="#"><%= problems.author.name%></a>
-                </div>
-            </div>
-        <% }) %> 
-  
-        <!-- Pagination -->
-        <ul class="pagination justify-content-center mb-4">
-          <li class="page-item">
-            <a class="page-link" href="#">&larr; Older</a>
-          </li>
-          <li class="page-item disabled">
-            <a class="page-link" href="#">Newer &rarr;</a>
-          </li>
-        </ul>
-  
-      </div>
-  
-      <!-- Sidebar Widgets Column -->
-      <div class="col-md-4">
-  
-        <!-- Search Widget -->
-        <div class="card my-4">
-          <h5 class="card-header">Search</h5>
-          <div class="card-body">
-            <div class="input-group">
-              <input type="text" class="form-control" name="searchbox" id="searchbox" placeholder="Search for...">
-              <span class="input-group-append">
-                <button class="btn btn-secondary" type="button">Go!</button>
-              </span>
-            </div>
-          </div>
-        </div>
-  
-        <!-- Categories Widget -->
-        <div class="card my-4">
-          <h5 class="card-header">Categories</h5>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-lg-6">
-                <ul class="list-unstyled mb-0">
-                  <li>
-                    <a href="#">Category 1</a>
-                  </li>
-                  <li>
-                    <a href="#">Category 2</a>
-                  </li>
-                  <li>
-                    <a href="#">Category 3</a>
-                  </li>
-                </ul>
+  <%- include ('../partials/messages') %>
+  <div class="row">
+
+    <!-- Blog Entries Column -->
+    <div class="col-md-8">
+      <br>
+      <br>
+      <a class="btn btn-outline-primary" href="/problems/new" role="button"><i class="fas fa-plus-square"></i> Add Problem</a>
+      <h1 class="my-4">Recent Problems</h1>
+      <% problems.slice().reverse().forEach((problems) => { %>
+          <!-- Blog Post -->
+          <div class="card mb-4" id="myDIV"> 
+              <h4 class="card-header">
+                <a href="/problems/<%= problems._id %>"><%= problems.title%></a>
+              </h4>
+              <div class="card-body">
+                  <!-- <h2 class="card-title"><%= problems.title%></h2> -->
+                  <p class="card-text"><%- problems.body.description %></p>
+                  <a href="/problems/<%= problems._id %>" class="btn btn-primary">View &rarr;</a>
+                  <% if(currentUser && problems.author.id.equals(currentUser._id)){ %>
+                      <a href="/problems/<%=problems._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
+                      <form style="display: inline;" action="/problems/<%= problems._id %>?_method=DELETE" method="POST">
+                          <button type="submit" class="btn btn-outline-danger">Delete</button>
+                      </form>
+                  <% } %>
+                  <br></br>
+                  <button type="button" class="btn btn btn-info" disabled><%= problems.body.difficulty%></button>
+                  <button type="button" class="btn btn btn-dark" disabled><%= problems.body.year%></button>
               </div>
-              <div class="col-lg-6">
-                <ul class="list-unstyled mb-0">
-                  <li>
-                    <a href="#">Category 4</a>
-                  </li>
-                  <li>
-                    <a href="#">Category 5</a>
-                  </li>
-                  <li>
-                    <a href="#">Category 6</a>
-                  </li>
-                </ul>
+              
+              <div class="card-footer text-muted">
+                  <%= problems.created.toDateString() %>
+                  <a href="#"><%= problems.author.name%></a>
               </div>
-            </div>
           </div>
-        </div>
-  
-        <!-- Side Widget -->
-        <div class="card my-4">
-          <h5 class="card-header">Side Widget</h5>
-          <div class="card-body">
-            You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
-          </div>
-        </div>
-  
-      </div>
-  
+      <% }) %> 
+
+      <!-- Pagination -->
+      <ul class="pagination justify-content-center mb-4">
+        <li class="page-item">
+          <a class="page-link" href="#">&larr; Older</a>
+        </li>
+        <li class="page-item disabled">
+          <a class="page-link" href="#">Newer &rarr;</a>
+        </li>
+      </ul>
+
     </div>
-    <!-- /.row -->
+
+    <!-- Sidebar Widgets Column -->
+    <div class="col-md-4">
+
+      <!-- Search Widget -->
+      <div class="card my-4">
+        <h5 class="card-header">Search</h5>
+        <div class="card-body">
+          <div class="input-group">
+            <input type="text" class="form-control" name="searchbox" id="searchbox" placeholder="Search for...">
+            <span class="input-group-append">
+              <button class="btn btn-secondary" type="button">Go!</button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Categories Widget -->
+      <div class="card my-4">
+        <h5 class="card-header">Categories</h5>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-6">
+              <ul class="list-unstyled mb-0">
+                <li>
+                  <a href="#">Easy </a>
+                </li>
+                <li>
+                  <a href="#">Medium</a>
+                </li>
+                <li>
+                  <a href="#">Hard</a>
+                </li>
+              </ul>
+            </div>
+            <!-- <div class="col-lg-6">
+              <ul class="list-unstyled mb-0">
+                <li>
+                  <a href="#">Category 4</a>
+                </li>
+                <li>
+                  <a href="#">Category 5</a>
+                </li>
+                <li>
+                  <a href="#">Category 6</a>
+                </li>
+              </ul>
+            </div> -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Side Widget -->
+      <div class="card my-4">
+        <h5 class="card-header">Side Widget</h5>
+        <div class="card-body">
+          You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
+        </div>
+      </div>
+
+    </div>
+
   </div>
-  
-  <script>
-    $(document).ready(function(){
-      $("#searchbox").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#myDIV *").filter(function() {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
+  <!-- /.row -->
+</div>
+
+<script>
+  $(document).ready(function(){
+    $("#searchbox").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#myDIV *").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
       });
     });
-  </script>
-    
+  });
+</script>
+  

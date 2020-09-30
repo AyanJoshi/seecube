@@ -8,7 +8,7 @@ const passport = require('passport');
 const methodOverride = require('method-override');
 const app = express();
 const PORT = process.env.PORT || 5000;
-
+const Problem = require('./models/Problem');
 //Passport config
 require('./config/passport')(passport);
 
@@ -51,6 +51,20 @@ app.use((req, res, next) => {
 });
 
 //Routes
+app.get('/search',(req,res)=>{  
+    try {  
+        Problem.find({$or:[{title: {'$regex':req.query.dsearch}}]},(err,problems)=>{  
+        if(err){  
+            console.log(err);  
+        }else{  
+            res.render('./problems/listProblems',{problems:problems});  
+        }  
+    })  
+    } catch (error) {  
+        console.log(error);  
+    }  
+});
+
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/user'));
 app.use('', require('./routes/post'));

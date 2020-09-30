@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const ProblemsSchema = new mongoose.Schema({
     title: String,
     solved: Boolean,
+    approved: {
+        type: Boolean,
+        default: false
+    },
     body: {
         description: String,            
         example: String,

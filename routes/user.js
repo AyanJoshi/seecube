@@ -27,7 +27,7 @@ router.get('/register', (req, res) => {
 
 //Register Handle
 router.post('/register', (req, res) => {
-    const { name, email, password, password2} = req.body;
+    const { name, email, password, password2, isAdmin} = req.body;
     let errors = [];
 
     //check required fields
@@ -71,7 +71,8 @@ router.post('/register', (req, res) => {
                     const newUser = new User({
                         name: name,
                         email: email,
-                        password: password
+                        password: password,
+                        isAdmin: isAdmin
                     });
 
                     //Hash password

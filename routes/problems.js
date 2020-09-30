@@ -5,7 +5,7 @@ const methodOvverride = require('method-override');
 //problems Model
 const Problem = require('../models/Problem');
 const { route } = require('.');
-const { ensureAuthenticated, ensureProblemOwnerShip } = require('../config/auth');
+const { ensureAuthenticated, ensureProblemOwnerShip, ensureAdmin } = require('../config/auth');
 
 //Get all problems
 router.get('/problems', (req, res) => {
@@ -26,7 +26,7 @@ router.get('/problems/new', ensureAuthenticated, (req, res)=>{
 //Create Problem
 router.post('/problems/', ensureAuthenticated, (req, res)=>{
     const { title, solved } = req.body;
-    const newProblem = new Problems({
+    const newProblem = new Problem({
         title: title,
         solved: solved,
         body: {
@@ -43,7 +43,7 @@ router.post('/problems/', ensureAuthenticated, (req, res)=>{
     });
     newProblem.save()
         .then(Problem => {
-            req.flash('success_msg', 'Successfully added a Problem');
+            req.flash('success_msg', 'Thank you for submitting the problem, we\'re reviewing it now!');
             res.redirect('/problems');
         })
         .catch(err => console.log(err));
@@ -80,6 +80,7 @@ router.put('/problems/:id', ensureAuthenticated, ensureProblemOwnerShip, (req, r
         {
             title: title,
             solved: solved,
+            approved: false,
             body: {
                 description: req.body.description,
                 example: req.body.example,
@@ -114,6 +115,22 @@ router.delete('/problems/:id', ensureAuthenticated, ensureProblemOwnerShip, (req
             req.flash('success_msg', 'Succesfully deleted the Problem');
             res.redirect('/problems');
         }
+    });
+});
+
+router.post('/problems/:id/approve', ensureAuthenticated, ensureAdmin, (req, res)=>{
+    Problem.findByIdAndUpdate(req.params.id, 
+        {
+            approved: true
+        }, 
+        (err, updatedProblem) => {
+            if(err){
+                req.flash('error_msg', 'There is an error processing your request.');
+                res.redirect('/problems');
+            }else{
+                req.flash('success_msg', 'Succesfully approved the Problem');
+                res.redirect('/problems');
+            }
     });
 });
 

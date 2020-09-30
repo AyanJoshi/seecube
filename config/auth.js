@@ -8,7 +8,7 @@ module.exports = {
             return next();
         }else{
             // req.flash('error_msg', req.body.title);
-            req.flash('error_msg', 'Thank you for submitting the problem, we\'re reviewing it now!');
+            req.flash('error_msg', 'You\'re not the admin!');
             res.redirect('/problems');
         }
     },

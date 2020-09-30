@@ -34,7 +34,7 @@
                             <button type="submit" class="btn btn-outline-danger">Delete</button>
                         </form>
                     <% } %>
-                    <% if(currentUser && currentUser.isAdmin) { %>
+                    <% if(!problems.approved && currentUser && currentUser.isAdmin) { %>
                       <form style="display: inline;" action="/problems/<%= problems._id %>/approve" method="POST">
                           <button type="submit" class="btn btn-outline-danger">Approve</button>
                       </form>

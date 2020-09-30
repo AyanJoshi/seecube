@@ -2,9 +2,6 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
 </head>
 <body>
 
@@ -22,30 +19,37 @@
       <h1 class="my-4">Recent Problems</h1>
       <% problems.slice().reverse().forEach((problems) => { %>
           <!-- Blog Post -->
-          <div class="card mb-4" id="myDIV"> 
-              <h4 class="card-header">
-                <a href="/problems/<%= problems._id %>"><%= problems.title%></a>
-              </h4>
-              <div class="card-body">
-                  <!-- <h2 class="card-title"><%= problems.title%></h2> -->
-                  <p class="card-text"><%- problems.body.description %></p>
-                  <a href="/problems/<%= problems._id %>" class="btn btn-primary">View &rarr;</a>
-                  <% if(currentUser && problems.author.id.equals(currentUser._id)){ %>
-                      <a href="/problems/<%=problems._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
-                      <form style="display: inline;" action="/problems/<%= problems._id %>?_method=DELETE" method="POST">
-                          <button type="submit" class="btn btn-outline-danger">Delete</button>
+          <% if(problems.approved || (currentUser && currentUser.isAdmin)) {%>
+            <div class="card mb-4" id="myDIV"> 
+                <h4 class="card-header">
+                  <a href="/problems/<%= problems._id %>"><%= problems.title%></a>
+                </h4>
+                <div class="card-body">
+                    <!-- <h2 class="card-title"><%= problems.title%></h2> -->
+                    <p class="card-text"><%- problems.body.description %></p>
+                    <a href="/problems/<%= problems._id %>" class="btn btn-primary">View &rarr;</a>
+                    <% if((currentUser && problems.author.id.equals(currentUser._id)) || (currentUser && currentUser.isAdmin)){ %>
+                        <a href="/problems/<%=problems._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
+                        <form style="display: inline;" action="/problems/<%= problems._id %>?_method=DELETE" method="POST">
+                            <button type="submit" class="btn btn-outline-danger">Delete</button>
+                        </form>
+                    <% } %>
+                    <% if(currentUser && currentUser.isAdmin) { %>
+                      <form style="display: inline;" action="/problems/<%= problems._id %>/approve" method="POST">
+                          <button type="submit" class="btn btn-outline-danger">Approve</button>
                       </form>
-                  <% } %>
-                  <br></br>
-                  <button type="button" class="btn btn btn-info" disabled><%= problems.body.difficulty%></button>
-                  <button type="button" class="btn btn btn-dark" disabled><%= problems.body.year%></button>
-              </div>
-              
-              <div class="card-footer text-muted">
-                  <%= problems.created.toDateString() %>
-                  <a href="#"><%= problems.author.name%></a>
-              </div>
-          </div>
+                    <% } %>
+                    <br></br>
+                    <button type="button" class="btn btn btn-info" disabled><%= problems.body.difficulty%></button>
+                    <button type="button" class="btn btn btn-dark" disabled><%= problems.body.year%></button>
+                </div>
+                
+                <div class="card-footer text-muted">
+                    <%= problems.created.toDateString() %>
+                    <a href="#"><%= problems.author.name%></a>
+                </div>
+            </div>
+          <% } %>
       <% }) %> 
 
       <!-- Pagination -->
@@ -124,17 +128,6 @@
   </div>
   <!-- /.row -->
 </div>
-
-<script>
-  $(document).ready(function(){
-    $("#searchbox").on("keyup", function() {
-      var value = $(this).val().toLowerCase();
-      $("#myDIV *").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-      });
-    });
-  });
-</script>
 
 </body>
 </html>

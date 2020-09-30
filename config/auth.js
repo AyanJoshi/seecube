@@ -3,6 +3,15 @@ const Problem = require('../models/Problem')
 const Comment = require('../models/Comment');
 
 module.exports = {
+    ensureAdmin: function(req, res, next){
+        if(req.user.isAdmin){
+            return next();
+        }else{
+            // req.flash('error_msg', req.body.title);
+            req.flash('error_msg', 'Thank you for submitting the problem, we\'re reviewing it now!');
+            res.redirect('/problems');
+        }
+    },
     ensureAuthenticated: function(req, res, next){
         if(req.isAuthenticated()){
             return next();
@@ -17,7 +26,7 @@ module.exports = {
                 req.flash('error', 'Post is not found');
                 res.redirect('/posts');
             }else{
-                if(foundPost.author.id.equals(req.user._id) /*|| req.user.isAdmin*/){
+                if(foundPost.author.id.equals(req.user._id) || req.user.isAdmin){
                     next();
                 }else{
                     req.flash('error_msg', 'You do not have permission to do that');
@@ -32,7 +41,7 @@ module.exports = {
                 req.flash('error', 'Problem is not found');
                 res.redirect('/problems');
             }else{
-                if(foundProblem.author.id.equals(req.user._id) /*|| req.user.isAdmin*/){
+                if(foundProblem.author.id.equals(req.user._id) || req.user.isAdmin){
                     next();
                 }else{
                     req.flash('error_msg', 'You do not have permission to do that');
@@ -48,7 +57,7 @@ module.exports = {
                 req.flash('error', 'Comment is not found');
                 res.redirect('back');
             }else{
-                if(foundComment.author.id.equals(req.user._id) /*|| req.user.isAdmin*/){
+                if(foundComment.author.id.equals(req.user._id) || req.user.isAdmin){
                     next();
                 }else{
                     req.flash('error_msg', 'You do not have permission to do that');

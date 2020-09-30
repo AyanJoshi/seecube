@@ -32,7 +32,7 @@ module.exports = {
                     req.flash('error_msg', 'You do not have permission to do that');
                     res.redirect('/posts');
                 }
-            }s
+            }
         });
     },
     ensureProblemOwnerShip: function(req, res, next){

@@ -1,3 +1,6 @@
+//dot env config
+require('dotenv').config();
+
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const { mongoose } = require('./db.js');
@@ -9,6 +12,7 @@ const methodOverride = require('method-override');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const Problem = require('./models/Problem');
+
 //Passport config
 require('./config/passport')(passport);
 

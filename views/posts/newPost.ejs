@@ -3,7 +3,7 @@
     <div class="card card-body">
       <h1 class="text-center mb-3"><i class="fas fa-plus-square"></i>  Add New Post</h1>
       <%- include ('../partials/messages') %>
-      <form action="/posts" method="POST">
+      <form action="/posts" method="POST" enctype="multipart/form-data">
         <div class="form-group">
           <label for="title">Title</label>
           <input
@@ -31,6 +31,7 @@
             type="file"
             id="image"
             name="image"
+            accept="image/*"
             class="form-control"
             placeholder="Enter Description"
           />

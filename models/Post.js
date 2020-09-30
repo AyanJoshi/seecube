@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const PostSchema = new mongoose.Schema({
     title: String,
-    image: {type: String, default:"default.jpg"},
+    image: {type: String, default:undefined},
+    imageId: String,
     body: String,
     created: {type: Date, default: Date.now},
     author: {

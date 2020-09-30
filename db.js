@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const mongoDBAtlasUri = "mongodb+srv://admin:admin@cluster0.oxcmc.mongodb.net/ccubeDB?retryWrites=true&w=majority";
+const mongoDBAtlasUri = process.env.MONGODB_ATLAS_URI;
 const localMongoDBUri = 'mongodb://localhost:27017/CrudDB';
 mongoose.connect(mongoDBAtlasUri, {
     useUnifiedTopology: true,

@@ -19,7 +19,7 @@
 
         <!-- Date/Time -->
         <p><%= post.created.toDateString() %></p>
-        <% if(post.image.length != 0){ %>
+        <% if(post.image){ %>
             <hr>
             <!-- Preview Image -->
             <img class="img-fluid rounded" src="<%=post.image%>" alt="">

@@ -3,16 +3,6 @@ const mongoose = require('mongoose');
 const ProblemsSchema = new mongoose.Schema({
     title: String,
     solved: Boolean,
-    // input: {
-    //     type: String, 
-    //     default:undefined
-    // },
-    // // inputId: String,
-    // output: {
-    //     type: String, 
-    //     default:undefined
-    // },
-    // // outputId: String,
     approved: {
         type: Boolean,
         default: false
@@ -22,9 +12,7 @@ const ProblemsSchema = new mongoose.Schema({
         example: String,
         limits: String,
         difficulty: String,
-        year: String,
-        input: String,
-        output: String
+        year: String
     },
     created: {
         type: Date, 
@@ -38,12 +26,6 @@ const ProblemsSchema = new mongoose.Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Comment"
-        }
-    ],
-    solutions: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Solution"
         }
     ]
 });

@@ -222,20 +222,20 @@ router.get('/problems/:id/edit', ensureAuthenticated, ensureProblemOwnerShip, (r
 
 router.put('/problems/:id', ensureAuthenticated, ensureProblemOwnerShip, (req, res) => {
     const data = req.body;
-    const { title, solved, input, output } = req.body;
+    const { title, solved } = req.body;
     Problem.findByIdAndUpdate(req.params.id, 
         {
             title: title,
             solved: solved,
             approved: false,
-            input: input,
-            output: output,
             body: {
                 description: req.body.description,
                 example: req.body.example,
                 limits: req.body.limits,
                 difficulty: req.body.difficulty,
-                year: req.body.year
+                year: req.body.year,
+                input: req.body.input,
+                output: req.body.output
             },
             author: {
                 id: req.user._id,

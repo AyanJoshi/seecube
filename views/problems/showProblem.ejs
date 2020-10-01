@@ -123,7 +123,7 @@
                     </div>
                     <button class="btn btn-success my-2 my-sm-0" type="submit">Test</button>
                 </form>
-                <% if((problem.solutions) && currentUser) { %>
+                <% if((problem.solutions.length > 0) && currentUser) { %>
                     <hr>
                     <p style="font-size:160%;">Status: <button type="button" class="btn btn btn-dark" disabled><%= problem.solutions.slice().reverse()[0].status%></button></p>
                 <% }%>

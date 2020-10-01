@@ -3,7 +3,7 @@
       <div class="card card-body">
         <h1 class="text-center mb-3"><i class="fas fa-plus-square"></i>  Add New Problem</h1>
         <%- include ('../partials/messages') %>
-        <form action="/problems" method="POST"> <!--  Add for file upload: enctype="multipart/form-data" -->
+        <form action="/problems" method="POST">
           <div class="form-group">
             <label for="title">Title</label>
             <input
@@ -20,7 +20,7 @@
             <br>
             <textarea
                 placeholder="Full problem description"
-                class="form-control" 
+                class="form-control"
                 id="description" 
                 name="description" 
                 rows="4"
@@ -63,53 +63,6 @@
                 <option>Senior</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="input">Enter Test Inputs</label>
-            <br>
-            <textarea
-                placeholder="Input"
-                class="form-control" 
-                id="input" 
-                name="input" 
-                rows="4"
-                required></textarea>
-          </div>
-          <div class="form-group">
-            <label for="output">Enter Test Outputs</label>
-            <br>
-            <textarea
-                placeholder="Output"
-                class="form-control" 
-                id="output" 
-                name="output" 
-                rows="4"
-                required></textarea>
-          </div>
-          <!-- <div class="form-group">
-            <label for="input">Enter Input File</label>
-            <input
-              type="file"
-              id="input"
-              name="input"
-              accept="input/*"
-              class="form-control"
-              placeholder="Enter Description"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="output">Enter Output File</label>
-            <input
-              type="file"
-              id="output"
-              name="output"
-              accept="output/*"
-              class="form-control"
-              placeholder="Enter Description"
-              required
-            />
-          </div> -->
-
           <button type="submit" class="btn btn-primary btn-block">Submit</button>
         </form>
       </div>

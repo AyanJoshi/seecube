@@ -147,7 +147,7 @@ router.post('/problems/:id/solution', ensureAuthenticated, async (req, res)=>{
         if(err){
             console.log(err);
         }else{
-            const command = "cd solutions_java; unset JAVA_TOOL_OPTIONS; echo '"+req.body.solution+"' > Main.java; echo '"+foundProblem.body.input+"' > input.txt ; javac Main.java; java Main <input.txt > output.txt; echo '"+foundProblem.body.output+"' > expected_output.txt; diff output.txt expected_output.txt > diff.txt; cat diff.txt";
+            const command = "cd solutions_java; unset JAVA_TOOL_OPTIONS; echo '"+req.body.editor+"' > Main.java; echo '"+foundProblem.body.input+"' > input.txt ; javac Main.java; java Main <input.txt > output.txt; echo '"+foundProblem.body.output+"' > expected_output.txt; diff output.txt expected_output.txt > diff.txt; cat diff.txt";
             let differ = "false";
             exec(command, async (error, stdout, stderr) => {
                 if (error) {
@@ -172,7 +172,7 @@ router.post('/problems/:id/solution', ensureAuthenticated, async (req, res)=>{
 
                 const newSolution = new Solution({
                     language: req.body.language,
-                    text: req.body.solution,
+                    text: req.body.editor,
                     solution_owner: {
                         id: req.user._id,
                         name: req.user.name

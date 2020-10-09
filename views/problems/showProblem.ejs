@@ -9,6 +9,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/mode/clojure/clojure.min.js" integrity="sha512-X768TsV+mWnXbVgGHnnjow8nzN12Sn54VaZDkqIW9HgkDOW8nlGribrJrk+a4D+mQu73O7gsqlrRqHbJ5N8adQ==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/mode/clike/clike.min.js" integrity="sha512-HT3t3u7HfQ7USbSZa0Tk5caEnUfO8s58OWqMBwm96xaZAbA17rpnXXHDefR8ixVmSSVssbOv3W3OMh6mNX/XuQ==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/addon/edit/closetag.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/addon/edit/matchbrackets.min.js" integrity="sha512-zgTUY40c9HFb3Kr25lTW3gpnSt+xVc0yWPYwa6Yu7kChiaOHfNlyA4bM8Y3YLzjeQfrNFy40UcbOE/Cmmb29nQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/addon/edit/closebrackets.min.js" integrity="sha512-SS70d62R68X0qaUE9PPzc0+zXNvJzg11XpniHKLv46GS7SN99iboTRgc9f/guIFFh7d4ehoPi7iQJIojIQeJnQ==" crossorigin="anonymous"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/theme/dracula.min.css" rel="stylesheet"/>
 </head>
 
@@ -123,18 +125,39 @@
                         </div>
                         <div class="form-group">
                             <label for="editor">Enter Solution:</label>
-                            <textarea
-                                class="form-control"
-                                id="editor"
-                                name="editor"
-                                required></textarea>
+                            <% if((problem.solutions.length > 0) && currentUser) { %>
+                                <% if(problem.solutions.slice().reverse()[0].solution_owner.id.equals(currentUser._id)) { %>
+                                    <textarea
+                                        class="form-control"
+                                        id="editor"
+                                        name="editor"
+                                        required><%= problem.solutions.slice().reverse()[0].text %></textarea>
+                                <% }%>
+                            <%} else {%>
+                                <textarea
+                                    class="form-control"
+                                    id="editor"
+                                    name="editor"
+                                    required></textarea>
+                            <% }%>
                         </div>
                         <button class="btn btn-success my-2 my-sm-0" onclick="myFunction()">Test</button>
                     </form>
+                    
                     <% if((problem.solutions.length > 0) && currentUser) { %>
-                    <hr>
-                    <p style="font-size:160%;">Status: <button type="button" class="btn btn btn-dark"
-                            disabled><%= problem.solutions.slice().reverse()[0].status%></button></p>
+                        <!-- <% problem.solutions.slice().reverse().forEach((solution) => {%>
+                            <% if(solution.solution_owner.id.equals(currentUser._id)) { %>
+                            <hr>
+                            <p style="font-size:160%;">Status: <button type="button" class="btn btn btn-dark"
+                                    disabled><%= solution.status%></button></p>
+                            <% return;}%>
+                        <% return;});%> -->
+                        <% if(problem.solutions.slice().reverse()[0].solution_owner.id.equals(currentUser._id)) { %>
+                            <hr>
+                            <p style="font-size:160%;">Status: <button type="button" class="btn btn btn-dark"
+                                    disabled><%= problem.solutions.slice().reverse()[0].status%></button></p>
+                        <% }%>
+
                     <% }%>
                 </div>
             </div>
@@ -156,8 +179,12 @@
             theme: "dracula",
             lineNumbers: true,
             autoCloseTags: true,
+            autoCloseBrackets: true,
+            matchBrackets: true,
             class: "form-control"
         });
+        cm.execCommand("selectAll");
+        cm.execCommand("indentAuto");
     </script>
 
     <script>

@@ -1,0 +1,4 @@
+Main.java:1: error: reached end of file while parsing
+fbfbfbfbffbfgbfb
+^
+1 error

@@ -1,179 +1,145 @@
-<!DOCTYPE html>
-<html>
+<!-- Page Content -->
+<div class="container-fluid">
 
-<head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/codemirror.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/codemirror.min.css" rel="stylesheet"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/mode/xml/xml.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/mode/cmake/cmake.min.js" integrity="sha512-tcA/59rEsi2Yng1WaCM9umEa6MBs+xvr3TFWbsipwp1Wbd+94X5PMnkoNPryjUIy+Vfl/8y0cjGJYssweigNFA==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/mode/clojure/clojure.min.js" integrity="sha512-X768TsV+mWnXbVgGHnnjow8nzN12Sn54VaZDkqIW9HgkDOW8nlGribrJrk+a4D+mQu73O7gsqlrRqHbJ5N8adQ==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/mode/clike/clike.min.js" integrity="sha512-HT3t3u7HfQ7USbSZa0Tk5caEnUfO8s58OWqMBwm96xaZAbA17rpnXXHDefR8ixVmSSVssbOv3W3OMh6mNX/XuQ==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/addon/edit/closetag.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/addon/edit/matchbrackets.min.js" integrity="sha512-zgTUY40c9HFb3Kr25lTW3gpnSt+xVc0yWPYwa6Yu7kChiaOHfNlyA4bM8Y3YLzjeQfrNFy40UcbOE/Cmmb29nQ==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/addon/edit/closebrackets.min.js" integrity="sha512-SS70d62R68X0qaUE9PPzc0+zXNvJzg11XpniHKLv46GS7SN99iboTRgc9f/guIFFh7d4ehoPi7iQJIojIQeJnQ==" crossorigin="anonymous"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/theme/dracula.min.css" rel="stylesheet"/>
-</head>
+    <div class="row">
 
-<body>
-    <!-- Page Content -->
-    <div class="container-fluid">
+        <!-- Problem Content Column -->
+        <div class="col-md-6" style="border-right: 1px solid rgb(202, 201, 201);">
 
-        <div class="row">
+            <!-- Title -->
+            <h1 class="mt-4"><%= problem.title %></h1>
 
-            <!-- Problem Content Column -->
-            <div class="col-md-6" style="border-right: 1px solid rgb(202, 201, 201);">
+            <!-- Author -->
+            <p class="lead">
+                By
+                <a href="#"><%= problem.author.name %></a>
+            </p>
 
-                <!-- Title -->
-                <h1 class="mt-4"><%= problem.title %></h1>
+            <hr>
 
-                <!-- Author -->
-                <p class="lead">
-                    By
-                    <a href="#"><%= problem.author.name %></a>
-                </p>
+            <!-- Date/Time -->
+            <p><%= problem.created.toDateString() %></p>
 
-                <hr>
+            <hr>
 
-                <!-- Date/Time -->
-                <p><%= problem.created.toDateString() %></p>
+            <!-- Problem Content -->
+            <h5>Description</h5>
+            <p class="lead" style="font-size:15px"><%= problem.body.description %></p>
 
-                <hr>
+            <h5>Example</h5>
+            <p class="lead" style="font-size:15px"><%= problem.body.example %></p>
 
-                <!-- Problem Content -->
-                <h5>Description</h5>
-                <p class="lead" style="font-size:15px"><%= problem.body.description %></p>
+            <h5>Limits</h5>
+            <p class="lead" style="font-size:15px"><%= problem.body.limits %></p>
 
-                <h5>Example</h5>
-                <p class="lead" style="font-size:15px"><%= problem.body.example %></p>
+            <% if(currentUser && problem.author.id.equals(currentUser._id)){ %>
+            <a href="/problems/<%=problem._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
+            <form style="display: inline;" action="/problems/<%= problem._id %>?_method=DELETE" method="POST">
+                <button type="submit" class="btn btn-outline-danger">Delete</button>
+            </form>
+            <% } %>
+            <hr>
 
-                <h5>Limits</h5>
-                <p class="lead" style="font-size:15px"><%= problem.body.limits %></p>
+            <!-- Comments Form -->
+            <div class="card my-4">
+                <h5 class="card-header">Leave a Comment:</h5>
+                <div class="card-body">
+                    <form action="/problems/<%=problem._id%>/comments" method="POST">
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3" name="text"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <% if(problem.comments != undefined){ %>
+            <% problem.comments.slice().reverse().forEach((comment) => {%>
+            <div class="media mb-4">
 
-                <% if(currentUser && problem.author.id.equals(currentUser._id)){ %>
-                <a href="/problems/<%=problem._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
-                <form style="display: inline;" action="/problems/<%= problem._id %>?_method=DELETE" method="POST">
-                    <button type="submit" class="btn btn-outline-danger">Delete</button>
+                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                <div class="media-body">
+                    <h5 class="mt-0"><%= comment.author.name %> </h5>
+                    <%= comment.text %>
+                </div>
+                <% if(currentUser && comment.author.id.equals(currentUser._id) /*|| currentUser && currentUser.isAdmin*/){ %>
+
+                <a class="btn btn-sm btn-outline-warning float-left mr-2"
+                    onclick="toggleEditForm(`<%= comment._id %>`)">
+                    <i class="fas fa-edit"></i>
+                </a>
+
+                <form id="delete-form" action="/problems/<%=problem._id%>/comments/<%=comment._id%>?_method=DELETE"
+                    method="POST">
+                    <button class="btn btn-sm btn-outline-danger float-left mr-2"><i
+                            class="fas fa-trash-alt"></i></button>
                 </form>
                 <% } %>
-                <hr>
-
-                <!-- Comments Form -->
-                <div class="card my-4">
-                    <h5 class="card-header">Leave a Comment:</h5>
-                    <div class="card-body">
-                        <form action="/problems/<%=problem._id%>/comments" method="POST">
-                            <div class="form-group">
-                                <textarea class="form-control" rows="3" name="text"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
-                    </div>
-                </div>
-                <% if(problem.comments != undefined){ %>
-                <% problem.comments.slice().reverse().forEach((comment) => {%>
-                <div class="media mb-4">
-
-                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                    <div class="media-body">
-                        <h5 class="mt-0"><%= comment.author.name %> </h5>
-                        <%= comment.text %>
-                    </div>
-                    <% if(currentUser && comment.author.id.equals(currentUser._id) /*|| currentUser && currentUser.isAdmin*/){ %>
-
-                    <a class="btn btn-sm btn-outline-warning float-left mr-2"
-                        onclick="toggleEditForm(`<%= comment._id %>`)">
-                        <i class="fas fa-edit"></i>
-                    </a>
-
-                    <form id="delete-form" action="/problems/<%=problem._id%>/comments/<%=comment._id%>?_method=DELETE"
-                        method="POST">
-                        <button class="btn btn-sm btn-outline-danger float-left mr-2"><i
-                                class="fas fa-trash-alt"></i></button>
-                    </form>
-                    <% } %>
-                </div>
-
-                <div id="<%= comment._id %>" style="display: none;">
-                    <form action="/problems/<%= problem._id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
-                        <div class="form-group">
-                            <textarea class="form-control" name="text" id="inputContent" rows="3"
-                                placeholder="Type here"><%= comment.text %></textarea>
-                        </div>
-                        <input type="submit" class="btn btn-primary" value="Edit Comment">
-                        <br>
-                        <br>
-                    </form>
-                </div>
-
-                <% }); %>
-                <% } %>
-
             </div>
 
-            <!-- Sidebar Widgets Column -->
-            <div class="col-md-6">
-                <div class="card card-body">
-                    <form action="/problems/<%=problem._id%>/solution" method="POST" id="myForm">
-                        <div class="form-group">
-                            <label for="language">Choose Language</label>
-                            <select id="language" class="form-control" name="language">
-                                <option selected>Choose Language</option>
-                                <!-- <option>C++</option> -->
-                                <option>Java</option>
-                                <!-- <option>Python</option> -->
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="editor">Enter Solution:</label>
-                            <% if((problem.solutions.length > 0) && currentUser) { %>
-                                <% if(problem.solutions.slice().reverse()[0].solution_owner.id.equals(currentUser._id)) { %>
-                                    <textarea
-                                        class="form-control"
-                                        id="editor"
-                                        name="editor"
-                                        required><%= problem.solutions.slice().reverse()[0].text %></textarea>
-                                <% }%>
-                            <%} else {%>
-                                <textarea
-                                    class="form-control"
-                                    id="editor"
-                                    name="editor"
-                                    required></textarea>
-                            <% }%>
-                        </div>
-                        <button class="btn btn-success my-2 my-sm-0" onclick="myFunction()">Test</button>
-                    </form>
-                    
-                    <% if((problem.solutions.length > 0) && currentUser) { %>
-                        <!-- <% problem.solutions.slice().reverse().forEach((solution) => {%>
-                            <% if(solution.solution_owner.id.equals(currentUser._id)) { %>
-                            <hr>
-                            <p style="font-size:160%;">Status: <button type="button" class="btn btn btn-dark"
-                                    disabled><%= solution.status%></button></p>
-                            <% return;}%>
-                        <% return;});%> -->
-                        <% if(problem.solutions.slice().reverse()[0].solution_owner.id.equals(currentUser._id)) { %>
-                            <hr>
-                            <p style="font-size:160%;">Status: <button type="button" class="btn btn btn-dark"
-                                    disabled><%= problem.solutions.slice().reverse()[0].status%></button></p>
-                        <% }%>
-
-                    <% }%>
-                </div>
+            <div id="<%= comment._id %>" style="display: none;">
+                <form action="/problems/<%= problem._id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
+                    <div class="form-group">
+                        <textarea class="form-control" name="text" id="inputContent" rows="3"
+                            placeholder="Type here"><%= comment.text %></textarea>
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Edit Comment">
+                    <br>
+                    <br>
+                </form>
             </div>
 
+            <% }); %>
+            <% } %>
         </div>
-        <!-- /.row -->
 
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-6">
+            <div class="card card-body">
+                <form action="/problems/<%=problem._id%>/solution" method="POST" id="myForm">
+                    <div class="form-group">
+                        <label for="language">Choose Language</label>
+                        <select id="language" class="form-control" name="language">
+                            <option selected>Choose Language</option>
+                            <!-- <option>C++</option> -->
+                            <option>Java</option>
+                            <!-- <option>Python</option> -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editor">Enter Solution:</label>
+                        <% if((problem.solutions.length > 0) && currentUser) { %>
+                        <% if(problem.solutions.slice().reverse()[0].solution_owner.id.equals(currentUser._id)) { %>
+                        <textarea class="form-control" id="editor" name="editor"
+                            required><%= problem.solutions.slice().reverse()[0].text %></textarea>
+                        <% }%>
+                        <%} else {%>
+                        <textarea class="form-control" id="editor" name="editor" required></textarea>
+                        <% }%>
+                    </div>
+                    <button class="btn btn-success my-2 my-sm-0" onclick="myFunction()">Test</button>
+                </form>
+                <% if((problem.solutions.length > 0) && currentUser) { %>
+                    <% if(problem.solutions.slice().reverse()[0].solution_owner.id.equals(currentUser._id)) { %>
+                    <hr>
+                    <p style="font-size:160%;">Status: <button type="button" class="btn btn btn-dark"
+                            disabled><%= problem.solutions.slice().reverse()[0].status%></button></p>
+                    <% }%>
+                <% }%>
+            </div>
+        </div>
     </div>
-    <script>
-        function myFunction() {
-            document.getElementById("myForm").submit();
-        }
-    </script>
-    <script>
-        //https://stackoverflow.com/questions/57733400/codemirror-clike-mode-doesnt-seem-to-work
-        var editor = CodeMirror.fromTextArea
+    <!-- /.row -->
+</div>
+
+<script>
+    function myFunction() {
+        document.getElementById("myForm").submit();
+    }
+</script>
+
+<script>
+    //https://stackoverflow.com/questions/57733400/codemirror-clike-mode-doesnt-seem-to-work
+    var editor = CodeMirror.fromTextArea
         (document.getElementById('editor'), {
             mode: "text/x-java",
             theme: "dracula",
@@ -183,20 +149,17 @@
             matchBrackets: true,
             class: "form-control"
         });
-        cm.execCommand("selectAll");
-        cm.execCommand("indentAuto");
-    </script>
+    cm.execCommand("selectAll");
+    cm.execCommand("indentAuto");
+</script>
 
-    <script>
-        function toggleEditForm(commentId) {
-            var x = document.getElementById("" + commentId);
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
-        } 
-    </script>
-</body>
-
-</html>
+<script>
+    function toggleEditForm(commentId) {
+        var x = document.getElementById("" + commentId);
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    } 
+</script>

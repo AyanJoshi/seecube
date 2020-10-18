@@ -175,7 +175,6 @@ router.post('/problems/:id/solution', ensureAuthenticated, async (req, res) => {
                         .then(problem => {
                             foundProblem.solutions.push(newSolution);
                             foundProblem.save();
-                            // req.flash('success_msg', 'Successfully added a solution');
                             res.redirect('/problems/' + req.params.id);
                         })
                         .catch(err => console.log(err));

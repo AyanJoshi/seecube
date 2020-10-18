@@ -12,7 +12,9 @@ const ProblemsSchema = new mongoose.Schema({
         example: String,
         limits: String,
         difficulty: String,
-        year: String
+        year: String,
+        input: String,
+        output: String
     },
     created: {
         type: Date, 
@@ -26,6 +28,12 @@ const ProblemsSchema = new mongoose.Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Comment"
+        }
+    ],
+    solutions: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Solution"
         }
     ]
 });

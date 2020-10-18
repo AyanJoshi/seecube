@@ -22,9 +22,7 @@
                 class="form-control"
                 id="description" 
                 name="description" 
-                rows="4">
-                <%= problems.body.description %>
-            </textarea>
+                rows="4"><%= problems.body.description %></textarea>
           </div>
           <div class="form-group">
             <label for="example">Example</label>
@@ -32,9 +30,7 @@
                 class="form-control"
                 id="example" 
                 name="example" 
-                rows="4">
-                <%= problems.body.example %>
-            </textarea>
+                rows="4"><%= problems.body.example %></textarea>
           </div>
           <div class="form-group">
             <label for="limits">Limits</label>
@@ -42,9 +38,7 @@
                 class="form-control"
                 id="limits" 
                 name="limits" 
-                rows="4">
-                <%= problems.body.limits %>
-            </textarea>
+                rows="4"><%= problems.body.limits %></textarea>
           </div>
           <div class="form-group">
             <label for="difficulty">Difficulty</label>
@@ -64,6 +58,28 @@
                 <option>Junior</option>
                 <option>Senior</option>
             </select>
+          </div>
+          <div class="form-group">
+            <label for="input">Enter Test Inputs</label>
+            <br>
+            <textarea
+                placeholder=""
+                class="form-control" 
+                id="input" 
+                name="input" 
+                rows="4"
+                required><%= problems.body.input %></textarea>
+          </div>
+          <div class="form-group">
+            <label for="output">Enter Test Outputs</label>
+            <br>
+            <textarea
+                placeholder=""
+                class="form-control" 
+                id="output" 
+                name="output" 
+                rows="4"
+                required><%= problems.body.output %></textarea>
           </div>
           <button type="submit" class="btn btn-primary btn-block">Submit</button>
         </form>

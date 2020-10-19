@@ -1,6 +1,6 @@
 
 <!-- Page Content -->
-<div class="container">
+<div class="container"> 
   <%- include ('../partials/messages') %>
   <div class="row">
 
@@ -60,10 +60,10 @@
         <h5 class="card-header">Search</h5>
         <div class="card-body">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for...">
-            <span class="input-group-append">
-              <button class="btn btn-secondary" type="button">Go!</button>
-            </span>
+            <form class="form-inline my-2 my-lg-0" action="/posts" method="get">    
+              <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search">    
+              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>    
+            </form>
           </div>
         </div>
       </div>

@@ -31,13 +31,24 @@ const { ensureAuthenticated, ensurePostOwnerShip } = require('../config/auth');
 
 //Get all Posts
 router.get('/posts', (req, res) => {
-    Post.find({}, (err, posts) => {
-        if(err){
-            console.log(err);
-        }else{
-            res.render('./posts/listPosts', {posts: posts});
-        }
-    })
+    if(req.query.search){
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+        Post.find({title: regex}, (err, posts) => {
+            if(err){
+                console.log(err);
+            }else{
+                res.render('./posts/listPosts', {posts: posts});
+            }
+        })
+    }else{
+        Post.find({}, (err, posts) => {
+            if(err){
+                console.log(err);
+            }else{
+                res.render('./posts/listPosts', {posts: posts});
+            }
+        })
+    }
 });
 
 //Add new post
@@ -163,5 +174,9 @@ router.delete('/posts/:id', ensureAuthenticated, ensurePostOwnerShip, (req, res)
         }
     });
 });
+
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
 
 module.exports = router;

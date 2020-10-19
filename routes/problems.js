@@ -13,13 +13,24 @@ const { ensureAuthenticated, ensureProblemOwnerShip, ensureAdmin } = require('..
 
 //Get all problems
 router.get('/problems', (req, res) => {
-    Problem.find({}, (err, problems) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.render('./problems/listProblems', { problems: problems });
-        }
-    })
+    if(req.query.search){
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+        Problem.find({title: regex}, (err, problems) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.render('./problems/listProblems', { problems: problems });
+            }
+        })
+    }else{
+        Problem.find({}, (err, problems) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.render('./problems/listProblems', { problems: problems });
+            }
+        })
+    }
 });
 
 //Add new Problem
@@ -216,5 +227,9 @@ router.post('/problems/:id/solution', ensureAuthenticated, async (req, res) => {
         }
     })
 });
+
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
 
 module.exports = router;

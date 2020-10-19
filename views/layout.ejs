@@ -19,7 +19,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/addon/edit/matchbrackets.min.js" integrity="sha512-zgTUY40c9HFb3Kr25lTW3gpnSt+xVc0yWPYwa6Yu7kChiaOHfNlyA4bM8Y3YLzjeQfrNFy40UcbOE/Cmmb29nQ==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/addon/edit/closebrackets.min.js" integrity="sha512-SS70d62R68X0qaUE9PPzc0+zXNvJzg11XpniHKLv46GS7SN99iboTRgc9f/guIFFh7d4ehoPi7iQJIojIQeJnQ==" crossorigin="anonymous"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/theme/dracula.min.css" rel="stylesheet"/>
-
+    <script src="https://cdn.tiny.cloud/1/ywedehzyjxff1vk4y21j4i1s5x3ws88706jdwdyexvzcqrbi/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#mytextarea',
+            plugins: 'a11ychecker advcode casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinymcespellchecker',
+            menubar: 'edit view format tools table'
+        });
+    </script>
     <title>CCube</title>
 </head>
 <body>

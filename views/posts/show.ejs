@@ -22,13 +22,13 @@
         <% if(post.image){ %>
             <hr>
             <!-- Preview Image -->
-            <img class="img-fluid rounded" src="<%=post.image%>" alt="">
+            <img width="300px" height="300px" class="card-img-top" src="<%=post.image%>" alt="Card image cap">
             <hr>
         <% }else{ %>
             <hr>
         <% } %>
         <!-- Post Content -->
-        <p class="lead"><%= post.body %></p>
+        <p class="lead"><%- post.body %></p>
         <% if(currentUser && post.author.id.equals(currentUser._id)){ %>
             <a href="/posts/<%=post._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
             <form style="display: inline;" action="/posts/<%= post._id %>?_method=DELETE" method="POST">

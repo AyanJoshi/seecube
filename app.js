@@ -57,7 +57,7 @@ app.use((req, res, next) => {
 //Routes
 app.get('/search',(req,res)=>{  
     try {  
-        Problem.find({$or:[{title: {'$regex':req.query.dsearch}}]},(err,problems)=>{  
+        Problem.find({$or:[{title: {'$regex':req.query.dsearch, $options: 'i'}}]},(err,problems)=>{  
         if(err){  
             console.log(err);  
         }else{  

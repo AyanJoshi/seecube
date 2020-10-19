@@ -7,6 +7,8 @@ const { exec } = require("child_process");
 const Problem = require('../models/Problem');
 //solutions Model
 const Solution = require('../models/Solution');
+//user Model
+const User = require('../models/User');
 
 const { route } = require('.');
 const { ensureAuthenticated, ensureProblemOwnerShip, ensureAdmin } = require('../config/auth');
@@ -152,12 +154,10 @@ router.post('/problems/:id/solution', ensureAuthenticated, async (req, res) => {
             exec(command, async (error, stdout, stderr) => {
                 if (error) {
                     console.log(`error: ${error.message}`);
-                    // console.log(error);
                     res.redirect('/problems/' + req.params.id);
                 }
                 else if (stderr) {
                     console.log(`stderr: ${stderr}`);
-                    // console.log(error);
                     var stderror = `${stderr}`;
                     var status_error = "Compilation Error";
                     const newSolution = new Solution({
@@ -178,14 +178,11 @@ router.post('/problems/:id/solution', ensureAuthenticated, async (req, res) => {
                             res.redirect('/problems/' + req.params.id);
                         })
                         .catch(err => console.log(err));
-
-                    // res.redirect('/problems/' + req.params.id);
                 }
-                // console.log(`stdout: ${stdout}`);
                 else {
                     differ = `${stdout}`;
                     console.log("something happened lol")
-                    // res.redirect('/problems/'+req.params.id);
+                    
                     var status = "fail";
                     if (differ === "") {
                         status = "pass"

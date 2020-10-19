@@ -95,6 +95,7 @@
         <!-- Sidebar Widgets Column -->
         <div class="col-md-6">
             <div class="card card-body">
+                <%var solution;%>
                 <form action="/problems/<%=problem._id%>/solution" method="POST" id="myForm">
                     <div class="form-group">
                         <label for="language">Choose Language</label>
@@ -108,32 +109,42 @@
                     <div class="form-group">
                         <label for="editor">Enter Solution:</label>
                         <% if((problem.solutions.length > 0) && currentUser) { %>
-                            <% if(problem.solutions.slice().reverse()[0].solution_owner.id.equals(currentUser._id)) { %>
-                            <textarea class="form-control" id="editor" name="editor"
-                                required><%= problem.solutions.slice().reverse()[0].text %></textarea>
-                            <% } else {%>
-                                <textarea class="form-control" id="editor" name="editor" required></textarea>
+                            <%//console.log("here1");%>
+                            <% for(var i = problem.solutions.length-1; i>=0;i--) {%>
+                                <% if(problem.solutions[i].solution_owner.id.equals(currentUser._id)) { %>
+                                    <%solution = problem.solutions[i]; %>
+                                    <%//console.log("here2");%>
+                                    <% break; %>
+                                <% } %>
                             <% }%>
+                            <%if(solution) {%>
+                                <%//console.log("here3");%>
+                                <textarea class="form-control" id="editor" name="editor" 
+                                    required><%=solution.text%></textarea>
+                            <%} else {%>
+                                <textarea class="form-control" id="editor" name="editor" required></textarea>
+                            <%}%>
                         <%} else {%>
-                        <textarea class="form-control" id="editor" name="editor" required></textarea>
+                            <textarea class="form-control" id="editor" name="editor" required></textarea>
                         <% }%>
                     </div>
                     <button class="btn btn-success my-2 my-sm-0" onclick="myFunction()">Test</button>
                 </form>
                 <% if((problem.solutions.length > 0) && currentUser) { %>
-                    <% if(problem.solutions.slice().reverse()[0].solution_owner.id.equals(currentUser._id)) { %>
+                    <% if(solution) { %>
                         <hr>
                         <p style="font-size:160%;">Status: <button type="button" class="btn btn btn-dark"
-                                disabled><%= problem.solutions.slice().reverse()[0].status%></button></p>
+                                disabled><%= solution.status%></button></p>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Difference</span>
                             </div>
                             <textarea class="form-control" aria-label="Difference" rows="2"
-                                readonly class="form-control-plaintext"><%= problem.solutions.slice().reverse()[0].difference%></textarea>
+                                readonly class="form-control-plaintext"><%= solution.difference%></textarea>
                         </div>
                     <% }%>
                 <% }%>
+
             </div>
         </div>
     </div>

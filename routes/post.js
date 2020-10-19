@@ -61,6 +61,7 @@ router.post('/posts/', ensureAuthenticated, upload.single('image'), (req, res)=>
 });
 
 function createNewPostAndSave(req, res, imageUrl, imageId){
+    
     const newPost = new Post({
         title: req.body.title,
         body: (req.body).body,

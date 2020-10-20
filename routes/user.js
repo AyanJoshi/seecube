@@ -111,5 +111,17 @@ router.get('/logout', (req, res) => {
     res.redirect('/users/login');
 })
 
+//User profile
+router.get("/:id", (req, res) => {
+    User.findById(req.params.id, (err, foundUser) => {
+        if(err){
+            console.log(err);
+            req.flash('error_msg', 'Something went wrong');
+            res.redirect('/');
+        }else{
+            res.render('users/show', {user: foundUser});
+        }
+    });
+})
 
 module.exports = router;

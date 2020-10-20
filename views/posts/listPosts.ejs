@@ -8,7 +8,7 @@
     <div class="col-md-8">
       <br>
       <br>
-      <a class="btn btn-outline-primary" href="/posts/new" role="button"><i class="fas fa-plus-square"></i> Add Post</a>
+      <a class="btn btn-outline-dark" href="/posts/new" role="button"><i class="fas fa-plus-square"></i> Add Post</a>
       <h1 class="my-4">Recent Posts</h1>
       <% posts.slice().reverse().forEach((post) => { %>
           <!-- Blog Post -->
@@ -23,7 +23,7 @@
                 <a href="/posts/<%= post._id %>" class="btn btn-primary">Read More &rarr;</a>
               <% }else{ %>
                 <p class="card-text"><%- post.body %></p>
-                <a href="/posts/<%= post._id %>" class="btn btn-primary">Quick Read &rarr;</a>
+                <a href="/posts/<%= post._id %>" class="btn btn-dark">Quick Read &rarr;</a>
               <% } %>
               <% if(currentUser && post.author.id.equals(currentUser._id) || (currentUser && currentUser.isAdmin)){ %>
                 <a href="/posts/<%=post._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>

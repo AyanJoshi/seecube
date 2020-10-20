@@ -15,7 +15,7 @@
     <div class="col-md-8">
       <br>
       <br>
-      <a class="btn btn-outline-primary" href="/problems/new" role="button"><i class="fas fa-plus-square"></i> Add Problem</a>
+      <a class="btn btn-outline-dark" href="/problems/new" role="button"><i class="fas fa-plus-square"></i> Add Problem</a>
       <h1 class="my-4">Recent Problems</h1>
       <% problems.slice().reverse().forEach((problems) => { %>
           <!-- Blog Post -->
@@ -27,7 +27,7 @@
                 <div class="card-body">
                     <!-- <h2 class="card-title"><%= problems.title%></h2> -->
                     <p class="card-text"><%- problems.body.description %></p>
-                    <a href="/problems/<%= problems._id %>" class="btn btn-primary">View &rarr;</a>
+                    <a href="/problems/<%= problems._id %>" class="btn btn-dark">View &rarr;</a>
                     <% if((currentUser && problems.author.id.equals(currentUser._id)) || (currentUser && currentUser.isAdmin)){ %>
                         <a href="/problems/<%=problems._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
                         <form style="display: inline;" action="/problems/<%= problems._id %>?_method=DELETE" method="POST">

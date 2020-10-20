@@ -13,30 +13,30 @@
       <% posts.slice().reverse().forEach((post) => { %>
           <!-- Blog Post -->
           <div class="card mb-4">
-          <% if(post.image != undefined){ %> 
-            <img width="300px" height="300px" class="card-img-top" src="<%=post.image%>" alt="Card image cap">
-          <% } %> 
-          <div class="card-body">
-              <h2 class="card-title"><%= post.title%></h2>
-              <% if(post.body.length >= 250){ %>
-                <p class="card-text"><%- post.body.substring(0, 245) %>...</p>
-                <a href="/posts/<%= post._id %>" class="btn btn-primary">Read More &rarr;</a>
-              <% }else{ %>
-                <p class="card-text"><%- post.body %></p>
-                <a href="/posts/<%= post._id %>" class="btn btn-dark">Quick Read &rarr;</a>
-              <% } %>
-              <% if(currentUser && post.author.id.equals(currentUser._id) || (currentUser && currentUser.isAdmin)){ %>
-                <a href="/posts/<%=post._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
-                <form style="display: inline;" action="/posts/<%= post._id %>?_method=DELETE" method="POST">
-                  <button type="submit" class="btn btn-outline-danger">Delete</button>
-                </form>
-              <% } %>
-          </div>
-          
-          <div class="card-footer text-muted">
-              <%= post.created.toDateString() %>
-              <a href="#"><%= post.author.name%></a>
-          </div>
+            <% if(post.image != undefined){ %> 
+              <img width="300px" height="300px" class="card-img-top" src="<%=post.image%>" alt="Card image cap">
+            <% } %> 
+            <div class="card-body">
+                <h2 class="card-title"><%= post.title%></h2>
+                <% if(post.body.length >= 250){ %>
+                  <p class="card-text"><%- post.body.substring(0, 245) %>...</p>
+                  <a href="/posts/<%= post._id %>" class="btn btn-primary">Read More &rarr;</a>
+                <% }else{ %>
+                  <p class="card-text"><%- post.body %></p>
+                  <a href="/posts/<%= post._id %>" class="btn btn-dark">Quick Read &rarr;</a>
+                <% } %>
+                <% if(currentUser && post.author.id.equals(currentUser._id) || (currentUser && currentUser.isAdmin)){ %>
+                  <a href="/posts/<%=post._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
+                  <form style="display: inline;" action="/posts/<%= post._id %>?_method=DELETE" method="POST">
+                    <button type="submit" class="btn btn-outline-danger">Delete</button>
+                  </form>
+                <% } %>
+            </div>
+            
+            <div class="card-footer text-muted">
+                <%= post.created.toDateString() %>
+                <a href="#"><%= post.author.name%></a>
+            </div>
           </div>
       <% }) %> 
 

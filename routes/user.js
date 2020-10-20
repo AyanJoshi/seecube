@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const Post = require('../models/Post');
 
 //User model
 const User = require('../models/User');
@@ -111,5 +112,22 @@ router.get('/logout', (req, res) => {
     res.redirect('/users/login');
 })
 
+//User profile
+router.get("/:id", (req, res) => {
+    User.findById(req.params.id, (err, foundUser) => {
+        if(err){
+            req.flash('error_msg', 'Something went wrong');
+            res.redirect('/');
+        }else{
+            Post.find().where('author.id').equals(foundUser.id).exec((err, my_posts) => {
+                if(err){
+                    req.flash('error_msg', 'Something went wrong');
+                    res.redirect('/');
+                }
+                res.render('users/show', {user: foundUser, posts: my_posts});
+            });
+        }
+    });
+})
 
 module.exports = router;

@@ -31,6 +31,7 @@ const { ensureAuthenticated, ensurePostOwnerShip } = require('../config/auth');
 
 //Get all Posts
 router.get('/posts', (req, res) => {
+    console.log(req.query);
     if(req.query.search){
         const regex = new RegExp(escapeRegex(req.query.search), 'gi');
         Post.find({title: regex}, (err, posts) => {
@@ -40,12 +41,52 @@ router.get('/posts', (req, res) => {
                 res.render('./posts/listPosts', {posts: posts});
             }
         })
-    }else{
+    }
+    else if(req.query.older){
         Post.find({}, (err, posts) => {
             if(err){
                 console.log(err);
             }else{
-                res.render('./posts/listPosts', {posts: posts});
+                const pageCount = Math.ceil(posts.length / 5);
+                console.log(posts.length);
+                let p = parseInt(req.query.older);
+                if(posts.length-5*(p+1) >= 0 && (p+1)<pageCount) {
+                    p = p+1;
+                    res.render('./posts/listPosts', {posts: posts.slice(posts.length-5*p, posts.length-5*(p-1)), page: p});
+                }
+                else {
+                    console.log("I am here");
+                    res.render('./posts/listPosts', {posts: posts.slice(0, posts.length-5*(pageCount-1)), page: pageCount});
+                }
+                
+            }
+        })
+    }
+    else if(req.query.newer){
+        Post.find({}, (err, posts) => {
+            if(err){
+                console.log(err);
+            }else{
+                const pageCount = Math.ceil(posts.length / 5);
+                let p = parseInt(req.query.newer);
+                console.log(p);
+                if(p-1>0) {
+                    p = p-1;
+                }
+                else {
+                    p=1;
+                }
+                console.log(p);
+                res.render('./posts/listPosts', {posts: posts.slice(posts.length-5*p, posts.length-5*(p-1)), page: p});
+            }
+        })
+    }
+    else{
+        Post.find({}, (err, posts) => {
+            if(err){
+                console.log(err);
+            }else{
+                res.render('./posts/listPosts', {posts: posts.slice(posts.length-5, posts.length), page: 1});
             }
         })
     }

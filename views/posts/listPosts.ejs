@@ -35,7 +35,7 @@
             
             <div class="card-footer text-muted">
                 <%= post.created.toDateString() %>
-                <a href="#"><%= post.author.name%></a>
+                <a href="/users/<%= post.author.id %>"><%= post.author.name %> </a>
             </div>
           </div>
       <% }) %> 

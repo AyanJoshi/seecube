@@ -46,7 +46,7 @@
                 
                 <div class="card-footer text-muted">
                     <%= problems.created.toDateString() %>
-                    <a href="#"><%= problems.author.name%></a>
+                    <a href="/users/<%= problems.author.id %>"><%= problems.author.name %> </a>
                 </div>
             </div>
           <% } %>

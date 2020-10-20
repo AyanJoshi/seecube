@@ -12,7 +12,7 @@
             <!-- Author -->
             <p class="lead">
                 By
-                <a href="#"><%= problem.author.name %></a>
+                <a href="/users/<%= problem.author.id %>"><%= problem.author.name %> </a>
             </p>
 
             <hr>
@@ -58,7 +58,7 @@
 
                 <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
                 <div class="media-body">
-                    <h5 class="mt-0"><%= comment.author.name %> </h5>
+                    <h5 class="mt-0"><a href="/users/<%= comment.author.id %>"><%= comment.author.name %> </a></h5>
                     <%= comment.text %>
                 </div>
                 <% if(currentUser && comment.author.id.equals(currentUser._id) /*|| currentUser && currentUser.isAdmin*/){ %>

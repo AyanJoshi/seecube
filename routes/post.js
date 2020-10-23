@@ -86,7 +86,12 @@ router.get('/posts', (req, res) => {
             if(err){
                 console.log(err);
             }else{
-                res.render('./posts/listPosts', {posts: posts.slice(posts.length-5, posts.length), page: 1});
+                if(posts.length >=5) {
+                    res.render('./posts/listPosts', {posts: posts.slice(posts.length-5, posts.length), page: 1});
+                }
+                else {
+                    res.render('./posts/listPosts', {posts: posts, page: 1});
+                }
             }
         })
     }

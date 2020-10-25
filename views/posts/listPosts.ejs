@@ -1,5 +1,5 @@
 <style>
-  .fit-image{
+  .fit-image {
     width: 100%;
     object-fit: cover;
     height: 300px; /* only if you want fixed height */
@@ -54,9 +54,7 @@
           </form>
         </li>
         <li class="page-item">
-          <!-- <a class="page-link" href="/posts">Newer &rarr;</a> -->
-          <form action="/posts" method="get"> 
-            <%console.log("PAGE: "+page)%>
+          <form action="/posts" method="get">
             <button class="form-control btn-light" type="submit" name="newer" value=<%=page%>>Newer &rarr;</button>
           </form>
         </li>

@@ -31,7 +31,6 @@ const { ensureAuthenticated, ensurePostOwnerShip } = require('../config/auth');
 
 //Get all Posts
 router.get('/posts', (req, res) => {
-    console.log(req.query);
     if(req.query.search){
         const regex = new RegExp(escapeRegex(req.query.search), 'gi');
         Post.find({title: regex}, (err, posts) => {
@@ -48,7 +47,6 @@ router.get('/posts', (req, res) => {
                 console.log(err);
             }else{
                 const pageCount = Math.ceil(posts.length / 5);
-                console.log(posts.length);
                 let p = parseInt(req.query.older);
                 if(posts.length-5*(p+1) >= 0 && (p+1)<pageCount) {
                     p = p+1;
@@ -68,7 +66,6 @@ router.get('/posts', (req, res) => {
             }else{
                 const pageCount = Math.ceil(posts.length / 5);
                 let p = parseInt(req.query.newer);
-                console.log(p);
                 if(p-1>0) {
                     p = p-1;
                 }

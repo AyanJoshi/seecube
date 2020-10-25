@@ -55,7 +55,6 @@ router.get('/posts', (req, res) => {
                     res.render('./posts/listPosts', {posts: posts.slice(posts.length-5*p, posts.length-5*(p-1)), page: p});
                 }
                 else {
-                    console.log("I am here");
                     res.render('./posts/listPosts', {posts: posts.slice(0, posts.length-5*(pageCount-1)), page: pageCount});
                 }
                 
@@ -76,7 +75,6 @@ router.get('/posts', (req, res) => {
                 else {
                     p=1;
                 }
-                console.log(p);
                 res.render('./posts/listPosts', {posts: posts.slice(posts.length-5*p, posts.length-5*(p-1)), page: p});
             }
         })

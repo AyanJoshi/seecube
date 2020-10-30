@@ -28,7 +28,9 @@
         tinymce.init({
             selector: '#mytextarea',
             plugins: 'a11ychecker advcode casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinymcespellchecker',
-            menubar: 'edit view format tools table'
+            menubar: 'edit view format tools table',
+            paste_data_images: false,
+            powerpaste_block_drop: true
         });
     </script>
     <title>CCube</title>

@@ -96,17 +96,18 @@
     }
 </style>
 <div class="container emp-profile">
-    
         <div class="row">
             <div class="col-md-4">
                 <div class="profile-img">
                     <img src="<%= user.display_picture %> " alt=""/>
+                    <% if(currentUser && user._id.equals(currentUser._id) || (currentUser && currentUser.isAdmin)){ %>
                     <form action="/users/<%=user._id%>/submitDisplayPicture?_method=PUT" method="POST" enctype="multipart/form-data">
                         <div class="file btn btn-lg btn-primary">
                             Change Profile Picture
                             <input type="file" id="display_picture" name="display_picture" onchange="this.form.submit()"/>
                         </div>
                     </form>
+                    <% } %> 
                 </div>
             </div>
             <div class="col-md-6">

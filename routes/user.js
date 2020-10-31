@@ -161,22 +161,27 @@ router.put('/:id/submitDisplayPicture', ensureAuthenticated, upload.single('disp
         console.log('No picture has been uploaded! Unexpected code to reach');
         res.redirect('back');
     }else{
-        console.log("Iam in else statement");
         User.findById(req.params.id, (err, foundUser) => {
-            cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
-                if(err){
-                    console.log(err);
-                    req.flash('error_msg', err.message);
-                    res.redirect('back');
-                }
-                foundUser.display_picture = result.secure_url;
-                foundUser.save()
-                .then(user => {
-                    req.flash('success_msg', 'Successfully added a display picture');
-                    res.redirect('/users/'+req.params.id);
+            if(req.user && req.user._id.equals(foundUser._id)){
+                cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
+                    if(err){
+                        console.log(err);
+                        req.flash('error_msg', err.message);
+                        res.redirect('back');
+                    }
+                    foundUser.display_picture = result.secure_url;
+                    foundUser.save()
+                    .then(user => {
+                        req.flash('success_msg', 'Successfully added a display picture');
+                        res.redirect('/users/'+req.params.id);
+                    })
+                    .catch(err => console.log(err));
                 })
-                .catch(err => console.log(err));
-            })
+            }else{
+                req.flash('error_msg', err.message);
+                res.redirect('back');
+            }
+            
         })
     }
 });

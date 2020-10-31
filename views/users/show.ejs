@@ -104,9 +104,8 @@
                     <form action="/users/<%=user._id%>/submitDisplayPicture?_method=PUT" method="POST" enctype="multipart/form-data">
                         <div class="file btn btn-lg btn-primary">
                             Change Profile Picture
-                            <input type="file" id="display_picture" name="display_picture"/>
+                            <input type="file" id="display_picture" name="display_picture" onchange="this.form.submit()"/>
                         </div>
-                        <button type="submit" class="btn btn-dark btn-block">Submit</button>
                     </form>
                 </div>
             </div>

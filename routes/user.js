@@ -161,30 +161,37 @@ router.put('/:id/submitDisplayPicture', ensureAuthenticated, upload.single('disp
         console.log('No picture has been uploaded! Unexpected code to reach');
         res.redirect('back');
     }else{
-        User.findById(req.params.id, (err, foundUser) => {
-            if(req.user && req.user._id.equals(foundUser._id)){
-                cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
-                    if(err){
-                        console.log(err);
-                        req.flash('error_msg', err.message);
-                        res.redirect('back');
+        User.findById(req.params.id, async(err, foundUser) => {
+            if(req.user && req.user._id.equals(foundUser._id)){                
+                try{
+                    if(foundUser.display_picture_id && foundUser.display_picture_id.length > 0){
+                        await cloudinary.v2.uploader.destroy(foundUser.display_picture_id);
                     }
-                    foundUser.display_picture = result.secure_url;
-                    foundUser.save()
-                    .then(user => {
-                        req.flash('success_msg', 'Successfully added a display picture');
-                        res.redirect('/users/'+req.params.id);
-                    })
-                    .catch(err => console.log(err));
-                })
+                    let result = await cloudinary.v2.uploader.upload(req.file.path, (err, data) => {
+                        if(err){
+                            req.flash('error_msg', err.message);
+                            res.redirect('back');
+                        }
+                        foundUser.display_picture_id = data.public_id;
+                        foundUser.display_picture = data.secure_url;
+                        foundUser.save()
+                        .then(user => {
+                            req.flash('success_msg', 'Successfully added a display picture');
+                            res.redirect('/users/'+req.params.id);
+                        })
+                        .catch(err => console.log(err));
+                    });
+                }catch(err){
+                    req.flash('error_msg', err.message);
+                    return res.redirect('back');
+                }    
+                
             }else{
                 req.flash('error_msg', err.message);
                 res.redirect('back');
             }
-            
         })
     }
 });
-
 
 module.exports = router;

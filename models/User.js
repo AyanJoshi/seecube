@@ -22,7 +22,8 @@ const UserSchema = new mongoose.Schema({
     },
     display_picture: {type: String, 
         default: "https://i.pinimg.com/originals/19/b8/d6/19b8d6e9b13eef23ec9c746968bb88b1.jpg"
-    }
+    },
+    display_picture_id: String
 });
 
 const User = mongoose.model('User', UserSchema);

@@ -2,7 +2,6 @@
     <div class="col-md-6 m-auto">
       <div class="card card-body">
         <h1 class="text-center mb-3"><i class="fas fa-plus-square"></i>  Edit <%=problems.title%></h1>
-        <%- include ('../partials/messages') %>
         <form action="/problems/<%=problems._id%>?_method=PUT" method="POST">
           <div class="form-group">
             <label for="title">Title</label>

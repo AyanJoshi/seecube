@@ -19,7 +19,8 @@ const UserSchema = new mongoose.Schema({
     isAdmin:{
         type: Boolean,
         default: false
-    }
+    },
+    display_picture: {type: String, default:undefined}
 });
 
 const User = mongoose.model('User', UserSchema);

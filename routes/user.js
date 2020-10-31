@@ -155,14 +155,17 @@ router.get("/:id", (req, res) => {
 })
 
 //Submit display picture
-router.post('/:id/submitDisplayPicture', ensureAuthenticated, upload.single('image'), async(req, res)=>{
+router.put('/:id/submitDisplayPicture', ensureAuthenticated, upload.single('display_picture'), async(req, res)=>{
+    
     if(!req.file){
         console.log('No picture has been uploaded! Unexpected code to reach');
         res.redirect('back');
     }else{
+        console.log("Iam in else statement");
         User.findById(req.params.id, (err, foundUser) => {
             cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
                 if(err){
+                    console.log(err);
                     req.flash('error_msg', err.message);
                     res.redirect('back');
                 }

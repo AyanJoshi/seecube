@@ -40,12 +40,53 @@ router.get('/posts', (req, res) => {
                 res.render('./posts/listPosts', {posts: posts});
             }
         })
-    }else{
+    }
+    else if(req.query.older){
         Post.find({}, (err, posts) => {
             if(err){
                 console.log(err);
             }else{
-                res.render('./posts/listPosts', {posts: posts});
+                const pageCount = Math.ceil(posts.length / 5);
+                let p = parseInt(req.query.older);
+                if(posts.length-5*(p+1) >= 0 && (p+1)<pageCount) {
+                    p = p+1;
+                    res.render('./posts/listPosts', {posts: posts.slice(posts.length-5*p, posts.length-5*(p-1)), page: p});
+                }
+                else {
+                    res.render('./posts/listPosts', {posts: posts.slice(0, posts.length-5*(pageCount-1)), page: pageCount});
+                }
+                
+            }
+        })
+    }
+    else if(req.query.newer){
+        Post.find({}, (err, posts) => {
+            if(err){
+                console.log(err);
+            }else{
+                const pageCount = Math.ceil(posts.length / 5);
+                let p = parseInt(req.query.newer);
+                if(p-1>0) {
+                    p = p-1;
+                }
+                else {
+                    p=1;
+                }
+                res.render('./posts/listPosts', {posts: posts.slice(posts.length-5*p, posts.length-5*(p-1)), page: p});
+            }
+        })
+    }
+    else{
+        Post.find({}, (err, posts) => {
+            if(err){
+                console.log(err);
+            }else{
+                if(posts.length >=5) {
+                    res.render('./posts/listPosts', {posts: posts.slice(posts.length-5, posts.length), page: 1});
+                }
+                else {
+                    res.render('./posts/listPosts', {posts: posts, page: 1});
+                }
             }
         })
     }

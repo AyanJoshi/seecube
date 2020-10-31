@@ -101,10 +101,13 @@
             <div class="col-md-4">
                 <div class="profile-img">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt=""/>
-                    <div class="file btn btn-lg btn-primary">
-                        Change Photo
-                        <input type="file" name="file"/>
-                    </div>
+                    <form action="/submitDisplayPicture" method="POST" enctype="multipart/form-data">
+                        <div class="file btn btn-lg btn-primary">
+                            Change Photo
+                            <input type="file" id="display_picture" name="display_picture"/>
+                        </div>
+                        <button type="submit" class="btn btn-dark btn-block">Submit</button>
+                    </form>
                 </div>
             </div>
             <div class="col-md-6">

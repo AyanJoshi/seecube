@@ -3,6 +3,30 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const Post = require('../models/Post');
+const { ensureAuthenticated } = require('../config/auth');
+const multer = require('multer');
+const storage = multer.diskStorage({
+    filename: (req, file, callback) =>{
+        callback(null, Date.now() + file.originalname);
+    }
+});
+
+const imageFilter = (req, file, cb) => {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+        return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+}
+
+const upload = multer({ storage: storage, fileFilter: imageFilter})
+
+const cloudinary = require('cloudinary');
+cloudinary.config({ 
+  cloud_name: 'dfqajn5ex', 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
 
 //User model
 const User = require('../models/User');
@@ -129,5 +153,30 @@ router.get("/:id", (req, res) => {
         }
     });
 })
+
+//Submit display picture
+router.post('/:id/submitDisplayPicture', ensureAuthenticated, upload.single('image'), async(req, res)=>{
+    if(!req.file){
+        console.log('No picture has been uploaded! Unexpected code to reach');
+        res.redirect('back');
+    }else{
+        User.findById(req.params.id, (err, foundUser) => {
+            cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
+                if(err){
+                    req.flash('error_msg', err.message);
+                    res.redirect('back');
+                }
+                foundUser.display_picture = result.secure_url;
+                foundUser.save()
+                .then(user => {
+                    req.flash('success_msg', 'Successfully added a display picture');
+                    res.redirect('/users/'+req.params.id);
+                })
+                .catch(err => console.log(err));
+            })
+        })
+    }
+});
+
 
 module.exports = router;

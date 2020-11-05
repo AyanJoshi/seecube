@@ -7,27 +7,40 @@ const { exec } = require("child_process");
 const Problem = require('../models/Problem');
 //solutions Model
 const Solution = require('../models/Solution');
+//user Model
+const User = require('../models/User');
 
 const { route } = require('.');
 const { ensureAuthenticated, ensureProblemOwnerShip, ensureAdmin } = require('../config/auth');
 
 //Get all problems
 router.get('/problems', (req, res) => {
-    Problem.find({}, (err, problems) => {
-        if(err){
-            console.log(err);
-        }else{
-            res.render('./problems/listProblems', {problems: problems});
-        }
-    })
+    if(req.query.search){
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+        Problem.find({title: regex}, (err, problems) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.render('./problems/listProblems', { problems: problems });
+            }
+        })
+    }else{
+        Problem.find({}, (err, problems) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.render('./problems/listProblems', { problems: problems });
+            }
+        })
+    }
 });
 
 //Add new Problem
-router.get('/problems/new', ensureAuthenticated, (req, res)=>{
+router.get('/problems/new', ensureAuthenticated, (req, res) => {
     res.render('./problems/newProblem');
 });
 
-router.post('/problems/', ensureAuthenticated, (req, res)=>{
+router.post('/problems/', ensureAuthenticated, (req, res) => {
     const { title, solved } = req.body;
     const newProblem = new Problem({
         title: title,
@@ -45,7 +58,7 @@ router.post('/problems/', ensureAuthenticated, (req, res)=>{
             id: req.user._id,
             name: req.user.name
         },
-        
+
     });
     newProblem.save()
         .then(Problem => {
@@ -57,23 +70,23 @@ router.post('/problems/', ensureAuthenticated, (req, res)=>{
 
 //Show Problem
 router.get('/problems/:id', (req, res) => {
-    Problem.findById(req.params.id).populate("comments").populate("solutions").exec((err, foundProblem)=>{
-        if(err){
+    Problem.findById(req.params.id).populate("comments").populate("solutions").exec((err, foundProblem) => {
+        if (err) {
             res.redirect("/problems");
-        }else{
-            res.render("./problems/showProblem", {problem: foundProblem});
+        } else {
+            res.render("./problems/showProblem", { problem: foundProblem });
         }
     })
 });
 
 //Edit Problem
 router.get('/problems/:id/edit', ensureAuthenticated, ensureProblemOwnerShip, (req, res) => {
-    Problem.findById(req.params.id, (err, foundProblem)=>{
-        if(err){
+    Problem.findById(req.params.id, (err, foundProblem) => {
+        if (err) {
             alert('Cannot find the Problem');
             res.redirect("/problems");
-        }else{
-            res.render("./problems/editProblem", {problems: foundProblem});
+        } else {
+            res.render("./problems/editProblem", { problems: foundProblem });
         }
     });
 });
@@ -81,7 +94,7 @@ router.get('/problems/:id/edit', ensureAuthenticated, ensureProblemOwnerShip, (r
 router.put('/problems/:id', ensureAuthenticated, ensureProblemOwnerShip, (req, res) => {
     const data = req.body;
     const { title, solved } = req.body;
-    Problem.findByIdAndUpdate(req.params.id, 
+    Problem.findByIdAndUpdate(req.params.id,
         {
             title: title,
             solved: solved,
@@ -99,99 +112,121 @@ router.put('/problems/:id', ensureAuthenticated, ensureProblemOwnerShip, (req, r
                 id: req.user._id,
                 name: req.user.name
             }
-        }, 
+        },
         (err, updatedProblem) => {
-        if(err){
-            req.flash('error_msg', 'There is an error processing your request.');
-            res.redirect('/problems');
-        }else{
-            req.flash('success_msg', 'Succesfully edited the Problem');
-            res.redirect('/problems/'+ req.params.id);
-        }
-    });
+            if (err) {
+                req.flash('error_msg', 'There is an error processing your request.');
+                res.redirect('/problems');
+            } else {
+                req.flash('success_msg', 'Succesfully edited the Problem');
+                res.redirect('/problems/' + req.params.id);
+            }
+        });
 });
 
 //Delete route
 router.delete('/problems/:id', ensureAuthenticated, ensureProblemOwnerShip, (req, res) => {
     const data = req.body;
-    Problem.findByIdAndRemove(req.params.id, (err)=>{
-        if(err){
+    Problem.findByIdAndRemove(req.params.id, (err) => {
+        if (err) {
             req.flash('error_msg', 'There is an error processing your request.');
             res.redirect('/problems');
-        }else{
+        } else {
             req.flash('success_msg', 'Succesfully deleted the Problem');
             res.redirect('/problems');
         }
     });
 });
 
-router.post('/problems/:id/approve', ensureAuthenticated, ensureAdmin, (req, res)=>{
-    Problem.findByIdAndUpdate(req.params.id, 
+router.post('/problems/:id/approve', ensureAuthenticated, ensureAdmin, (req, res) => {
+    Problem.findByIdAndUpdate(req.params.id,
         {
             approved: true
-        }, 
+        },
         (err, updatedProblem) => {
-            if(err){
+            if (err) {
                 req.flash('error_msg', 'There is an error processing your request.');
                 res.redirect('/problems');
-            }else{
+            } else {
                 req.flash('success_msg', 'Succesfully approved the Problem');
                 res.redirect('/problems');
             }
-    });
+        });
 });
 
-router.post('/problems/:id/solution', ensureAuthenticated, async (req, res)=>{
+router.post('/problems/:id/solution', ensureAuthenticated, async (req, res) => {
     const data = req.body;
     Problem.findById(req.params.id, (err, foundProblem) => {
-        if(err){
+        if (err) {
             console.log(err);
-        }else{
-            const command = "cd solutions_java; unset JAVA_TOOL_OPTIONS; echo '"+req.body.editor+"' > Main.java; echo '"+foundProblem.body.input+"' > input.txt ; javac Main.java; java Main <input.txt > output.txt; echo '"+foundProblem.body.output+"' > expected_output.txt; diff output.txt expected_output.txt > diff.txt; cat diff.txt";
+        } else {
+            const command = "cd solutions_java; unset JAVA_TOOL_OPTIONS; echo '" + req.body.editor + "' > Main.java; echo '"+foundProblem.body.input+"' > input.txt ; javac Main.java; java Main < input.txt > output.txt; echo '"+foundProblem.body.output+"' > expected_output.txt; diff --strip-trailing-cr expected_output.txt output.txt > diff.txt; java Script < diff.txt > difference.txt; cat difference.txt";
             let differ = "false";
             exec(command, async (error, stdout, stderr) => {
                 if (error) {
                     console.log(`error: ${error.message}`);
-                    // console.log(error);
-                    res.redirect('/problems');
+                    res.redirect('/problems/' + req.params.id);
                 }
-                if (stderr) {
+                else if (stderr) {
                     console.log(`stderr: ${stderr}`);
-                    // console.log(error);
-                    res.redirect('/problems');
-                }
-                // console.log(`stdout: ${stdout}`);
-                differ = `${stdout}`;
-                console.log("something happened lol")
-                // res.redirect('/problems/'+req.params.id);
-                var status = "fail";
-                if(differ === "") {
-                    status = "pass"
-                }
-                console.log("diff value is: "+differ);
+                    var stderror = `${stderr}`;
+                    var status_error = "Compilation Error";
+                    const newSolution = new Solution({
+                        language: req.body.language,
+                        text: req.body.editor,
+                        solution_owner: {
+                            id: req.user._id,
+                            name: req.user.name
+                        },
+                        status: status_error,
+                        difference: stderror
+                    });
 
-                const newSolution = new Solution({
-                    language: req.body.language,
-                    text: req.body.editor,
-                    solution_owner: {
-                        id: req.user._id,
-                        name: req.user.name
-                    },
-                    status: status,
-                    difference: differ
-                });
-                
-                newSolution.save()
-                .then(problem => {
-                    foundProblem.solutions.push(newSolution);
-                    foundProblem.save();
-                    // req.flash('success_msg', 'Successfully added a solution');
-                    res.redirect('/problems/'+req.params.id);
-                })
-                .catch(err => console.log(err));
+                    newSolution.save()
+                        .then(problem => {
+                            foundProblem.solutions.push(newSolution);
+                            foundProblem.save();
+                            res.redirect('/problems/' + req.params.id);
+                        })
+                        .catch(err => console.log(err));
+                }
+                else {
+                    differ = `${stdout}`;
+                    console.log("something happened lol")
+                    
+                    var status = "fail";
+                    if (differ === "") {
+                        status = "pass"
+                    }
+                    console.log("diff value is: " + differ);
+
+                    const newSolution = new Solution({
+                        language: req.body.language,
+                        text: req.body.editor,
+                        solution_owner: {
+                            id: req.user._id,
+                            name: req.user.name
+                        },
+                        status: status,
+                        difference: differ
+                    });
+
+                    newSolution.save()
+                        .then(problem => {
+                            foundProblem.solutions.push(newSolution);
+                            foundProblem.save();
+                            // req.flash('success_msg', 'Successfully added a solution');
+                            res.redirect('/problems/' + req.params.id);
+                        })
+                        .catch(err => console.log(err));
+                }
             })
         }
     })
 });
+
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
 
 module.exports = router;

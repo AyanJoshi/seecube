@@ -54,21 +54,6 @@ app.use((req, res, next) => {
     next();
 });
 
-//Routes
-app.get('/search',(req,res)=>{  
-    try {  
-        Problem.find({$or:[{title: {'$regex':req.query.dsearch}}]},(err,problems)=>{  
-        if(err){  
-            console.log(err);  
-        }else{  
-            res.render('./problems/listProblems',{problems:problems});  
-        }  
-    })  
-    } catch (error) {  
-        console.log(error);  
-    }  
-});
-
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/user'));
 app.use('', require('./routes/post'));

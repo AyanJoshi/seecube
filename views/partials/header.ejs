@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="/"><i class="fas fa-cubes"></i> CCube</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -44,9 +44,47 @@
             <li class="nav-item"><a class="nav-link" href="/users/register">Sign Up<span class="sr-only">(current)</span></a></li>
             <li class="nav-item"><a class="nav-link" href="/users/login">Login<span class="sr-only">(current)</span></a></li>     
         <%}else{%>
-             <li class="nav-item"><a class="nav-link" href="/home">Signed in as <%=currentUser.name%></a></li>
-             <li class="nav-item"><a class="nav-link" href="/users/logout">Log out<span class="sr-only">(current)</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="/users/<%= currentUser._id %>" > Signed in as <%=currentUser.name%></a></li>
+            <li class="nav-item"><a class="nav-link" href="/users/logout">Log out<span class="sr-only">(current)</span></a></li>
        <% } %>
     </ul>
   </div>
 </nav>
+
+
+<% if(typeof errors != 'undefined'){ %> <% errors.forEach(function(error) { %>
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <%= error.msg %>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <% }); %> 
+<% } %>
+
+<% if(success_msg != ''){ %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= success_msg %>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+<% } %>
+
+<% if(error_msg != ''){ %>
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <%= error_msg %>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+<% } %>
+
+<% if(error != ''){ %>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <%= error %>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% } %>

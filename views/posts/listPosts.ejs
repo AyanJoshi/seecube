@@ -1,52 +1,61 @@
-
+<style>
+  .fit-image {
+    width: 100%;
+    object-fit: cover;
+    height: 300px; /* only if you want fixed height */
+  }
+</style>
 <!-- Page Content -->
-<div class="container">
-  <%- include ('../partials/messages') %>
+<div class="container"> 
   <div class="row">
 
     <!-- Blog Entries Column -->
     <div class="col-md-8">
       <br>
       <br>
-      <a class="btn btn-outline-primary" href="/posts/new" role="button"><i class="fas fa-plus-square"></i> Add Post</a>
+      <a class="btn btn-outline-dark" href="/posts/new" role="button"><i class="fas fa-plus-square"></i> Add Post</a>
       <h1 class="my-4">Recent Posts</h1>
       <% posts.slice().reverse().forEach((post) => { %>
           <!-- Blog Post -->
           <div class="card mb-4">
-          <% if(post.image != undefined){ %> 
-            <img class="card-img-top" src="<%=post.image%>" alt="Card image cap">
-          <% } %> 
-          <div class="card-body">
-              <h2 class="card-title"><%= post.title%></h2>
-              <% if(post.body.length >= 250){ %>
-                <p class="card-text"><%- post.body.substring(0, 245) %>...</p>
-                <a href="/posts/<%= post._id %>" class="btn btn-primary">Read More &rarr;</a>
-              <% }else{ %>
-                <p class="card-text"><%- post.body %></p>
-                <a href="/posts/<%= post._id %>" class="btn btn-primary">Quick Read &rarr;</a>
-              <% } %>
-              <% if(currentUser && post.author.id.equals(currentUser._id) || (currentUser && currentUser.isAdmin)){ %>
-                <a href="/posts/<%=post._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
-                <form style="display: inline;" action="/posts/<%= post._id %>?_method=DELETE" method="POST">
-                  <button type="submit" class="btn btn-outline-danger">Delete</button>
-                </form>
-              <% } %>
-          </div>
-          
-          <div class="card-footer text-muted">
-              <%= post.created.toDateString() %>
-              <a href="#"><%= post.author.name%></a>
-          </div>
+            <% if(post.image != undefined){ %> 
+              <img class="card-img-top fit-image" src="<%=post.image%>" alt="Card image cap">
+            <% } %> 
+            <div class="card-body">
+                <h2 class="card-title"><%= post.title%></h2>
+                <% if(post.body.length >= 250){ %>
+                  <p class="card-text"><%- post.body.substring(0, 245) %>...</p>
+                  <a href="/posts/<%= post._id %>" class="btn btn-primary">Read More &rarr;</a>
+                <% }else{ %>
+                  <p class="card-text"><%- post.body %></p>
+                  <a href="/posts/<%= post._id %>" class="btn btn-dark">Quick Read &rarr;</a>
+                <% } %>
+                <% if(currentUser && post.author.id.equals(currentUser._id) || (currentUser && currentUser.isAdmin)){ %>
+                  <a href="/posts/<%=post._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
+                  <form style="display: inline;" action="/posts/<%= post._id %>?_method=DELETE" method="POST">
+                    <button type="submit" class="btn btn-outline-danger">Delete</button>
+                  </form>
+                <% } %>
+            </div>
+            
+            <div class="card-footer text-muted">
+                <%= post.created.toDateString() %>
+                <a href="/users/<%= post.author.id %>"><%= post.author.name %> </a>
+            </div>
           </div>
       <% }) %> 
 
       <!-- Pagination -->
       <ul class="pagination justify-content-center mb-4">
         <li class="page-item">
-          <a class="page-link" href="#">&larr; Older</a>
+          <form action="/posts" method="get"> 
+            <button class="form-control btn-dark" type="submit" name="older" value=<%=page%>>&larr; Older</button>
+          </form>
         </li>
-        <li class="page-item disabled">
-          <a class="page-link" href="#">Newer &rarr;</a>
+        <li class="page-item">
+          <form action="/posts" method="get">
+            <button class="form-control btn-light" type="submit" name="newer" value=<%=page%>>Newer &rarr;</button>
+          </form>
         </li>
       </ul>
 
@@ -60,10 +69,10 @@
         <h5 class="card-header">Search</h5>
         <div class="card-body">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for...">
-            <span class="input-group-append">
-              <button class="btn btn-secondary" type="button">Go!</button>
-            </span>
+            <form class="form-inline my-2 my-lg-0" action="/posts" method="get">    
+              <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search">    
+              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>    
+            </form>
           </div>
         </div>
       </div>

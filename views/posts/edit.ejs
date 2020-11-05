@@ -2,7 +2,6 @@
     <div class="col-md-6 m-auto">
       <div class="card card-body">
         <h1 class="text-center mb-3"><i class="fas fa-edit"></i>  Edit <%=post.title%></h1>
-        <%- include ('../partials/messages') %>
         <form action="/posts/<%=post._id%>?_method=PUT" method="POST" enctype="multipart/form-data">
           <div class="form-group">
             <label for="title">Title</label>
@@ -19,9 +18,9 @@
             <br>
             <textarea 
                 class="form-control"
-                id="body" 
+                id="mytextarea" 
                 name="body" 
-                rows="4">
+                rows="20">
             <%= post.body %>
             </textarea>
           </div>
@@ -36,7 +35,7 @@
               placeholder="Enter Description"
             />
           </div>
-          <button type="submit" class="btn btn-primary btn-block">Submit</button>
+          <button type="submit" class="btn btn-dark btn-block">Submit</button>
         </form>
       </div>
     </div>

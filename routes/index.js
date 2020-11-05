@@ -5,9 +5,15 @@ router.get('/', (req, res) => res.render('welcome.ejs'));
 
 //Dasboard Handle
 router.get('/home', (req, res) => {
-    res.render('home', {
-        name: req.user.name
-    });
+    if(req.user){
+        res.render('home', {
+            name: req.user.name
+        });
+    }else{
+        res.render('home', {
+            name: undefined
+        })
+    }
 });
 
 module.exports = router;

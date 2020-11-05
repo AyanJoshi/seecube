@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
 
 const imageFilter = (req, file, cb) => {
     if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
-        return cb(new Error('Only image files are allowed!'), false);
+        return cb(null, false);
     }
     cb(null, true);
 }
@@ -158,7 +158,7 @@ router.get("/:id", (req, res) => {
 router.put('/:id/submitDisplayPicture', ensureAuthenticated, upload.single('display_picture'), async(req, res)=>{
     
     if(!req.file){
-        console.log('No picture has been uploaded! Unexpected code to reach');
+        req.flash('error_msg', 'Unsuccessful: Either file is not uploaded or uploaded but of type other than jpg or png');
         res.redirect('back');
     }else{
         User.findById(req.params.id, async(err, foundUser) => {
@@ -171,21 +171,22 @@ router.put('/:id/submitDisplayPicture', ensureAuthenticated, upload.single('disp
                         if(err){
                             req.flash('error_msg', err.message);
                             res.redirect('back');
-                        }
-                        foundUser.display_picture_id = data.public_id;
-                        foundUser.display_picture = data.secure_url;
-                        foundUser.save()
-                        .then(user => {
-                            req.flash('success_msg', 'Successfully added a display picture');
-                            res.redirect('/users/'+req.params.id);
-                        })
-                        .catch(err => console.log(err));
+                        }else{
+                            foundUser.display_picture_id = data.public_id;
+                            foundUser.display_picture = data.secure_url;
+                            foundUser.save()
+                            .then(user => {
+                                req.flash('success_msg', 'Successfully added a display picture');
+                                res.redirect('/users/'+req.params.id);
+                            })
+                            .catch(err => console.log(err));
+                        }        
                     });
                 }catch(err){
                     req.flash('error_msg', err.message);
                     return res.redirect('back');
                 }    
-                
+
             }else{
                 req.flash('error_msg', err.message);
                 res.redirect('back');

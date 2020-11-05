@@ -1,4 +1,10 @@
-
+<style>
+  .fit-image {
+    width: 100%;
+    object-fit: cover;
+    height: 300px; /* only if you want fixed height */
+  }
+</style>
 <!-- Page Content -->
 <div class="container"> 
   <div class="row">
@@ -13,7 +19,7 @@
           <!-- Blog Post -->
           <div class="card mb-4">
             <% if(post.image != undefined){ %> 
-              <img width="300px" height="300px" class="card-img-top" src="<%=post.image%>" alt="Card image cap">
+              <img class="card-img-top fit-image" src="<%=post.image%>" alt="Card image cap">
             <% } %> 
             <div class="card-body">
                 <h2 class="card-title"><%= post.title%></h2>
@@ -42,10 +48,14 @@
       <!-- Pagination -->
       <ul class="pagination justify-content-center mb-4">
         <li class="page-item">
-          <a class="page-link" href="#">&larr; Older</a>
+          <form action="/posts" method="get"> 
+            <button class="form-control btn-dark" type="submit" name="older" value=<%=page%>>&larr; Older</button>
+          </form>
         </li>
-        <li class="page-item disabled">
-          <a class="page-link" href="#">Newer &rarr;</a>
+        <li class="page-item">
+          <form action="/posts" method="get">
+            <button class="form-control btn-light" type="submit" name="newer" value=<%=page%>>Newer &rarr;</button>
+          </form>
         </li>
       </ul>
 

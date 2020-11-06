@@ -27,8 +27,10 @@
     <script>
         tinymce.init({
             selector: '#mytextarea',
-            plugins: 'a11ychecker advcode casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinymcespellchecker',
-            menubar: 'edit view format tools table'
+            plugins: 'autolink lists media table emoticons fullscreen help link ',
+            toolbar: 'undo redo | styleselect | bold italic | ' +   'alignleft aligncenter alignright alignjustify | ' +
+                      'outdent indent | numlist bullist| emoticons | fullscreen |help |link ',
+            menubar: 'edit view format tools table insert '    
         });
     </script>
     <title>CCube</title>

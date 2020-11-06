@@ -28,9 +28,11 @@
         tinymce.init({
             selector: '#mytextarea',
             plugins: 'autolink lists media table emoticons fullscreen help link ',
-            toolbar: 'undo redo | styleselect | bold italic | ' +   'alignleft aligncenter alignright alignjustify | ' +
-                      'outdent indent | numlist bullist| emoticons | fullscreen |help |link ',
-            menubar: 'edit view format tools table insert '    
+            toolbar: 'undo redo | styleselect | bold italic | ' +   'alignleft aligncenter alignright alignjustify |' +
+                      'outdent indent | numlist bullist| emoticons | fullscreen |help |link',
+            menubar: 'edit view format tools table insert',
+            paste_data_images: false,
+            powerpaste_block_drop: true  
         });
     </script>
     <title>CCube</title>

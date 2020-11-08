@@ -1,6 +1,7 @@
 const Post = require('../models/Post');
 const Problem = require('../models/Problem')
 const Comment = require('../models/Comment');
+const Job = require('../models/Job');
 
 module.exports = {
     ensureAdmin: function(req, res, next){
@@ -51,7 +52,6 @@ module.exports = {
         });
     },
     ensureCommentOwnerShip: function(req, res, next){
-        
         Comment.findById(req.params.comment_id, (err, foundComment) => {
             if(err){
                 req.flash('error', 'Comment is not found');
@@ -62,6 +62,21 @@ module.exports = {
                 }else{
                     req.flash('error_msg', 'You do not have permission to do that');
                     res.redirect('back');
+                }
+            }
+        });
+    },
+    ensureJobOwnerShip: function(req, res, next){
+        Job.findById(req.params.id, (err, foundJob) => {
+            if(err){
+                req.flash('error', 'Job is not found');
+                res.redirect('/jobs');
+            }else{
+                if(foundJob.author.id.equals(req.user._id) || req.user.isAdmin){
+                    next();
+                }else{
+                    req.flash('error_msg', 'You do not have permission to do that');
+                    res.redirect('/jobs');
                 }
             }
         });

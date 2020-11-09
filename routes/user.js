@@ -3,7 +3,10 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const Post = require('../models/Post');
+const Problem = require('../models/Problem');
+const { ensureAuthenticated } = require('../config/auth');
 const { ensureAuthenticated, ensureStudent } = require('../config/auth');
+
 const multer = require('multer');
 const storage = multer.diskStorage({
     filename: (req, file, callback) =>{
@@ -159,7 +162,14 @@ router.get("/users/:id", ensureStudent, (req, res) => {
                     req.flash('error_msg', 'Something went wrong');
                     res.redirect('/');
                 }
-                res.render('users/show', {user: foundUser, posts: my_posts});
+                Problem.find().where('author.id').equals(foundUser.id).exec((er, my_problems) => {
+                    if(er){
+                        req.flash('error_msg', 'Something went wrong');
+                        res.redirect('back');
+                    }
+                    res.render('users/show', {user: foundUser, posts: my_posts, problems: my_problems});
+                });
+                
             });
         }
     });

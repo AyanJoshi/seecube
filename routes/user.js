@@ -4,7 +4,6 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const Post = require('../models/Post');
 const Problem = require('../models/Problem');
-const { ensureAuthenticated } = require('../config/auth');
 const { ensureAuthenticated, ensureStudent } = require('../config/auth');
 
 const multer = require('multer');

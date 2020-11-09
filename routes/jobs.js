@@ -27,7 +27,7 @@ cloudinary.config({
 //Job Model
 const Job = require('../models/Job');
 const { route } = require('.');
-const { ensureAuthenticated, ensureJobOwnerShip } = require('../config/auth');
+const { ensureAuthenticated, ensureJobOwnerShip, ensureEmployer } = require('../config/auth');
 
 //Get all Jobs
 router.get('/jobs', (req, res) => {
@@ -41,12 +41,12 @@ router.get('/jobs', (req, res) => {
 });
 
 //Add new job
-router.get('/jobs/new', ensureAuthenticated, (req, res)=>{
+router.get('/jobs/new', ensureAuthenticated, ensureEmployer, (req, res)=>{
     res.render('./jobs/newJob');
 });
 
 //Create Job
-router.post('/jobs/', ensureAuthenticated, upload.single('image'), (req, res)=>{
+router.post('/jobs/', ensureAuthenticated, ensureEmployer, upload.single('image'), (req, res)=>{
     if(!req.file){
         createNewJobAndSave(req, res, undefined, undefined);
     }else{
@@ -94,7 +94,7 @@ router.get('/jobs/:id', (req, res) => {
 });
 
 //Edit Job
-router.get('/jobs/:id/edit', ensureAuthenticated, ensureJobOwnerShip, (req, res) => {
+router.get('/jobs/:id/edit', ensureAuthenticated, ensureJobOwnerShip, ensureEmployer, (req, res) => {
     Job.findById(req.params.id, (err, foundJob)=>{
         if(err){
             alert('Cannot find the job');
@@ -106,7 +106,7 @@ router.get('/jobs/:id/edit', ensureAuthenticated, ensureJobOwnerShip, (req, res)
 });
 
 //Update Job
-router.put('/jobs/:id', ensureAuthenticated, ensureJobOwnerShip, upload.single('image'), async (req, res) => {
+router.put('/jobs/:id', ensureAuthenticated, ensureJobOwnerShip, ensureEmployer, upload.single('image'), async (req, res) => {
 
     Job.findById(req.params.id, async (err, foundJob)=>{
         if(err){
@@ -139,7 +139,7 @@ router.put('/jobs/:id', ensureAuthenticated, ensureJobOwnerShip, upload.single('
 });
 
 //Delete route
-router.delete('/jobs/:id', ensureAuthenticated, ensureJobOwnerShip, (req, res) => {
+router.delete('/jobs/:id', ensureAuthenticated, ensureJobOwnerShip, ensureEmployer, (req, res) => {
     Job.findById(req.params.id, async (err, foundJob)=>{
         if(err){
             req.flash('error_msg', 'Cannot find the job');

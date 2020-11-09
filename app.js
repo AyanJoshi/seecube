@@ -48,7 +48,6 @@ app.use(flash());
 
 //Global variables
 app.use((req, res, next) => {
-    res.locals.currentEmployer = req.employer;
     res.locals.currentUser = req.user;
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
@@ -57,11 +56,12 @@ app.use((req, res, next) => {
 });
 
 app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/user'));
+app.use('', require('./routes/user'));
 app.use('', require('./routes/post'));
 app.use('', require('./routes/problems'));
 app.use('', require('./routes/comment'));
 app.use('', require('./routes/jobs'));
+app.use('', require('./routes/employer'));
 
 //Versus route
 app.get('/versus', (req, res) => {

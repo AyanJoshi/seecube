@@ -13,12 +13,30 @@ module.exports = {
             res.redirect('/problems');
         }
     },
+    ensureStudent: function(req, res, next){
+        if(req.user.userType.localeCompare("employer")!=0){
+            return next();
+        }else{
+            // req.flash('error_msg', req.body.title);
+            req.flash('error_msg', 'Sorry but you\'re not a student!');
+            res.redirect('/home');
+        }
+    },
+    ensureEmployer: function(req, res, next){
+        if(req.user.userType.localeCompare("employer")==0){
+            return next();
+        }else{
+            // req.flash('error_msg', req.body.title);
+            req.flash('error_msg', 'Sorry but you\'re not an employer!');
+            res.redirect('/home');
+        }
+    },
     ensureAuthenticated: function(req, res, next){
         if(req.isAuthenticated()){
             return next();
         }else{
             req.flash('error_msg', 'Oh oh! You need to login before doing that');
-            res.redirect('/users/login');
+            res.redirect('/login');
         }
     },
     ensurePostOwnerShip: function(req, res, next){

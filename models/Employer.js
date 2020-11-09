@@ -4,6 +4,7 @@ const EmployerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    userType: String,
     email:{
         type: String,
         required: true

@@ -1,0 +1,50 @@
+<!-- Page Content -->
+<div class="container-fluid" style="max-width: max-content;">
+
+    <div class="row">
+
+        <!-- Problem Content Column -->
+        <div class="col-md-7" style="border-right: 1px solid rgb(202, 201, 201);">
+
+            <!-- Title -->
+            <h1 class="mt-4" style="text-align: center;"><%= job.company%></h1>
+            <hr>
+            <h5 class="mt-4">Position: <%= job.position%></h1>
+            <h5 class="mt-4">Location: <%= job.location%></h1>
+            <h5 class="mt-4">Role Type: <%= job.role_type%></h1>
+            
+            <hr>
+            <!-- Author -->
+            <p class="lead">
+                By
+                <a href="/users/<%= job.author.id %>"><%= job.author.name %> </a>
+            </p>
+
+            <!-- Date/Time -->
+            <p><%= job.created.toDateString() %></p>
+
+            <hr>
+
+            <a class="btn btn-success" href="#" role="button">Apply</a>
+
+            <hr>
+            <!-- Problem Content -->
+            
+            <p class="lead" style="font-size:15px"><%- job.body %></p>
+
+            <% if(currentUser && job.author.id.equals(currentUser._id)){ %>
+            <a href="/jobs/<%=job._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
+            <form style="display: inline;" action="/jobs/<%= job._id %>?_method=DELETE" method="POST">
+                <button type="submit" class="btn btn-outline-danger">Delete</button>
+            </form>
+            <% } %>
+            <hr>
+        </div>
+
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-5">
+            <img class="img-fluid" src="<%=job.image%>" alt="Card image cap">
+        </div>
+    </div>
+    <!-- /.row -->
+</div>

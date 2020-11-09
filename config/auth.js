@@ -1,6 +1,7 @@
 const Post = require('../models/Post');
 const Problem = require('../models/Problem')
 const Comment = require('../models/Comment');
+const Job = require('../models/Job');
 
 module.exports = {
     ensureAdmin: function(req, res, next){
@@ -12,12 +13,30 @@ module.exports = {
             res.redirect('/problems');
         }
     },
+    ensureStudent: function(req, res, next){
+        if(req.user.userType.localeCompare("employer")!=0){
+            return next();
+        }else{
+            // req.flash('error_msg', req.body.title);
+            req.flash('error_msg', 'Sorry but you\'re not a student!');
+            res.redirect('/home');
+        }
+    },
+    ensureEmployer: function(req, res, next){
+        if(req.user.userType.localeCompare("employer")==0){
+            return next();
+        }else{
+            // req.flash('error_msg', req.body.title);
+            req.flash('error_msg', 'Sorry but you\'re not an employer!');
+            res.redirect('/home');
+        }
+    },
     ensureAuthenticated: function(req, res, next){
         if(req.isAuthenticated()){
             return next();
         }else{
             req.flash('error_msg', 'Oh oh! You need to login before doing that');
-            res.redirect('/users/login');
+            res.redirect('/login');
         }
     },
     ensurePostOwnerShip: function(req, res, next){
@@ -51,7 +70,6 @@ module.exports = {
         });
     },
     ensureCommentOwnerShip: function(req, res, next){
-        
         Comment.findById(req.params.comment_id, (err, foundComment) => {
             if(err){
                 req.flash('error', 'Comment is not found');
@@ -62,6 +80,21 @@ module.exports = {
                 }else{
                     req.flash('error_msg', 'You do not have permission to do that');
                     res.redirect('back');
+                }
+            }
+        });
+    },
+    ensureJobOwnerShip: function(req, res, next){
+        Job.findById(req.params.id, (err, foundJob) => {
+            if(err){
+                req.flash('error', 'Job is not found');
+                res.redirect('/jobs');
+            }else{
+                if(foundJob.author.id.equals(req.user._id) || req.user.isAdmin){
+                    next();
+                }else{
+                    req.flash('error_msg', 'You do not have permission to do that');
+                    res.redirect('/jobs');
                 }
             }
         });

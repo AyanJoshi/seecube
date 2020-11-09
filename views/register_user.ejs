@@ -4,19 +4,7 @@
         <h1 class="text-center mb-3">
           <i class="fas fa-user-plus"></i> Register
         </h1>
-        <!-- <div class="col-md-12 school-options-dropdown text-center transparentbar">
-          <div class="dropdown">
-            <button class="btn btn-dark btn-secondary dropdown-toggle text-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Select User Type
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Students</a>
-              <a class="dropdown-item" href="#">Professor</a>
-              <a class="dropdown-item" href="#">Employers</a>
-            </div>
-          </div>
-        </div> -->
-        <form action="/employer/register" method="POST">
+        <form action="/users/register" method="POST">
           <div class="form-group">
             <label for="name">Name</label>
             <input
@@ -37,28 +25,6 @@
               class="form-control"
               placeholder="Enter Email"
               value="<%= typeof email != 'undefined' ? email : '' %>"
-            />
-          </div>
-          <div class="form-group">
-            <label for="current_company">Company Name</label>
-            <input
-              type="name"
-              id="current_company"
-              name="current_company"
-              class="form-control"
-              placeholder="Enter Company Name"
-              value="<%= typeof current_company != 'undefined' ? current_company : '' %>"
-            />
-          </div>
-          <div class="form-group">
-            <label for="position">Position in the Company</label>
-            <input
-              type="name"
-              id="position"
-              name="position"
-              class="form-control"
-              placeholder="Enter Position"
-              value="<%= typeof position != 'undefined' ? position : '' %>"
             />
           </div>
           <div class="form-group">
@@ -87,7 +53,7 @@
             Register
           </button>
         </form>
-        <p class="lead mt-4">Have An Account? <a href="/employer/login">Login</a></p>
+        <p class="lead mt-4">Have An Account? <a href="/users/login">Login</a></p>
       </div>
     </div>
   </div>

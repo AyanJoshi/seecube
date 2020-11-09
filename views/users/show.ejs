@@ -95,153 +95,189 @@
         font-weight: 600;
     }
 </style>
-<div class="container emp-profile">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="profile-img">
-                    <img src="<%= user.display_picture %> " alt=""/>
-                    <% if(currentUser && user._id.equals(currentUser._id) || (currentUser && currentUser.isAdmin)){ %>
-                    <form action="/users/<%=user._id%>/submitDisplayPicture?_method=PUT" method="POST" enctype="multipart/form-data">
-                        <div class="file btn btn-lg btn-primary">
-                            Change Profile Picture
-                            <input type="file" id="display_picture" name="display_picture" onchange="this.form.submit()"/>
-                        </div>
-                    </form>
-                    <% } %> 
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="profile-head">
-                    <h5>
-                        <%= user.name %> 
-                    </h5>
-                    <h6>
-                        Computer Science
-                    </h6>
-                    <p class="proile-rating">CGPA : <span>user data</span></p>
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Timeline</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="false">My Posts</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <input type="button" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="profile-work">
-                    <p>SOCIAL</p>
-                    <a href="">LinkedIn</a>
-                    <a href="">Facebook</a>
-                    <p>SKILLS</p>
-                    <a href="">My Website</a><br/>
-                    <a href="">Github</a><br/>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="tab-content profile-tab" id="myTabContent">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Name</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p><%= user.name %></p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Email</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p><%= user.email %> </p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Phone</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p>user data</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Major</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p>Computer Science</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Standing</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p>Freshman</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>My Summary</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p style="font-weight: 100;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi quibusdam repudiandae quae, explicabo perspiciatis tempore corporis assumenda, odio natus quasi 
-                                            pariatur nesciunt exercitationem eum autem excepturi veritatis molestias, laboriosam error!</p>
-                                    </div>
-                                </div>
-                    </div>
-                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Problems Solved</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p>user data</p>
-                            </div>
-                        </div>   
-                    </div>
 
-                    <div class="tab-pane fade" id="posts" role="tabpanel" aria-labelledby="posts-tab">
-                        <div class="row text-center" style="display:flex; flex-wrap: wrap;">
-                            <% posts.forEach(function(post){ %>
-                                <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;">
-                                    <div class="card" style="width: 19rem;">
-                                        <% if(post.image != undefined){ %> 
-                                            <img height="180px" width="150px" class="card-img-top" src="<%=post.image%>" alt="Card image cap">
-                                        <% } %> 
-                                        <div class="card-body">
-                                            <p style="font-weight: 1000; font-size: large;" class="card-title"><%= post.title%></p>
-                                            <!-- <h1 class="card-title"><%= post.title%></h1> -->
-                                            <% if(post.body.length >= 250){ %>
-                                              <p class="card-text"><%- post.body.substring(0, 245) %>...</p>
-                                              <a href="/posts/<%= post._id %>" class="btn btn-primary">Read More &rarr;</a>
-                                            <% }else{ %>
-                                              <p class="card-text"><%- post.body %></p>
-                                              <a href="/posts/<%= post._id %>" class="btn btn-dark">Quick Read &rarr;</a>
-                                            <% } %>
-                                        </div>
-                                        
-                                        <div class="card-footer text-muted">
-                                            <%= post.created.toDateString() %>
-                                        </div>
+<div class="container emp-profile">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="profile-img">
+                <img src="<%= user.display_picture %> " alt=""/>
+                <% if(currentUser && user._id.equals(currentUser._id) || (currentUser && currentUser.isAdmin)){ %>
+                <form action="/users/<%=user._id%>/submitDisplayPicture?_method=PUT" method="POST" enctype="multipart/form-data">
+                    <div class="file btn btn-lg btn-primary">
+                        Change Profile Picture
+                        <input type="file" id="display_picture" name="display_picture" onchange="this.form.submit()"/>
+                    </div>
+                </form>
+                <% } %> 
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="profile-head">
+                <h5>
+                    <%= user.name %> 
+                </h5>
+                <h6>
+                    Computer Science
+                </h6>
+                <p class="proile-rating">CGPA : <span>user data</span></p>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Timeline</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="false">My Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="problems-tab" data-toggle="tab" href="#problems" role="tab" aria-controls="problems" aria-selected="false">Contribution</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <input type="button" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="profile-work">
+                <p>SOCIAL</p>
+                <a href="">LinkedIn</a>
+                <a href="">Facebook</a>
+                <p>SKILLS</p>
+                <a href="">My Website</a><br/>
+                <a href="">Github</a><br/>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="tab-content profile-tab" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Name</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><%= user.name %></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Email</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><%= user.email %> </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Phone</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>user data</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Major</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>Computer Science</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Standing</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>Freshman</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>My Summary</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p style="font-weight: 100;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi quibusdam repudiandae quae, explicabo perspiciatis tempore corporis assumenda, odio natus quasi 
+                                        pariatur nesciunt exercitationem eum autem excepturi veritatis molestias, laboriosam error!</p>
+                                </div>
+                            </div>
+                </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Problems Solved</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p>user data</p>
+                        </div>
+                    </div>   
+                </div>
+
+                <div class="tab-pane fade" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+                        <% posts.slice().reverse().forEach(function(post){ %>
+                            <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;">
+                                <div class="card" style="width: 19rem;">
+                                    <% if(post.image != undefined){ %> 
+                                        <img height="180px" width="150px" class="card-img-top" src="<%=post.image%>" alt="Card image cap">
+                                    <% } %> 
+                                    <div class="card-body">
+                                        <p style="font-weight: 1000; font-size: large;" class="card-title"><%= post.title%></p>
+                                        <% if(post.body.length >= 150){ %>
+                                            <p class="card-text"><%- post.body.substring(0, 145) %>...</p>
+                                            <a href="/posts/<%= post._id %>" class="btn btn-sm btn-primary">Read More &rarr;</a>
+                                        <% }else{ %>
+                                            <p class="card-text"><%- post.body %></p>
+                                            <a href="/posts/<%= post._id %>" class="btn btn-sm btn-dark">Quick Read &rarr;</a>
+                                        <% } %>
+                                    </div>
+                                    
+                                    <div class="card-footer text-muted">
+                                        <%= post.created.toDateString() %>
                                     </div>
                                 </div>
-                            <% }); %>
-                            
-                        </div>
+                            </div>
+                        <% }); %>
+                        
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="problems" role="tabpanel" aria-labelledby="problems-tab">
+                    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+                        <% problems.slice().reverse().forEach(function(problem){ %>
+                            <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;">
+                                <div class="card" style="width: 19rem;">
+                                    <div class="card-body">
+                                        <p style="font-weight: 1000; font-size: large;" class="card-title"><%= problem.title%></p>
+                                        <% if(problem.body.description.length >= 150){ %>
+                                            <p class="card-text"><%- problem.body.description.substring(0, 145) %>...</p>
+                                            <% if(problem.approved){ %> 
+                                                <a class="btn btn-sm btn-success">Approved</a>
+                                            <% }else{ %> 
+                                                <a class="btn btn-sm btn-danger">Not Approved</a>
+                                            <% } %> 
+                                            <a href="/problems/<%= problem._id %>" class="btn btn-sm btn-primary">Show More &rarr;</a>
+                                        <% }else{ %>
+                                            <p class="card-text"><%- problem.body.description %></p>
+                                            <% if(problem.approved){ %> 
+                                                <a class="btn btn-sm btn-success">Approved</a>
+                                            <% }else{ %> 
+                                                <a class="btn btn-sm btn-danger">Not Approved</a>
+                                            <% } %> 
+                                            <a href="/posts/<%= problem._id %>" class="btn btn-sm btn-dark">Quick Read &rarr;</a>
+                                        <% } %>
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                        <%= problem.created.toDateString() %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
                     </div>
                 </div>
             </div>
         </div>
-              
+    </div>
 </div>

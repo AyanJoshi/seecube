@@ -1,0 +1,178 @@
+/* Fix user-agent */
+
+* {
+    box-sizing: border-box !important;
+  }
+  
+  html {
+    font-weight: 300 !important;
+    -webkit-font-smoothing: antialiased !important;
+  }
+  
+  .gameButtons {
+  
+    position: absolute !important;
+    right: 0px !important;
+  }
+  
+  
+  .joinGame, .leaveGame {
+  /* http://css3buttongenerator.com/ */
+  
+    background: #000000 !important;
+    background-image: -webkit-linear-gradient(top, #000000, #303233) !important;
+    background-image: -moz-linear-gradient(top, #000000, #303233) !important;
+    background-image: -ms-linear-gradient(top, #000000, #303233) !important;
+    background-image: -o-linear-gradient(top, #000000, #303233) !important;
+    background-image: linear-gradient(to bottom, #000000, #303233) !important;
+    -webkit-border-radius: 7 !important;
+    -moz-border-radius: 7 !important;
+    border-radius: 7px !important;
+    text-shadow: 1px 1px 3px #666666 !important;
+    font-family: Arial !important;
+    color: #ffffff !important;
+    font-size: 20px !important;
+    padding: 11px 20px 10px 20px !important;
+    text-decoration: none !important;
+  
+  }
+  
+  
+  html, input {
+    font-family:
+      "HelveticaNeue-Light",
+      "Helvetica Neue Light",
+      "Helvetica Neue",
+      Helvetica,
+      Arial,
+      "Lucida Grande",
+      sans-serif !important;
+  }
+  
+  html, body {
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  ul {
+    list-style: none !important;
+    word-wrap: break-word !important;
+  }
+  
+  /* Pages */
+  
+  .pages {
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important; 
+    width: 100% !important;
+  }
+  
+  .page {
+    height: 100% !important;
+    position: absolute !important;
+    width: 100% !important;
+  }
+  
+  /* Login Page */
+  
+  .login.page {
+    background-color: #000 !important;
+  }
+  
+  .login.page .form {
+    height: 100px !important; 
+    margin-top: -100px !important;
+    position: absolute !important;
+  
+    text-align: center !important;
+    top: 50% !important;
+    width: 100% !important;
+  }
+  
+  .login.page .form .usernameInput {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #fff;
+    outline: none;
+    padding-bottom: 15px;
+    text-align: center;
+    width: 400px;
+  }
+  
+  .login.page .title {
+    font-size: 200%;
+  }
+  
+  .login.page .usernameInput {
+    font-size: 200%;
+    letter-spacing: 3px;
+  }
+  
+  .login.page .title, .login.page .usernameInput {
+    color: #fff;
+    font-weight: 100;
+  }
+  
+  /* Chat page */
+  
+  .chat.page {
+    display: none;
+  }
+  
+  /* Font */
+  
+  .messages {
+    font-size: 150%;
+  }
+  
+  .inputMessage {
+    font-size: 100%;
+  }
+  
+  .log {
+    color: gray;
+    font-size: 70%;
+    margin: 5px;
+    text-align: center;
+  }
+  
+  /* Messages */
+  
+  .chatArea {
+    height: 100%;
+    padding-bottom: 60px;
+  }
+  
+  .messages {
+    height: 100%;
+    margin: 0;
+    overflow-y: scroll;
+    padding: 10px 20px 10px 20px;
+  }
+  
+  .message.typing .messageBody {
+    color: gray;
+  }
+  
+  .username {
+    font-weight: 700;
+    overflow: hidden;
+    padding-right: 15px;
+    text-align: right;
+  }
+  
+  /* Input */
+  
+  .inputMessage {
+    border: 10px solid #000;
+    bottom: 0;
+    height: 60px;
+    left: 0;
+    outline: none;
+    padding-left: 10px;
+    position: absolute;
+    right: 0;
+    width: 100%;
+  }

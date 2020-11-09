@@ -3,7 +3,10 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const Post = require('../models/Post');
+const Problem = require('../models/Problem');
 const { ensureAuthenticated } = require('../config/auth');
+const { ensureAuthenticated, ensureStudent } = require('../config/auth');
+
 const multer = require('multer');
 const storage = multer.diskStorage({
     filename: (req, file, callback) =>{
@@ -32,26 +35,36 @@ cloudinary.config({
 const User = require('../models/User');
 const { route } = require('.');
 
-//Loging page
+//Login page
 router.get('/login', (req, res) => {
-    if(req.user){
-        res.send('Please logout to login from a different account');
-    }else{
-        res.render('login');
-    }  
+    res.render('login'); 
 });
 
 //Register page
 router.get('/register', (req, res) => {
+    res.render('register');  
+});
+
+//Student Login page
+router.get('/users/login', (req, res) => {
+    if(req.user){
+        res.send('Please logout to login from a different account');
+    }else{
+        res.render('login_user');
+    }  
+});
+
+//Student Register page
+router.get('/users/register', (req, res) => {
     if(req.user){
         res.send('Please logout to register for a new account');
     }else{
-        res.render('register');
+        res.render('register_user');
     }    
 });
 
 //Register Handle
-router.post('/register', (req, res) => {
+router.post('/users/register', (req, res) => {
     const { name, email, password, password2, isAdmin} = req.body;
     let errors = [];
 
@@ -71,7 +84,7 @@ router.post('/register', (req, res) => {
     }
 
     if(errors.length > 0){
-        res.render('register', {
+        res.render('register_user', {
             errors,
             name,
             email,
@@ -85,7 +98,7 @@ router.post('/register', (req, res) => {
                 if(user){
                     //User exists
                     errors.push({msg:'Email is already registered'});
-                    res.render('register', {
+                    res.render('register_user', {
                         errors,
                         name,
                         email,
@@ -97,7 +110,8 @@ router.post('/register', (req, res) => {
                         name: name,
                         email: email,
                         password: password,
-                        isAdmin: isAdmin
+                        isAdmin: isAdmin,
+                        userType: "user"
                     });
 
                     //Hash password
@@ -121,8 +135,8 @@ router.post('/register', (req, res) => {
 });
 
 //Login Handle
-router.post('/login', (req, res, next)=>{
-    passport.authenticate('local', {
+router.post('/users/login', (req, res, next)=>{
+    passport.authenticate('user-signup', {
         successRedirect: '/home',
         failureRedirect: '/users/login',
         failureFlash: true
@@ -130,14 +144,14 @@ router.post('/login', (req, res, next)=>{
 });
 
 //Logout handle
-router.get('/logout', (req, res) => {
+router.get('/users/logout', (req, res) => {
     req.logout();
     req.flash('success_msg', 'You are logged out');
     res.redirect('/users/login');
 })
 
 //User profile
-router.get("/:id", (req, res) => {
+router.get("/users/:id", ensureStudent, (req, res) => {
     User.findById(req.params.id, (err, foundUser) => {
         if(err){
             req.flash('error_msg', 'Something went wrong');
@@ -148,14 +162,21 @@ router.get("/:id", (req, res) => {
                     req.flash('error_msg', 'Something went wrong');
                     res.redirect('/');
                 }
-                res.render('users/show', {user: foundUser, posts: my_posts});
+                Problem.find().where('author.id').equals(foundUser.id).exec((er, my_problems) => {
+                    if(er){
+                        req.flash('error_msg', 'Something went wrong');
+                        res.redirect('back');
+                    }
+                    res.render('users/show', {user: foundUser, posts: my_posts, problems: my_problems});
+                });
+                
             });
         }
     });
 })
 
 //Submit display picture
-router.put('/:id/submitDisplayPicture', ensureAuthenticated, upload.single('display_picture'), async(req, res)=>{
+router.put('/users/:id/submitDisplayPicture', ensureStudent, ensureAuthenticated, upload.single('display_picture'), async(req, res)=>{
     
     if(!req.file){
         req.flash('error_msg', 'Unsuccessful: Either file is not uploaded or uploaded but of type other than jpg or png');

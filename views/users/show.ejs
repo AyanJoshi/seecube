@@ -217,7 +217,7 @@
 
                 <div class="tab-pane fade" id="posts" role="tabpanel" aria-labelledby="posts-tab">
                     <div class="row text-center" style="display:flex; flex-wrap: wrap;">
-                        <% posts.forEach(function(post){ %>
+                        <% posts.slice().reverse().forEach(function(post){ %>
                             <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;">
                                 <div class="card" style="width: 19rem;">
                                     <% if(post.image != undefined){ %> 
@@ -247,7 +247,7 @@
 
                 <div class="tab-pane fade" id="problems" role="tabpanel" aria-labelledby="problems-tab">
                     <div class="row text-center" style="display:flex; flex-wrap: wrap;">
-                        <% problems.forEach(function(problem){ %>
+                        <% problems.slice().reverse().forEach(function(problem){ %>
                             <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;">
                                 <div class="card" style="width: 19rem;">
                                     <div class="card-body">
@@ -259,7 +259,7 @@
                                             <% }else{ %> 
                                                 <a class="btn btn-sm btn-danger">Not Approved</a>
                                             <% } %> 
-                                            <a href="/problems/<%= problem._id %>" class="btn btn-primary">Show More &rarr;</a>
+                                            <a href="/problems/<%= problem._id %>" class="btn btn-sm btn-primary">Show More &rarr;</a>
                                         <% }else{ %>
                                             <p class="card-text"><%- problem.body.description %></p>
                                             <% if(problem.approved){ %> 
@@ -267,7 +267,7 @@
                                             <% }else{ %> 
                                                 <a class="btn btn-sm btn-danger">Not Approved</a>
                                             <% } %> 
-                                            <a href="/posts/<%= problem._id %>" class="btn btn-dark">Quick Read &rarr;</a>
+                                            <a href="/posts/<%= problem._id %>" class="btn btn-sm btn-dark">Quick Read &rarr;</a>
                                         <% } %>
                                     </div>
                                     <div class="card-footer text-muted">

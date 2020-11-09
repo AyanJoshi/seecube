@@ -27,7 +27,7 @@ cloudinary.config({
 //Post Model
 const Post = require('../models/Post');
 const { route } = require('.');
-const { ensureAuthenticated, ensurePostOwnerShip } = require('../config/auth');
+const { ensureAuthenticated, ensurePostOwnerShip, ensureStudent } = require('../config/auth');
 
 //Get all Posts
 router.get('/posts', (req, res) => {
@@ -93,12 +93,12 @@ router.get('/posts', (req, res) => {
 });
 
 //Add new post
-router.get('/posts/new', ensureAuthenticated, (req, res)=>{
+router.get('/posts/new', ensureAuthenticated, ensureStudent, (req, res)=>{
     res.render('./posts/newPost');
 });
 
 //Create Post
-router.post('/posts/', ensureAuthenticated, upload.single('image'), (req, res)=>{
+router.post('/posts/', ensureAuthenticated, ensureStudent, upload.single('image'), (req, res)=>{
     if(!req.file){
         createNewPostAndSave(req, res, undefined, undefined);
     }else{
@@ -144,7 +144,7 @@ router.get('/posts/:id', (req, res) => {
 });
 
 //Edit Post
-router.get('/posts/:id/edit', ensureAuthenticated, ensurePostOwnerShip, (req, res) => {
+router.get('/posts/:id/edit', ensureAuthenticated, ensurePostOwnerShip, ensureStudent, (req, res) => {
     Post.findById(req.params.id, (err, foundPost)=>{
         if(err){
             alert('cannot find the post');
@@ -156,7 +156,7 @@ router.get('/posts/:id/edit', ensureAuthenticated, ensurePostOwnerShip, (req, re
 });
 
 //Update Post
-router.put('/posts/:id', ensureAuthenticated, ensurePostOwnerShip, upload.single('image'), async (req, res) => {
+router.put('/posts/:id', ensureAuthenticated, ensurePostOwnerShip, ensureStudent, upload.single('image'), async (req, res) => {
 
     Post.findById(req.params.id, async (err, foundPost)=>{
         if(err){
@@ -186,7 +186,7 @@ router.put('/posts/:id', ensureAuthenticated, ensurePostOwnerShip, upload.single
 });
 
 //Delete route
-router.delete('/posts/:id', ensureAuthenticated, ensurePostOwnerShip, (req, res) => {
+router.delete('/posts/:id', ensureAuthenticated, ensurePostOwnerShip, ensureStudent, (req, res) => {
     Post.findById(req.params.id, async (err, foundPost)=>{
         if(err){
             req.flash('error_msg', 'Cannot find the post');

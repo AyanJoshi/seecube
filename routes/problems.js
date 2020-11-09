@@ -11,7 +11,7 @@ const Solution = require('../models/Solution');
 const User = require('../models/User');
 
 const { route } = require('.');
-const { ensureAuthenticated, ensureProblemOwnerShip, ensureAdmin } = require('../config/auth');
+const { ensureAuthenticated, ensureProblemOwnerShip, ensureAdmin, ensureStudent } = require('../config/auth');
 
 //Get all problems
 router.get('/problems', (req, res) => {
@@ -36,11 +36,11 @@ router.get('/problems', (req, res) => {
 });
 
 //Add new Problem
-router.get('/problems/new', ensureAuthenticated, (req, res) => {
+router.get('/problems/new', ensureAuthenticated, ensureStudent, (req, res) => {
     res.render('./problems/newProblem');
 });
 
-router.post('/problems/', ensureAuthenticated, (req, res) => {
+router.post('/problems/', ensureAuthenticated, ensureStudent, (req, res) => {
     const { title, solved } = req.body;
     const newProblem = new Problem({
         title: title,
@@ -80,7 +80,7 @@ router.get('/problems/:id', (req, res) => {
 });
 
 //Edit Problem
-router.get('/problems/:id/edit', ensureAuthenticated, ensureProblemOwnerShip, (req, res) => {
+router.get('/problems/:id/edit', ensureAuthenticated, ensureProblemOwnerShip, ensureStudent, (req, res) => {
     Problem.findById(req.params.id, (err, foundProblem) => {
         if (err) {
             alert('Cannot find the Problem');
@@ -91,7 +91,7 @@ router.get('/problems/:id/edit', ensureAuthenticated, ensureProblemOwnerShip, (r
     });
 });
 
-router.put('/problems/:id', ensureAuthenticated, ensureProblemOwnerShip, (req, res) => {
+router.put('/problems/:id', ensureAuthenticated, ensureProblemOwnerShip, ensureStudent, (req, res) => {
     const data = req.body;
     const { title, solved } = req.body;
     Problem.findByIdAndUpdate(req.params.id,
@@ -125,7 +125,7 @@ router.put('/problems/:id', ensureAuthenticated, ensureProblemOwnerShip, (req, r
 });
 
 //Delete route
-router.delete('/problems/:id', ensureAuthenticated, ensureProblemOwnerShip, (req, res) => {
+router.delete('/problems/:id', ensureAuthenticated, ensureProblemOwnerShip, ensureStudent, (req, res) => {
     const data = req.body;
     Problem.findByIdAndRemove(req.params.id, (err) => {
         if (err) {
@@ -138,7 +138,7 @@ router.delete('/problems/:id', ensureAuthenticated, ensureProblemOwnerShip, (req
     });
 });
 
-router.post('/problems/:id/approve', ensureAuthenticated, ensureAdmin, (req, res) => {
+router.post('/problems/:id/approve', ensureAuthenticated, ensureAdmin, ensureStudent, (req, res) => {
     Problem.findByIdAndUpdate(req.params.id,
         {
             approved: true
@@ -154,7 +154,7 @@ router.post('/problems/:id/approve', ensureAuthenticated, ensureAdmin, (req, res
         });
 });
 
-router.post('/problems/:id/solution', ensureAuthenticated, async (req, res) => {
+router.post('/problems/:id/solution', ensureAuthenticated, ensureStudent, async (req, res) => {
     const data = req.body;
     Problem.findById(req.params.id, (err, foundProblem) => {
         if (err) {

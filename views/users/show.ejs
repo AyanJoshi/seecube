@@ -225,7 +225,6 @@
                                     <% } %> 
                                     <div class="card-body">
                                         <p style="font-weight: 1000; font-size: large;" class="card-title"><%= post.title%></p>
-                                        <!-- <h1 class="card-title"><%= post.title%></h1> -->
                                         <% if(post.body.length >= 150){ %>
                                             <p class="card-text"><%- post.body.substring(0, 145) %>...</p>
                                             <a href="/posts/<%= post._id %>" class="btn btn-sm btn-primary">Read More &rarr;</a>

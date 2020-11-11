@@ -154,55 +154,55 @@
         <div class="col-md-8">
             <div class="tab-content profile-tab" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Name</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p><%= user.name %></p>
-                                </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Name</label>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Email</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p><%= user.email %> </p>
-                                </div>
+                            <div class="col-md-6">
+                                <p><%= user.name %></p>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Phone</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>user data</p>
-                                </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Email</label>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Major</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>Computer Science</p>
-                                </div>
+                            <div class="col-md-6">
+                                <p><%= user.email %> </p>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Standing</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>Freshman</p>
-                                </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Phone</label>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>My Summary</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p style="font-weight: 100;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi quibusdam repudiandae quae, explicabo perspiciatis tempore corporis assumenda, odio natus quasi 
-                                        pariatur nesciunt exercitationem eum autem excepturi veritatis molestias, laboriosam error!</p>
-                                </div>
+                            <div class="col-md-6">
+                                <p>user data</p>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Major</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>Computer Science</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Standing</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>Freshman</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>My Summary</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p style="font-weight: 100;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi quibusdam repudiandae quae, explicabo perspiciatis tempore corporis assumenda, odio natus quasi 
+                                    pariatur nesciunt exercitationem eum autem excepturi veritatis molestias, laboriosam error!</p>
+                            </div>
+                        </div>
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="row">
@@ -215,7 +215,22 @@
                         <div class="col-md-6">
                             <label>Resume</label>
                         </div>
-                        
+                        <div class="col-md-6">
+                            <% if(user.resume_id != undefined){ %>
+                                <div class="col-md-6">
+                                    <a style="color: black;" href="<%= user.resume %>" target="_blank">View Resume</a>
+                                </div>
+                            <% } %>  
+                            <% if(currentUser && user._id.equals(currentUser._id) || (currentUser && currentUser.isAdmin)){ %>
+                                <div class="col-md-6">
+                                    <form action="/users/<%=user._id%>/submitResume?_method=PUT" method="POST" enctype="multipart/form-data">
+                                        
+                                            <input type="file" size="30" id="resume" name="resume" onchange="this.form.submit()"/>
+                                        
+                                    </form>
+                                </div>
+                            <% } %> 
+                        </div>
                     </div>   
                 </div>
 

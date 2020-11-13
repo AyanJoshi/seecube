@@ -46,10 +46,10 @@
         <%if(!currentUser){%>
             <li class="nav-item"><a class="nav-link" href="/register">Sign Up<span class="sr-only">(current)</span></a></li>
             <li class="nav-item"><a class="nav-link" href="/login">Login<span class="sr-only">(current)</span></a></li>
-        <%}else if(currentUser.userType.localeCompare("employer")==0) {%>
+        <%}else if(currentUser && currentUser.userType.localeCompare("employer")==0) {%>
           <li class="nav-item"><a class="nav-link" href="#" > Employer <%=currentUser.name%></a></li>
           <li class="nav-item"><a class="nav-link" href="/employer/logout">Log out<span class="sr-only">(current)</span></a></li>    
-        <%}else if(currentUser.userType.localeCompare("employer")!=0){%>
+        <%}else if(currentUser && currentUser.userType.localeCompare("employer")!=0){%>
             <li class="nav-item"><a class="nav-link" href="/users/<%= currentUser._id %>" > User <%=currentUser.name%></a></li>
             <li class="nav-item"><a class="nav-link" href="/users/logout">Log out<span class="sr-only">(current)</span></a></li>
         <%}%>

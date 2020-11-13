@@ -150,7 +150,7 @@ router.get('/users/logout', (req, res) => {
 })
 
 //User profile
-router.get("/users/:id", ensureStudent, (req, res) => {
+router.get("/users/:id", (req, res) => {
     User.findById(req.params.id, (err, foundUser) => {
         if(err){
             req.flash('error_msg', 'Something went wrong');

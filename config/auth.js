@@ -14,7 +14,7 @@ module.exports = {
         }
     },
     ensureStudent: function(req, res, next){
-        if(req.user.userType.localeCompare("employer")!=0){
+        if(req.user && req.user.userType.localeCompare("employer")!=0){
             return next();
         }else{
             // req.flash('error_msg', req.body.title);
@@ -23,7 +23,7 @@ module.exports = {
         }
     },
     ensureEmployer: function(req, res, next){
-        if(req.user.userType.localeCompare("employer")==0){
+        if(req.user && req.user.userType.localeCompare("employer")==0){
             return next();
         }else{
             // req.flash('error_msg', req.body.title);

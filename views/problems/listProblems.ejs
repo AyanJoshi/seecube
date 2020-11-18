@@ -2,6 +2,12 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    .problemcard {
+      background: rgb(235,254,250);
+background: radial-gradient(circle, rgba(235,254,250,1) 0%, rgba(209,255,245,1) 100%);
+    }
+  </style>
 </head>
 <body>
 
@@ -72,7 +78,8 @@
         <div class="card-body">
           <div class="input-group">
             <form class="form-inline my-2 my-lg-0" action="/problems" method="get">    
-              <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search">    
+              <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search">
+              <br></br>
               <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>    
             </form>
           </div>

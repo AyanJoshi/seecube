@@ -147,7 +147,7 @@ router.get('/posts/:id', (req, res) => {
 router.get('/posts/:id/edit', ensureAuthenticated, ensurePostOwnerShip, ensureStudent, (req, res) => {
     Post.findById(req.params.id, (err, foundPost)=>{
         if(err){
-            alert('cannot find the post');
+            alert('Cannot find the post');
             res.redirect("/posts");
         }else{
             res.render("./posts/edit", {post: foundPost});

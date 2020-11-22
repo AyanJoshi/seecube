@@ -182,6 +182,41 @@ router.get("/users/:id", (req, res) => {
     });
 })
 
+// router.get('/users/:id/edit', ensureAuthenticated, ensureStudent, (req, res) => {
+//     User.findById(req.params.id, (err, foundUser)=>{
+//         if(err){
+//             alert('Cannot find the User');
+//             res.redirect("/users/:id");
+//         }else{
+//             res.render("./users/edit", {user: foundUser});
+//         }
+//     });
+// });
+
+router.put('/users/:id/edit', ensureAuthenticated, ensureStudent, async (req, res) => {
+    // console.log(req.body);
+    const { name, gpa, major, linkedin, github, standing, summary } = req.body;
+    User.findById(req.params.id, async (err, foundUser)=>{
+        if(err) {
+            req.flash('error_msg', 'Cannot find the post');
+            res.redirect('back');
+        } else {
+            // console.log(name);
+            foundUser.name = name;
+            foundUser.gpa = gpa;
+            foundUser.major = major;
+            foundUser.linkedin = linkedin;
+            foundUser.github = github;
+            foundUser.standing = standing;
+            foundUser.summary = summary;
+
+            foundUser.save();
+            req.flash('success_msg', 'Succesfully edited the user');
+            res.redirect('/users/'+ req.params.id);
+        }
+    });
+});
+
 //Submit display picture
 router.put('/users/:id/submitDisplayPicture', ensureStudent, ensureAuthenticated, upload.single('display_picture'), async(req, res)=>{
     

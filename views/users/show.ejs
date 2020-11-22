@@ -51,233 +51,227 @@
                 </ul>
             </div>
         </div>
-        <div class="col-md-2">
-            <input type="button" href="/users/<%=user._id%>/edit" class="profile-edit-btn" name="btnAddMore"
-                    value="Edit Profile" />
-            </div>
-        </div>
         <div class="row">
             <div class="col-md-4">
                 <div class="profile-work">
                     <p>SOCIAL</p>
                     <i class="fab fa-linkedin"> </i> <a href="<%=user.linkedin%>" target="_blank">LinkedIn</a>
                     <br>
-                    <i class="fab fa-github"> </i> <a href="<%=user.github%>" target="_blank">Github</a><br/>
-                </div>
+                    <i class="fab fa-github"> </i> <a href="<%=user.github%>" target="_blank">Github</a><br />
             </div>
-            <div class="col-md-8">
-                <div class="tab-content profile-tab" id="myTabContent">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Name</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p><%= user.name %></p>
-                            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="tab-content profile-tab" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Name</label>
                         </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Email</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p><%=user.email%> </p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Major</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p><%=user.major%></p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Standing</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p><%=user.standing%></p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>My Summary</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="lead"><%-user.summary%></p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Projects</label>
-                            </div>
+                        <div class="col-md-6">
+                            <p><%= user.name %></p>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                        <div class="row">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Email</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p><%=user.email%> </p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Major</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p><%=user.major%></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Standing</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p><%=user.standing%></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>My Summary</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="lead"><%-user.summary%></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Projects</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Problems Solved</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p>user data</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Resume</label>
+                        </div>
+                        <div class="col-md-6">
+                            <% if(user.resume_id != undefined){ %>
                             <div class="col-md-6">
-                                <label>Problems Solved</label>
+                                <a style="color: black;" href="<%= user.resume %>" target="_blank">View Resume</a>
                             </div>
+                            <% } %>
+                            <% if(currentUser && user._id.equals(currentUser._id) || (currentUser && currentUser.isAdmin)){ %>
                             <div class="col-md-6">
-                                <p>user data</p>
+                                <form action="/users/<%=user._id%>/submitResume?_method=PUT" method="POST"
+                                    enctype="multipart/form-data">
+
+                                    <input type="file" size="30" id="resume" name="resume"
+                                        onchange="this.form.submit()" />
+
+                                </form>
                             </div>
-                            <div class="col-md-6">
-                                <label>Resume</label>
-                            </div>
-                            <div class="col-md-6">
-                                <% if(user.resume_id != undefined){ %>
-                                <div class="col-md-6">
-                                    <a style="color: black;" href="<%= user.resume %>" target="_blank">View Resume</a>
-                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+                        <% posts.slice().reverse().forEach(function(post){ %>
+                        <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;">
+                            <div class="card" style="width: 19rem;">
+                                <% if(post.image != undefined){ %>
+                                <img height="180px" width="150px" class="card-img-top" src="<%=post.image%>"
+                                    alt="Card image cap">
                                 <% } %>
-                                <% if(currentUser && user._id.equals(currentUser._id) || (currentUser && currentUser.isAdmin)){ %>
-                                <div class="col-md-6">
-                                    <form action="/users/<%=user._id%>/submitResume?_method=PUT" method="POST"
-                                        enctype="multipart/form-data">
-
-                                        <input type="file" size="30" id="resume" name="resume"
-                                            onchange="this.form.submit()" />
-
-                                    </form>
-                                </div>
-                                <% } %>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="posts" role="tabpanel" aria-labelledby="posts-tab">
-                        <div class="row text-center" style="display:flex; flex-wrap: wrap;">
-                            <% posts.slice().reverse().forEach(function(post){ %>
-                            <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;">
-                                <div class="card" style="width: 19rem;">
-                                    <% if(post.image != undefined){ %>
-                                    <img height="180px" width="150px" class="card-img-top" src="<%=post.image%>"
-                                        alt="Card image cap">
-                                    <% } %>
-                                    <div class="card-body">
-                                        <p style="font-weight: 1000; font-size: large;" class="card-title">
-                                            <%= post.title%>
-                                        </p>
-                                        <% if(post.body.length >= 150){ %>
-                                        <p class="card-text"><%- post.body.substring(0, 145) %>...</p>
-                                        <a href="/posts/<%= post._id %>" class="btn btn-sm btn-primary">Read More
-                                            &rarr;</a>
-                                        <% }else{ %>
-                                        <p class="card-text"><%- post.body %></p>
-                                        <a href="/posts/<%= post._id %>" class="btn btn-sm btn-dark">Quick Read
-                                            &rarr;</a>
-                                        <% } %>
-                                    </div>
-
-                                    <div class="card-footer text-muted">
-                                        <%= post.created.toDateString() %>
-                                    </div>
-                                </div>
-                            </div>
-                            <% }); %>
-
-                        </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="problems" role="tabpanel" aria-labelledby="problems-tab">
-                        <div class="row text-center" style="display:flex; flex-wrap: wrap;">
-                            <% problems.slice().reverse().forEach(function(problem){ %>
-                            <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;">
-                                <div class="card" style="width: 19rem;">
-                                    <div class="card-body">
-                                        <p style="font-weight: 1000; font-size: large;" class="card-title">
-                                            <%= problem.title%></p>
-                                        <% if(problem.body.description.length >= 150){ %>
-                                        <p class="card-text"><%- problem.body.description.substring(0, 145) %>...</p>
-                                        <% if(problem.approved){ %>
-                                        <a class="btn btn-sm btn-success">Approved</a>
-                                        <% }else{ %>
-                                        <a class="btn btn-sm btn-danger">Not Approved</a>
-                                        <% } %>
-                                        <a href="/problems/<%= problem._id %>" class="btn btn-sm btn-primary">Show More
-                                            &rarr;</a>
-                                        <% }else{ %>
-                                        <p class="card-text"><%- problem.body.description %></p>
-                                        <% if(problem.approved){ %>
-                                        <a class="btn btn-sm btn-success">Approved</a>
-                                        <% }else{ %>
-                                        <a class="btn btn-sm btn-danger">Not Approved</a>
-                                        <% } %>
-                                        <a href="/posts/<%= problem._id %>" class="btn btn-sm btn-dark">Quick Read
-                                            &rarr;</a>
-                                        <% } %>
-                                    </div>
-                                    <div class="card-footer text-muted">
-                                        <%= problem.created.toDateString() %>
-                                    </div>
-                                </div>
-                            </div>
-                            <% }); %>
-                        </div>
-                    </div>
-
-                    <%if(currentUser && user._id.equals(currentUser._id)) {%>
-                    <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                        <div class="row" style="display:flex; flex-wrap: wrap;">
-                            <div class="card bg-light">
                                 <div class="card-body">
-                                    <form action="/users/<%=user._id%>/edit?_method=PUT" method="POST">
-                                        <div class="form-group">
-                                            <label for="Name" class="text-dark">Name</label>
-                                            <input type="text" id="name" name="name" class="form-control"
-                                                value="<%=user.name%>" alt="" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="GPA" class="text-dark">GPA</label>
-                                            <input type="text" id="gpa" name="gpa" class="form-control"
-                                                value="<%=user.gpa%>" alt="" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Major" class="text-dark">Major</label>
-                                            <input type="text" id="major" name="major" class="form-control"
-                                                value="<%=user.major%>" alt="" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="LinkedIn" class="text-dark">LinkedIn</label>
-                                            <input type="url" name="linkedin" id="linkedin"
-                                                pattern="https://www.linkedin.com/in/.*" size="100" class="form-control"
-                                                value="<%=user.linkedin%>" alt="" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="GitHub" class="text-dark">GitHub</label>
-                                            <input type="url" name="github" id="github" pattern="https://github.com/.*"
-                                                size="100" class="form-control" value="<%=user.github%>" alt=""
-                                                required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="standing" class="text-dark">Standing</label>
-                                            <select id="standing" class="form-control" name="standing">
-                                                <option selected><%=user.standing%></option>
-                                                <option>Freshmen</option>
-                                                <option>Sophomore</option>
-                                                <option>Junior</option>
-                                                <option>Senior</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="summary" class="text-dark">Summary</label>
-                                            <br>
-                                            <textarea class="form-control" id="mytextarea" name="summary"
-                                                rows="20"><%=user.summary%></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-dark btn-block">Submit</button>
-                                    </form>
+                                    <p style="font-weight: 1000; font-size: large;" class="card-title">
+                                        <%= post.title%>
+                                    </p>
+                                    <% if(post.body.length >= 150){ %>
+                                    <p class="card-text"><%- post.body.substring(0, 145) %>...</p>
+                                    <a href="/posts/<%= post._id %>" class="btn btn-sm btn-primary">Read More
+                                        &rarr;</a>
+                                    <% }else{ %>
+                                    <p class="card-text"><%- post.body %></p>
+                                    <a href="/posts/<%= post._id %>" class="btn btn-sm btn-dark">Quick Read
+                                        &rarr;</a>
+                                    <% } %>
+                                </div>
+
+                                <div class="card-footer text-muted">
+                                    <%= post.created.toDateString() %>
                                 </div>
                             </div>
                         </div>
+                        <% }); %>
+
                     </div>
-                    <%}%>
+                </div>
+
+                <div class="tab-pane fade" id="problems" role="tabpanel" aria-labelledby="problems-tab">
+                    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+                        <% problems.slice().reverse().forEach(function(problem){ %>
+                        <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;">
+                            <div class="card" style="width: 19rem;">
+                                <div class="card-body">
+                                    <p style="font-weight: 1000; font-size: large;" class="card-title">
+                                        <%= problem.title%></p>
+                                    <% if(problem.body.description.length >= 150){ %>
+                                    <p class="card-text"><%- problem.body.description.substring(0, 145) %>...</p>
+                                    <% if(problem.approved){ %>
+                                    <a class="btn btn-sm btn-success">Approved</a>
+                                    <% }else{ %>
+                                    <a class="btn btn-sm btn-danger">Not Approved</a>
+                                    <% } %>
+                                    <a href="/problems/<%= problem._id %>" class="btn btn-sm btn-primary">Show More
+                                        &rarr;</a>
+                                    <% }else{ %>
+                                    <p class="card-text"><%- problem.body.description %></p>
+                                    <% if(problem.approved){ %>
+                                    <a class="btn btn-sm btn-success">Approved</a>
+                                    <% }else{ %>
+                                    <a class="btn btn-sm btn-danger">Not Approved</a>
+                                    <% } %>
+                                    <a href="/posts/<%= problem._id %>" class="btn btn-sm btn-dark">Quick Read
+                                        &rarr;</a>
+                                    <% } %>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    <%= problem.created.toDateString() %>
+                                </div>
+                            </div>
+                        </div>
+                        <% }); %>
+                    </div>
+                </div>
+
+                <%if(currentUser && user._id.equals(currentUser._id)) {%>
+                <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                    <div class="row" style="display:flex; flex-wrap: wrap;">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <form action="/users/<%=user._id%>/edit?_method=PUT" method="POST">
+                                    <div class="form-group">
+                                        <label for="Name" class="text-dark">Name</label>
+                                        <input type="text" id="name" name="name" class="form-control"
+                                            value="<%=user.name%>" alt="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="GPA" class="text-dark">GPA</label>
+                                        <input type="text" id="gpa" name="gpa" class="form-control"
+                                            value="<%=user.gpa%>" alt="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Major" class="text-dark">Major</label>
+                                        <input type="text" id="major" name="major" class="form-control"
+                                            value="<%=user.major%>" alt="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="LinkedIn" class="text-dark">LinkedIn</label>
+                                        <input type="url" name="linkedin" id="linkedin"
+                                            pattern="https://www.linkedin.com/in/.*" size="100" class="form-control"
+                                            value="<%=user.linkedin%>" alt="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="GitHub" class="text-dark">GitHub</label>
+                                        <input type="url" name="github" id="github" pattern="https://github.com/.*"
+                                            size="100" class="form-control" value="<%=user.github%>" alt="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="standing" class="text-dark">Standing</label>
+                                        <select id="standing" class="form-control" name="standing">
+                                            <option selected><%=user.standing%></option>
+                                            <option>Freshmen</option>
+                                            <option>Sophomore</option>
+                                            <option>Junior</option>
+                                            <option>Senior</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="summary" class="text-dark">Summary</label>
+                                        <br>
+                                        <textarea class="form-control" id="mytextarea" name="summary"
+                                            rows="20"><%=user.summary%></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-dark btn-block">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%}%>
             </div>
         </div>
     </div>

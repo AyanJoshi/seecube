@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <style>
+    .p_overflow {
+        overflow-wrap: break-word;
+    }
 </style>
 
 <head>
@@ -48,10 +51,13 @@
             selector: '#mytextarea',
             plugins: 'autolink lists media table emoticons fullscreen help link ',
             toolbar: 'undo redo | styleselect | bold italic | ' + 'alignleft aligncenter alignright alignjustify |' +
-                'outdent indent | numlist bullist| emoticons | fullscreen |help |link',
+                'outdent indent | numlist bullist| emoticons | fullscreen | help | link',
             menubar: 'edit view format tools table insert',
             paste_data_images: false,
-            powerpaste_block_drop: true
+            powerpaste_block_drop: true,
+            force_br_newlines : true,
+            force_p_newlines : false,
+            forced_root_block : ''
         });
     </script>
     <title>CCube</title>
@@ -59,7 +65,7 @@
 
 <body>
     <%- include ('./partials/header') %>
-    <div class="container-fluid">
+    <div class="container-fluid p_overflow">
         <%- body %>
     </div>
     <%- include ('./partials/footer') %>

@@ -1,5 +1,5 @@
 <!-- Page Content -->
-<div class="container-fluid">
+<div class="container">
 
     <div class="row">
 
@@ -24,13 +24,14 @@
 
             <!-- Problem Content -->
             <h5>Description</h5>
-            <p class="lead" style="font-size:15px"><%- problem.body.description %></p>
-
+            <!-- <div class="col-md-2"> -->
+            <p class="lead" style="font-size:15px; overflow-wrap: break-word;"><%-problem.body.description%></p>
+            <!-- </div> -->
             <h5>Example</h5>
-            <p class="lead" style="font-size:15px"><%= problem.body.example %></p>
+            <p class="lead" style="font-size:15px; overflow-wrap: break-word;"><%= problem.body.example %></p>
 
             <h5>Limits</h5>
-            <p class="lead" style="font-size:15px"><%= problem.body.limits %></p>
+            <p class="lead" style="font-size:15px; overflow-wrap: break-word;"><%= problem.body.limits %></p>
 
             <% if(currentUser && problem.author.id.equals(currentUser._id)){ %>
             <a href="/problems/<%=problem._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>

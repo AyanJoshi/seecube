@@ -51,11 +51,12 @@
                 </ul>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="profile-work">
-                    <p>SOCIAL</p>
-                    <i class="fab fa-linkedin"> </i> <a href="<%=user.linkedin%>" target="_blank">LinkedIn</a>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="profile-work">
+                <p>SOCIAL</p>
+                <i class="fab fa-linkedin"> </i> <a href="<%=user.linkedin%>" target="_blank">LinkedIn</a>
                     <br>
                     <i class="fab fa-github"> </i> <a href="<%=user.github%>" target="_blank">Github</a><br />
             </div>
@@ -176,7 +177,6 @@
                             </div>
                         </div>
                         <% }); %>
-
                     </div>
                 </div>
 
@@ -247,7 +247,7 @@
                                     <div class="form-group">
                                         <label for="GitHub" class="text-dark">GitHub</label>
                                         <input type="url" name="github" id="github" pattern="https://github.com/.*"
-                                            size="100" class="form-control" value="<%=user.github%>" alt="">
+                                            size="100" class="form-control" value="<%=user.github%>" alt="" />
                                     </div>
                                     <div class="form-group">
                                         <label for="standing" class="text-dark">Standing</label>

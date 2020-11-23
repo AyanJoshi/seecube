@@ -36,8 +36,13 @@ router.get('/posts', (req, res) => {
         Post.find({title: regex}, (err, posts) => {
             if(err){
                 console.log(err);
-            }else{
-                res.render('./posts/listPosts', {posts: posts});
+            }else {
+                if(posts.length >=5) {
+                    res.render('./posts/listPosts', {posts: posts.slice(posts.length-5, posts.length), page: 1});
+                }
+                else {
+                    res.render('./posts/listPosts', {posts: posts, page: 1});
+                }
             }
         })
     }

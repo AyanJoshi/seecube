@@ -13,18 +13,21 @@ const User = require('../models/User');
 const { route } = require('.');
 const { ensureAuthenticated, ensureProblemOwnerShip, ensureAdmin, ensureStudent } = require('../config/auth');
 
+const courses = ['CSE100', 'CSE110', 'CSE120', 'CSE205', 'CSE240', 'CSE494', 'CSE310', 'CSE325', 'CSE330'
+    , 'CSE340', 'CSE355', 'CSE360', 'CSE412', 'CSE365', 'CSE230', 'CSE471']
+
 //Get all problems
 router.get('/problems', (req, res) => {
-    if(req.query.search){
+    if (req.query.search) {
         const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-        Problem.find({title: regex}, (err, problems) => {
+        Problem.find({ title: regex }, (err, problems) => {
             if (err) {
                 console.log(err);
             } else {
                 res.render('./problems/listProblems', { problems: problems });
             }
         })
-    }else{
+    } else {
         Problem.find({}, (err, problems) => {
             if (err) {
                 console.log(err);
@@ -41,31 +44,37 @@ router.get('/problems/new', ensureAuthenticated, ensureStudent, (req, res) => {
 });
 
 router.post('/problems/', ensureAuthenticated, ensureStudent, async (req, res) => {
-    const { title, solved } = req.body;
-    const newProblem = new Problem({
-        title: title,
-        solved: solved,
-        body: {
-            description: req.body.description,
-            example: req.body.example,
-            limits: req.body.limits,
-            difficulty: req.body.difficulty,
-            year: req.body.year,
-            input: req.body.input,
-            output: req.body.output
-        },
-        author: {
-            id: req.user._id,
-            name: req.user.name
-        },
-
-    });
-    newProblem.save()
-        .then(Problem => {
-            req.flash('success_msg', 'Thank you for submitting the problem, we\'re reviewing it now!');
-            res.redirect('/problems');
-        })
-        .catch(err => console.log(err));
+    const { title, solved, course } = req.body;
+    if (courses.includes(course) == false) {
+        req.flash('error_msg', 'Course specified is not a part of database');
+        res.redirect('/problems');
+    }
+    else {
+        const newProblem = new Problem({
+            title: title,
+            solved: solved,
+            body: {
+                description: req.body.description,
+                example: req.body.example,
+                limits: req.body.limits,
+                difficulty: req.body.difficulty,
+                year: req.body.year,
+                input: req.body.input,
+                output: req.body.output
+            },
+            author: {
+                id: req.user._id,
+                name: req.user.name
+            },
+            course: course
+        });
+        newProblem.save()
+            .then(Problem => {
+                req.flash('success_msg', 'Thank you for submitting the problem, we\'re reviewing it now!');
+                res.redirect('/problems');
+            })
+            .catch(err => console.log(err));
+    }
 });
 
 //Show Problem
@@ -93,35 +102,42 @@ router.get('/problems/:id/edit', ensureAuthenticated, ensureProblemOwnerShip, en
 
 router.put('/problems/:id', ensureAuthenticated, ensureProblemOwnerShip, ensureStudent, (req, res) => {
     const data = req.body;
-    const { title, solved } = req.body;
-    Problem.findByIdAndUpdate(req.params.id,
-        {
-            title: title,
-            solved: solved,
-            approved: false,
-            body: {
-                description: req.body.description,
-                example: req.body.example,
-                limits: req.body.limits,
-                difficulty: req.body.difficulty,
-                year: req.body.year,
-                input: req.body.input,
-                output: req.body.output
+    const { title, solved, course } = req.body;
+    if (courses.includes(course) == false) {
+        req.flash('error_msg', 'Course specified is not a part of database');
+        res.redirect('/problems');
+    }
+    else {
+        Problem.findByIdAndUpdate(req.params.id,
+            {
+                title: title,
+                solved: solved,
+                approved: false,
+                body: {
+                    description: req.body.description,
+                    example: req.body.example,
+                    limits: req.body.limits,
+                    difficulty: req.body.difficulty,
+                    year: req.body.year,
+                    input: req.body.input,
+                    output: req.body.output
+                },
+                author: {
+                    id: req.user._id,
+                    name: req.user.name
+                },
+                course: course
             },
-            author: {
-                id: req.user._id,
-                name: req.user.name
-            }
-        },
-        (err, updatedProblem) => {
-            if (err) {
-                req.flash('error_msg', 'There is an error processing your request.');
-                res.redirect('/problems');
-            } else {
-                req.flash('success_msg', 'Succesfully edited the Problem');
-                res.redirect('/problems/' + req.params.id);
-            }
-        });
+            (err, updatedProblem) => {
+                if (err) {
+                    req.flash('error_msg', 'There is an error processing your request.');
+                    res.redirect('/problems');
+                } else {
+                    req.flash('success_msg', 'Succesfully edited the Problem');
+                    res.redirect('/problems/' + req.params.id);
+                }
+            });
+    }
 });
 
 //Delete route
@@ -160,7 +176,7 @@ router.post('/problems/:id/solution', ensureAuthenticated, ensureStudent, async 
         if (err) {
             console.log(err);
         } else {
-            const command = "cd solutions_java; unset JAVA_TOOL_OPTIONS; echo '" + req.body.editor + "' > Main.java; echo '"+foundProblem.body.input+"' > input.txt ; javac Main.java; java Main < input.txt > output.txt; echo '"+foundProblem.body.output+"' > expected_output.txt; diff --strip-trailing-cr expected_output.txt output.txt > diff.txt; java Script < diff.txt > difference.txt; cat difference.txt";
+            const command = "cd solutions_java; unset JAVA_TOOL_OPTIONS; echo '" + req.body.editor + "' > Main.java; echo '" + foundProblem.body.input + "' > input.txt ; javac Main.java; java Main < input.txt > output.txt; echo '" + foundProblem.body.output + "' > expected_output.txt; diff --strip-trailing-cr expected_output.txt output.txt > diff.txt; java Script < diff.txt > difference.txt; cat difference.txt";
             let differ = "false";
             exec(command, async (error, stdout, stderr) => {
                 if (error) {
@@ -193,7 +209,7 @@ router.post('/problems/:id/solution', ensureAuthenticated, ensureStudent, async 
                 else {
                     differ = `${stdout}`;
                     console.log("something happened lol")
-                    
+
                     var status = "fail";
                     if (differ === "") {
                         status = "pass"

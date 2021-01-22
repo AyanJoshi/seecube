@@ -20,7 +20,15 @@ const imageFilter = (req, file, cb) => {
     cb(null, true);
 }
 
+const documentFilter = (req, file, cb) => {
+    if(!file.originalname.match(/\.(pdf|doc|docx|png|jpeg|jpg)$/i)){
+        return cb(null, false);
+    }
+    cb(null, true);
+}
+
 const upload = multer({ storage: storage, fileFilter: imageFilter})
+const uploadDocument = multer({storage: storage, fileFilter: documentFilter})
 
 const cloudinary = require('cloudinary');
 cloudinary.config({ 
@@ -174,6 +182,41 @@ router.get("/users/:id", (req, res) => {
     });
 })
 
+// router.get('/users/:id/edit', ensureAuthenticated, ensureStudent, (req, res) => {
+//     User.findById(req.params.id, (err, foundUser)=>{
+//         if(err){
+//             alert('Cannot find the User');
+//             res.redirect("/users/:id");
+//         }else{
+//             res.render("./users/edit", {user: foundUser});
+//         }
+//     });
+// });
+
+router.put('/users/:id/edit', ensureAuthenticated, ensureStudent, async (req, res) => {
+    // console.log(req.body);
+    const { name, gpa, major, linkedin, github, standing, summary } = req.body;
+    User.findById(req.params.id, async (err, foundUser)=>{
+        if(err) {
+            req.flash('error_msg', 'Cannot find the post');
+            res.redirect('back');
+        } else {
+            // console.log(name);
+            foundUser.name = name;
+            foundUser.gpa = gpa;
+            foundUser.major = major;
+            foundUser.linkedin = linkedin;
+            foundUser.github = github;
+            foundUser.standing = standing;
+            foundUser.summary = summary;
+
+            foundUser.save();
+            req.flash('success_msg', 'Succesfully edited the user');
+            res.redirect('/users/'+ req.params.id);
+        }
+    });
+});
+
 //Submit display picture
 router.put('/users/:id/submitDisplayPicture', ensureStudent, ensureAuthenticated, upload.single('display_picture'), async(req, res)=>{
     
@@ -197,6 +240,47 @@ router.put('/users/:id/submitDisplayPicture', ensureStudent, ensureAuthenticated
                             foundUser.save()
                             .then(user => {
                                 req.flash('success_msg', 'Successfully added a display picture');
+                                res.redirect('/users/'+req.params.id);
+                            })
+                            .catch(err => console.log(err));
+                        }        
+                    });
+                }catch(err){
+                    req.flash('error_msg', err.message);
+                    return res.redirect('back');
+                }    
+
+            }else{
+                req.flash('error_msg', err.message);
+                res.redirect('back');
+            }
+        })
+    }
+});
+
+//Submit Resume
+router.put('/users/:id/submitResume', ensureStudent, ensureAuthenticated, uploadDocument.single('resume'), async(req, res)=>{
+    
+    if(!req.file){
+        req.flash('error_msg', 'Unsuccessful: Either file is not uploaded or uploaded but of type other than pdf, doc, docx, jpeg, jpg, png. Also please wait for the page to reload after uploading.');
+        res.redirect('back');
+    }else{
+        User.findById(req.params.id, async(err, foundUser) => {
+            if(req.user && req.user._id.equals(foundUser._id)){                
+                try{
+                    if(foundUser.resume_id && foundUser.resume_id.length > 0){
+                        await cloudinary.v2.uploader.destroy(foundUser.resume_id);
+                    }
+                    let result = await cloudinary.v2.uploader.upload(req.file.path, (err, data) => {
+                        if(err){
+                            req.flash('error_msg', err.message);
+                            res.redirect('back');
+                        }else{
+                            foundUser.resume_id = data.public_id;
+                            foundUser.resume = data.secure_url;
+                            foundUser.save()
+                            .then(user => {
+                                req.flash('success_msg', 'Successfully added the resume');
                                 res.redirect('/users/'+req.params.id);
                             })
                             .catch(err => console.log(err));

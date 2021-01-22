@@ -1,0 +1,40 @@
+<div class="row mt-5">
+    <div class="col-md-6 m-auto">
+      <div class="card card-body">
+        <h1 class="text-center mb-3"><i class="fas fa-edit"></i>  Edit <%=post.title%></h1>
+        <form action="/users/<%=post._id%>?_method=PUT" method="POST" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              class="form-control"
+              value="<%= post.title %>"
+            />
+          </div>
+          <div class="form-group">
+            <label for="body">Description</label>
+            <br>
+            <textarea 
+                class="form-control"
+                id="mytextarea"
+                name="body"
+                rows="20"><%= post.body %></textarea>
+          </div>
+          <div class="form-group">
+            <label for="image">Image</label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              accept="image/*"
+              class="form-control"
+              placeholder="Enter Description"
+            />
+          </div>
+          <button type="submit" class="btn btn-dark btn-block">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>

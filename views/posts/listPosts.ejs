@@ -22,12 +22,13 @@
               <img class="card-img-top fit-image" src="<%=post.image%>" alt="Card image cap">
             <% } %> 
             <div class="card-body">
-                <h2 class="card-title"><%= post.title%></h2>
+                <h4 class="card-title"><%= post.title%></h2>
                 <% if(post.body.length >= 250){ %>
-                  <p class="card-text"><%- post.body.substring(0, 245) %>...</p>
-                  <a href="/posts/<%= post._id %>" class="btn btn-primary">Read More &rarr;</a>
+                  <!-- <p class="card-text"><%- post.body.substring(0, 245) %>...</p>
+                  <a href="/posts/<%= post._id %>" class="btn btn-primary">Read More &rarr;</a> -->
+                  <a href="/posts/<%= post._id %>" class="btn btn-dark">Quick Read &rarr;</a>
                 <% }else{ %>
-                  <p class="card-text"><%- post.body %></p>
+                  <!-- <p class="card-text"><%- post.body %></p> -->
                   <a href="/posts/<%= post._id %>" class="btn btn-dark">Quick Read &rarr;</a>
                 <% } %>
                 <% if(currentUser && post.author.id.equals(currentUser._id) || (currentUser && currentUser.isAdmin)){ %>
@@ -70,7 +71,8 @@
         <div class="card-body">
           <div class="input-group">
             <form class="form-inline my-2 my-lg-0" action="/posts" method="get">    
-              <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search">    
+              <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search">
+              <br></br>
               <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>    
             </form>
           </div>

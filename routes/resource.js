@@ -60,7 +60,7 @@ router.post('/resources/', ensureAuthenticated, ensureAdmin, async (req, res) =>
 router.get('/resources/:id', (req, res) => {
     Resource.findById(req.params.id).exec((err, foundResource)=>{
         if(err){
-            res.redirect("/resources");
+            res.redirect("/home");
         }else{
             res.render("./resources/showResource", {resources: foundResource});
         }

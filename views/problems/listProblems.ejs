@@ -1,9 +1,17 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
+
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    .problemcard {
+      background: rgb(235, 254, 250);
+      background: radial-gradient(circle, rgba(235, 254, 250, 1) 0%, rgba(209, 255, 245, 1) 100%);
+    }
+  </style>
 </head>
-<body>
+
+<body> -->
 
 
 <!-- Page Content -->
@@ -14,42 +22,49 @@
     <div class="col-md-8">
       <br>
       <br>
-      <a class="btn btn-outline-dark" href="/problems/new" role="button"><i class="fas fa-plus-square"></i> Add Problem</a>
+      <a class="btn btn-outline-dark" href="/problems/new" role="button"><i class="fas fa-plus-square"></i> Add
+        Problem</a>
       <h1 class="my-4">Recent Problems</h1>
       <% problems.slice().reverse().forEach((problems) => { %>
-          <!-- Blog Post -->
-          <% if(problems.approved || (currentUser && currentUser.isAdmin)) {%>
-            <div class="card mb-4" id="myDIV"> 
-                <h4 class="card-header">
-                  <a href="/problems/<%= problems._id %>"><%= problems.title%></a>
-                </h4>
-                <div class="card-body">
-                    <!-- <h2 class="card-title"><%= problems.title%></h2> -->
-                    <p class="card-text"><%- problems.body.description %></p>
-                    <a href="/problems/<%= problems._id %>" class="btn btn-dark">View &rarr;</a>
-                    <% if((currentUser && problems.author.id.equals(currentUser._id)) || (currentUser && currentUser.isAdmin)){ %>
-                        <a href="/problems/<%=problems._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
-                        <form style="display: inline;" action="/problems/<%= problems._id %>?_method=DELETE" method="POST">
-                            <button type="submit" class="btn btn-outline-danger">Delete</button>
-                        </form>
-                    <% } %>
-                    <% if(!problems.approved && currentUser && currentUser.isAdmin) { %>
-                      <form style="display: inline;" action="/problems/<%= problems._id %>/approve" method="POST">
-                          <button type="submit" class="btn btn-outline-danger">Approve</button>
-                      </form>
-                    <% } %>
-                    <br></br>
-                    <button type="button" class="btn btn btn-info" disabled><%= problems.body.difficulty%></button>
-                    <button type="button" class="btn btn btn-dark" disabled><%= problems.body.year%></button>
-                </div>
-                
-                <div class="card-footer text-muted">
-                    <%= problems.created.toDateString() %>
-                    <a href="/users/<%= problems.author.id %>"><%= problems.author.name %> </a>
-                </div>
-            </div>
+      <!-- Blog Post -->
+      <% if(problems.approved || (currentUser && currentUser.isAdmin)) {%>
+      <div class="card mb-4" id="myDIV">
+        <h4 class="card-header">
+          <a href="/problems/<%= problems._id %>"><%= problems.title%></a>
+        </h4>
+        <div class="card-body">
+          <!-- <h2 class="card-title"><%= problems.title%></h2> -->
+          <% if(problems.body.description.length >= 250){ %>
+          <p class="card-text"><%-problems.body.description.substring(0, 205)%>...</p>
+          <br>
+          <a href="/problems/<%= problems._id %>" type="button" class="btn btn-dark">Read More &rarr;</a>
+          <% }else{ %>
+          <p class="card-text"><%-problems.body.description%></p>
+          <a href="/problems/<%= problems._id %>" class="btn btn-dark">View &rarr;</a>
+          <%}%>
+          <% if((currentUser && problems.author.id.equals(currentUser._id)) || (currentUser && currentUser.isAdmin)){ %>
+          <a href="/problems/<%=problems._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
+          <form style="display: inline;" action="/problems/<%= problems._id %>?_method=DELETE" method="POST">
+            <button type="submit" class="btn btn-outline-danger">Delete</button>
+          </form>
           <% } %>
-      <% }) %> 
+          <% if(!problems.approved && currentUser && currentUser.isAdmin) { %>
+          <form style="display: inline;" action="/problems/<%= problems._id %>/approve" method="POST">
+            <button type="submit" class="btn btn-outline-danger">Approve</button>
+          </form>
+          <% } %>
+          <br></br>
+          <button type="button" class="btn btn btn-info" disabled><%= problems.body.difficulty%></button>
+          <button type="button" class="btn btn btn-dark" disabled><%= problems.body.year%></button>
+        </div>
+
+        <div class="card-footer text-muted">
+          <%= problems.created.toDateString() %>
+          <a href="/users/<%= problems.author.id %>"><%= problems.author.name %> </a>
+        </div>
+      </div>
+      <% } %>
+      <% }) %>
 
       <!-- Pagination -->
       <ul class="pagination justify-content-center mb-4">
@@ -71,9 +86,10 @@
         <h5 class="card-header">Search</h5>
         <div class="card-body">
           <div class="input-group">
-            <form class="form-inline my-2 my-lg-0" action="/problems" method="get">    
-              <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search">    
-              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>    
+            <form class="form-inline my-2 my-lg-0" action="/problems" method="get">
+              <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search">
+              <br></br>
+              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
             </form>
           </div>
         </div>
@@ -118,7 +134,8 @@
       <div class="card my-4">
         <h5 class="card-header">Side Widget</h5>
         <div class="card-body">
-          You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
+          You can put anything you want inside of these side widgets. They are easy to use, and feature the new
+          Bootstrap 4 card containers!
         </div>
       </div>
 
@@ -127,6 +144,7 @@
   </div>
   <!-- /.row -->
 </div>
-
+<!-- 
 </body>
-</html>
+
+</html> -->

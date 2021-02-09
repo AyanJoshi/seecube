@@ -1,208 +1,119 @@
-<style>
-    body{
-        background: -webkit-linear-gradient(left, #9a9a9e, #9be0f3);
-    }
-    .emp-profile{
-        padding: 3%;
-        margin-top: 3%;
-        margin-bottom: 3%;
-        border-radius: 0.5rem;
-        background: #fff;
-    }
-    .profile-img{
-        text-align: center;
-    }
-    .profile-img img{
-        width: 70%;
-        height: 100%;
-    }
-    .profile-img .file {
-        position: relative;
-        overflow: hidden;
-        margin-top: -20%;
-        width: 70%;
-        border: none;
-        border-radius: 0;
-        font-size: 15px;
-        background: #212529b8;
-    }
-    .profile-img .file input {
-        position: absolute;
-        opacity: 0;
-        right: 0;
-        top: 0;
-    }
-    .profile-head h5{
-        color: #333;
-    }
-    .profile-head h6{
-        color: #0062cc;
-    }
-    .profile-edit-btn{
-        border: none;
-        border-radius: 1.5rem;
-        width: 70%;
-        padding: 2%;
-        font-weight: 600;
-        color: #6c757d;
-        cursor: pointer;
-    }
-    .proile-rating{
-        font-size: 12px;
-        color: #818182;
-        margin-top: 5%;
-    }
-    .proile-rating span{
-        color: #495057;
-        font-size: 15px;
-        font-weight: 600;
-    }
-    .profile-head .nav-tabs{
-        margin-bottom:5%;
-    }
-    .profile-head .nav-tabs .nav-link{
-        font-weight:600;
-        border: none;
-    }
-    .profile-head .nav-tabs .nav-link.active{
-        border: none;
-        border-bottom:2px solid #0062cc;
-    }
-    .profile-work{
-        padding: 14%;
-        margin-top: -15%;
-    }
-    .profile-work p{
-        font-size: 12px;
-        color: #818182;
-        font-weight: 600;
-        margin-top: 10%;
-    }
-    .profile-work a{
-        text-decoration: none;
-        color: #495057;
-        font-weight: 600;
-        font-size: 14px;
-    }
-    .profile-work ul{
-        list-style: none;
-    }
-    .profile-tab label{
-        font-weight: 600;
-        color: #0062cc;
-    }
-    .profile-tab p{
-        font-weight: 600;
-    }
-</style>
+<link rel="stylesheet" href="/profile_user/profile_user.css">
 
 <div class="container emp-profile">
     <div class="row">
         <div class="col-md-4">
             <div class="profile-img">
-                <img src="<%= user.display_picture %> " alt=""/>
+                <img src="<%= user.display_picture %> " alt="" />
                 <% if(currentUser && user._id.equals(currentUser._id) || (currentUser && currentUser.isAdmin)){ %>
-                <form action="/users/<%=user._id%>/submitDisplayPicture?_method=PUT" method="POST" enctype="multipart/form-data">
+                <form action="/users/<%=user._id%>/submitDisplayPicture?_method=PUT" method="POST"
+                    enctype="multipart/form-data">
                     <div class="file btn btn-lg btn-primary">
                         Change Profile Picture
-                        <input type="file" id="display_picture" name="display_picture" onchange="this.form.submit()"/>
+                        <input type="file" id="display_picture" name="display_picture" onchange="this.form.submit()" />
                     </div>
                 </form>
-                <% } %> 
+                <% } %>
             </div>
         </div>
         <div class="col-md-6">
             <div class="profile-head">
                 <h5>
-                    <%= user.name %> 
+                    <%= user.name %>
                 </h5>
                 <h6>
-                    Computer Science
+                    <%=user.major%>
                 </h6>
-                <p class="proile-rating">CGPA : <span>user data</span></p>
+                <p class="proile-rating">CGPA : <span><%=user.gpa%></span></p>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                            aria-controls="home" aria-selected="true">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Timeline</a>
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                            aria-controls="profile" aria-selected="false">Timeline</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="false">My Posts</a>
+                        <a class="nav-link" id="posts-tab" data-toggle="tab" href="#posts" role="tab"
+                            aria-controls="posts" aria-selected="false">My Posts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="problems-tab" data-toggle="tab" href="#problems" role="tab" aria-controls="problems" aria-selected="false">Contribution</a>
+                        <a class="nav-link" id="problems-tab" data-toggle="tab" href="#problems" role="tab"
+                            aria-controls="problems" aria-selected="false">Contribution</a>
                     </li>
+                    <%if(currentUser && user._id.equals(currentUser._id)) {%>
+                    <li class="nav-item">
+                        <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab"
+                            aria-controls="settings" aria-selected="false">Settings</a>
+                    </li>
+                    <%}%>
                 </ul>
             </div>
-        </div>
-        <div class="col-md-2">
-            <input type="button" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
         </div>
     </div>
     <div class="row">
         <div class="col-md-4">
             <div class="profile-work">
                 <p>SOCIAL</p>
-                <a href="">LinkedIn</a>
-                <a href="">Facebook</a>
-                <p>SKILLS</p>
-                <a href="">My Website</a><br/>
-                <a href="">Github</a><br/>
+                <i class="fab fa-linkedin"> </i> <a href="<%=user.linkedin%>" target="_blank">LinkedIn</a>
+                    <br>
+                    <i class="fab fa-github"> </i> <a href="<%=user.github%>" target="_blank">Github</a><br />
             </div>
         </div>
         <div class="col-md-8">
             <div class="tab-content profile-tab" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Name</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p><%= user.name %></p>
-                            </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Name</label>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Email</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p><%= user.email %> </p>
-                            </div>
+                        <div class="col-md-6">
+                            <p><%= user.name %></p>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Phone</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p>user data</p>
-                            </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Email</label>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Major</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p>Computer Science</p>
-                            </div>
+                        <div class="col-md-6">
+                            <p><%=user.email%> </p>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Standing</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p>Freshman</p>
-                            </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Major</label>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>My Summary</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p style="font-weight: 100;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi quibusdam repudiandae quae, explicabo perspiciatis tempore corporis assumenda, odio natus quasi 
-                                    pariatur nesciunt exercitationem eum autem excepturi veritatis molestias, laboriosam error!</p>
-                            </div>
+                        <div class="col-md-6">
+                            <p><%=user.major%></p>
                         </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Standing</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p><%=user.standing%></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>My Summary</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="lead"><%-user.summary%></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Projects</label>
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="row">
@@ -217,85 +128,150 @@
                         </div>
                         <div class="col-md-6">
                             <% if(user.resume_id != undefined){ %>
-                                <div class="col-md-6">
-                                    <a style="color: black;" href="<%= user.resume %>" target="_blank">View Resume</a>
-                                </div>
-                            <% } %>  
+                            <div class="col-md-6">
+                                <a style="color: black;" href="<%= user.resume %>" target="_blank">View Resume</a>
+                            </div>
+                            <% } %>
                             <% if(currentUser && user._id.equals(currentUser._id) || (currentUser && currentUser.isAdmin)){ %>
-                                <div class="col-md-6">
-                                    <form action="/users/<%=user._id%>/submitResume?_method=PUT" method="POST" enctype="multipart/form-data">
-                                        
-                                            <input type="file" size="30" id="resume" name="resume" onchange="this.form.submit()"/>
-                                        
-                                    </form>
-                                </div>
-                            <% } %> 
+                            <div class="col-md-6">
+                                <form action="/users/<%=user._id%>/submitResume?_method=PUT" method="POST"
+                                    enctype="multipart/form-data">
+
+                                    <input type="file" size="30" id="resume" name="resume"
+                                        onchange="this.form.submit()" />
+
+                                </form>
+                            </div>
+                            <% } %>
                         </div>
-                    </div>   
+                    </div>
                 </div>
 
                 <div class="tab-pane fade" id="posts" role="tabpanel" aria-labelledby="posts-tab">
                     <div class="row text-center" style="display:flex; flex-wrap: wrap;">
                         <% posts.slice().reverse().forEach(function(post){ %>
-                            <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;">
-                                <div class="card" style="width: 19rem;">
-                                    <% if(post.image != undefined){ %> 
-                                        <img height="180px" width="150px" class="card-img-top" src="<%=post.image%>" alt="Card image cap">
-                                    <% } %> 
-                                    <div class="card-body">
-                                        <p style="font-weight: 1000; font-size: large;" class="card-title"><%= post.title%></p>
-                                        <% if(post.body.length >= 150){ %>
-                                            <p class="card-text"><%- post.body.substring(0, 145) %>...</p>
-                                            <a href="/posts/<%= post._id %>" class="btn btn-sm btn-primary">Read More &rarr;</a>
-                                        <% }else{ %>
-                                            <p class="card-text"><%- post.body %></p>
-                                            <a href="/posts/<%= post._id %>" class="btn btn-sm btn-dark">Quick Read &rarr;</a>
-                                        <% } %>
-                                    </div>
-                                    
-                                    <div class="card-footer text-muted">
-                                        <%= post.created.toDateString() %>
-                                    </div>
+                        <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;">
+                            <div class="card" style="width: 19rem;">
+                                <% if(post.image != undefined){ %>
+                                <img height="180px" width="150px" class="card-img-top" src="<%=post.image%>"
+                                    alt="Card image cap">
+                                <% } %>
+                                <div class="card-body">
+                                    <p style="font-weight: 1000; font-size: large;" class="card-title">
+                                        <%= post.title%>
+                                    </p>
+                                    <% if(post.body.length >= 150){ %>
+                                    <p class="card-text"><%- post.body.substring(0, 145) %>...</p>
+                                    <a href="/posts/<%= post._id %>" class="btn btn-sm btn-primary">Read More
+                                        &rarr;</a>
+                                    <% }else{ %>
+                                    <p class="card-text"><%- post.body %></p>
+                                    <a href="/posts/<%= post._id %>" class="btn btn-sm btn-dark">Quick Read
+                                        &rarr;</a>
+                                    <% } %>
+                                </div>
+
+                                <div class="card-footer text-muted">
+                                    <%= post.created.toDateString() %>
                                 </div>
                             </div>
+                        </div>
                         <% }); %>
-                        
                     </div>
                 </div>
 
                 <div class="tab-pane fade" id="problems" role="tabpanel" aria-labelledby="problems-tab">
                     <div class="row text-center" style="display:flex; flex-wrap: wrap;">
                         <% problems.slice().reverse().forEach(function(problem){ %>
-                            <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;">
-                                <div class="card" style="width: 19rem;">
-                                    <div class="card-body">
-                                        <p style="font-weight: 1000; font-size: large;" class="card-title"><%= problem.title%></p>
-                                        <% if(problem.body.description.length >= 150){ %>
-                                            <p class="card-text"><%- problem.body.description.substring(0, 145) %>...</p>
-                                            <% if(problem.approved){ %> 
-                                                <a class="btn btn-sm btn-success">Approved</a>
-                                            <% }else{ %> 
-                                                <a class="btn btn-sm btn-danger">Not Approved</a>
-                                            <% } %> 
-                                            <a href="/problems/<%= problem._id %>" class="btn btn-sm btn-primary">Show More &rarr;</a>
-                                        <% }else{ %>
-                                            <p class="card-text"><%- problem.body.description %></p>
-                                            <% if(problem.approved){ %> 
-                                                <a class="btn btn-sm btn-success">Approved</a>
-                                            <% }else{ %> 
-                                                <a class="btn btn-sm btn-danger">Not Approved</a>
-                                            <% } %> 
-                                            <a href="/posts/<%= problem._id %>" class="btn btn-sm btn-dark">Quick Read &rarr;</a>
-                                        <% } %>
-                                    </div>
-                                    <div class="card-footer text-muted">
-                                        <%= problem.created.toDateString() %>
-                                    </div>
+                        <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;">
+                            <div class="card" style="width: 19rem;">
+                                <div class="card-body">
+                                    <p style="font-weight: 1000; font-size: large;" class="card-title">
+                                        <%= problem.title%></p>
+                                    <% if(problem.body.description.length >= 150){ %>
+                                    <p class="card-text"><%- problem.body.description.substring(0, 145) %>...</p>
+                                    <% if(problem.approved){ %>
+                                    <a class="btn btn-sm btn-success">Approved</a>
+                                    <% }else{ %>
+                                    <a class="btn btn-sm btn-danger">Not Approved</a>
+                                    <% } %>
+                                    <a href="/problems/<%= problem._id %>" class="btn btn-sm btn-primary">Show More
+                                        &rarr;</a>
+                                    <% }else{ %>
+                                    <p class="card-text"><%- problem.body.description %></p>
+                                    <% if(problem.approved){ %>
+                                    <a class="btn btn-sm btn-success">Approved</a>
+                                    <% }else{ %>
+                                    <a class="btn btn-sm btn-danger">Not Approved</a>
+                                    <% } %>
+                                    <a href="/posts/<%= problem._id %>" class="btn btn-sm btn-dark">Quick Read
+                                        &rarr;</a>
+                                    <% } %>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    <%= problem.created.toDateString() %>
                                 </div>
                             </div>
+                        </div>
                         <% }); %>
                     </div>
                 </div>
+
+                <%if(currentUser && user._id.equals(currentUser._id)) {%>
+                <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                    <div class="row" style="display:flex; flex-wrap: wrap;">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <form action="/users/<%=user._id%>/edit?_method=PUT" method="POST">
+                                    <div class="form-group">
+                                        <label for="Name" class="text-dark">Name</label>
+                                        <input type="text" id="name" name="name" class="form-control"
+                                            value="<%=user.name%>" alt="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="GPA" class="text-dark">GPA</label>
+                                        <input type="text" id="gpa" name="gpa" class="form-control"
+                                            value="<%=user.gpa%>" alt="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Major" class="text-dark">Major</label>
+                                        <input type="text" id="major" name="major" class="form-control"
+                                            value="<%=user.major%>" alt="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="LinkedIn" class="text-dark">LinkedIn</label>
+                                        <input type="url" name="linkedin" id="linkedin"
+                                            pattern="https://www.linkedin.com/in/.*" size="100" class="form-control"
+                                            value="<%=user.linkedin%>" alt="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="GitHub" class="text-dark">GitHub</label>
+                                        <input type="url" name="github" id="github" pattern="https://github.com/.*"
+                                            size="100" class="form-control" value="<%=user.github%>" alt="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="standing" class="text-dark">Standing</label>
+                                        <select id="standing" class="form-control" name="standing">
+                                            <option selected><%=user.standing%></option>
+                                            <option>Freshmen</option>
+                                            <option>Sophomore</option>
+                                            <option>Junior</option>
+                                            <option>Senior</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="summary" class="text-dark">Summary</label>
+                                        <br>
+                                        <textarea class="form-control" id="mytextarea" name="summary"
+                                            rows="20"><%=user.summary%></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-dark btn-block">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%}%>
             </div>
         </div>
     </div>

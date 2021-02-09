@@ -40,7 +40,7 @@ router.get('/problems/new', ensureAuthenticated, ensureStudent, (req, res) => {
     res.render('./problems/newProblem');
 });
 
-router.post('/problems/', ensureAuthenticated, ensureStudent, (req, res) => {
+router.post('/problems/', ensureAuthenticated, ensureStudent, async (req, res) => {
     const { title, solved } = req.body;
     const newProblem = new Problem({
         title: title,

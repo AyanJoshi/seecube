@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <!-- Job Entries Column -->
         <div class="col-md-8">
@@ -15,70 +15,80 @@
             </form>
             <br>
             <div class="row text-center" style="display:flex; flex-wrap: wrap;">
-                <% jobs.slice().reverse().forEach((job) => { %>
-                <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;">
-                <!-- Job Post -->
-                <div class="card mb-3" style="width: 21rem;">
-                    <% if(job.image != undefined){ %>
-                    <img height="180px" width="150px" class="card-img-top" src="<%=job.image%>" alt="Card image cap">
-                    <% } %>
+                <% jobs.slice().reverse().forEach((job)=> { %>
+                    <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;">
+                        <!-- Job Post -->
+                        <div class="card mb-3" style="width: 21rem;">
+                            <% if(job.image !=undefined){ %>
+                                <img height="180px" width="150px" class="card-img-top" src="<%=job.image%>"
+                                    alt="Card image cap">
+                                <% } %>
 
-                    <div class="card-body">
-                        <h5 class="card-title text-center"><%= job.company%></h5>
-                        <hr>
-                        <p style="font-weight: 500; font-size: large;" class="card-title"><%= job.position%></p>
-                        <a href="/jobs/<%= job._id %>" class="btn btn-outline-dark">Job Description</a>
-                        <% if((currentUser && job.author.id.equals(currentUser._id)) || (currentUser && currentUser.isAdmin)){ %>
-                        <a href="/jobs/<%=job._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
-                        <form style="display: inline;" action="/jobs/<%= job._id %>?_method=DELETE" method="POST">
-                            <button type="submit" class="btn btn-outline-danger">Delete</button>
-                        </form>
-                        <% } %>
-                        <br></br>
-                        <button type="button" class="btn btn btn-info" disabled><%= job.role_type%></button>
-                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center">
+                                            <%= job.company%>
+                                        </h5>
+                                        <hr>
+                                        <p style="font-weight: 500; font-size: large;" class="card-title">
+                                            <%= job.position%>
+                                        </p>
+                                        <a href="/jobs/<%= job._id %>" class="btn btn-outline-dark">Job Description</a>
+                                        <% if((currentUser && job.author.id.equals(currentUser._id)) || (currentUser &&
+                                            currentUser.isAdmin)){ %>
+                                            <a href="/jobs/<%=job._id%>/edit" type="button"
+                                                class="btn btn-outline-warning">Edit</a>
+                                            <form style="display: inline;" action="/jobs/<%= job._id %>?_method=DELETE"
+                                                method="POST">
+                                                <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                            </form>
+                                            <% } %>
+                                                <br></br>
+                                                <button type="button" class="btn btn btn-info" disabled>
+                                                    <%= job.role_type%>
+                                                </button>
+                                    </div>
 
-                    <div class="card-footer text-muted">
-                        <%= job.created.toDateString() %>
+                                    <div class="card-footer text-muted">
+                                        <%= job.created.toDateString() %>
+                                    </div>
+                        </div>
                     </div>
-                </div>
+                    <% }) %>
             </div>
-            <% }) %>
+
+            <!-- Pagination -->
+            <ul class="pagination justify-content-center mb-4">
+                <li class="page-item">
+                    <a class="page-link" href="#">&larr; Older</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Newer &rarr;</a>
+                </li>
+            </ul>
+
         </div>
 
-        <!-- Pagination -->
-        <ul class="pagination justify-content-center mb-4">
-            <li class="page-item">
-                <a class="page-link" href="#">&larr; Older</a>
-            </li>
-            <li class="page-item disabled">
-                <a class="page-link" href="#">Newer &rarr;</a>
-            </li>
-        </ul>
-
-    </div>
-
-    <!-- Sidebar Widgets Column -->
-    <div class="col-md-4">
-        <!-- Categories Widget -->
-        <div class="card my-4">
-            <h5 class="card-header">Filters</h5>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <ul class="list-unstyled mb-0">
-                            <li>
-                                <a href="#">Internships </a>
-                            </li>
-                            <li>
-                                <a href="#">Full-Time</a>
-                            </li>
-                            <li>
-                                <a href="#">Part-Time</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- <div class="col-lg-6">
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-4">
+            <!-- Categories Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Filters</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled mb-0">
+                                <li>
+                                    <a href="#">Internships </a>
+                                </li>
+                                <li>
+                                    <a href="#">Full-Time</a>
+                                </li>
+                                <li>
+                                    <a href="#">Part-Time</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- <div class="col-lg-6">
               <ul class="list-unstyled mb-0">
                 <li>
                   <a href="#">Category 4</a>
@@ -91,20 +101,20 @@
                 </li>
               </ul>
             </div> -->
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Side Widget -->
-        <div class="card my-4">
-            <h5 class="card-header">Side Widget</h5>
-            <div class="card-body">
-                You can put anything you want inside of these side widgets. They are easy to use, and feature the
-                new Bootstrap 4 card containers!
+            <!-- Side Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Side Widget</h5>
+                <div class="card-body">
+                    You can put anything you want inside of these side widgets. They are easy to use, and feature the
+                    new Bootstrap 4 card containers!
+                </div>
             </div>
+
         </div>
 
     </div>
-
-</div>
 </div>

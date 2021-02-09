@@ -36,8 +36,13 @@ router.get('/posts', (req, res) => {
         Post.find({title: regex}, (err, posts) => {
             if(err){
                 console.log(err);
-            }else{
-                res.render('./posts/listPosts', {posts: posts});
+            }else {
+                if(posts.length >=5) {
+                    res.render('./posts/listPosts', {posts: posts.slice(posts.length-5, posts.length), page: 1});
+                }
+                else {
+                    res.render('./posts/listPosts', {posts: posts, page: 1});
+                }
             }
         })
     }
@@ -147,7 +152,7 @@ router.get('/posts/:id', (req, res) => {
 router.get('/posts/:id/edit', ensureAuthenticated, ensurePostOwnerShip, ensureStudent, (req, res) => {
     Post.findById(req.params.id, (err, foundPost)=>{
         if(err){
-            alert('cannot find the post');
+            alert('Cannot find the post');
             res.redirect("/posts");
         }else{
             res.render("./posts/edit", {post: foundPost});

@@ -1,0 +1,54 @@
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+
+        <!-- Post Content Column -->
+        <div class="col-lg-10">
+
+            <!-- Title -->
+            <h1 class="mt-4">
+                <%= resources.title %>
+            </h1>
+
+            <!-- Author -->
+            <p class="lead">
+                by
+                <a href="/users/<%= resources.author.id %>">
+                    <%= resources.author.name %>
+                </a>
+            </p>
+
+            <hr>
+
+            <!-- Date/Time -->
+            <p>
+                <%= resources.created.toDateString() %>
+            </p>
+            <hr>
+            <!-- Post Content -->
+            <h3>Instructors</h3>
+            <p class="lead">
+                <%- resources.instructors %>
+            </p>
+            <% if(currentUser && resources.author.id.equals(currentUser._id)){ %>
+                <a href="/resources/<%=resources._id%>/edit" type="button" class="btn btn-outline-warning">Edit</a>
+                <form style="display: inline;" action="/resources/<%= resources._id %>?_method=DELETE" method="POST">
+                    <button type="submit" class="btn btn-outline-danger">Delete</button>
+                </form>
+                <% } %>
+            <hr>
+            <h3>Videos</h3>
+            <%var video_src = resources.videos.split("\n");%>
+            <%video_src.slice().reverse().forEach((video)=> { %>
+                <iframe width="420" height="315" style="border:4px solid black;" src=<%=video%> allowfullscreen></iframe>
+                <%})%>
+            
+                <hr>
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+
+</div>

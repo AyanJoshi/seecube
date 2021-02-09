@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="row">
+        <!-- Job Entries Column -->
+        <div class="col-md-8">
+            <br>
+            <br>
+            <a class="btn btn-outline-dark" href="/resources/new" role="button"><i class="fas fa-plus-square"></i> Add
+                Class</a>
+            <h2 class="my-4">Classes</h2>
+            <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+                <% resources.slice().reverse().forEach((resource)=> { %>
+                    <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;">
+                        <!-- Job Post -->
+                        <div class="card bg-light mb-3" style="width: 21rem;">
+                            <img class="card-img-top" src="img/sun_devil.jpeg" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= resource.title%></h5>
+                                <a href="/resources/<%= resource._id%>" type="button" class="btn btn-dark">View
+                                    Class</a>
+                                <% if((currentUser && resource.author.id.equals(currentUser._id)) || (currentUser &&
+                                    currentUser.isAdmin)){ %>
+                                    <a href="/resources/<%=resource._id%>/edit" type="button"
+                                        class="btn btn-outline-warning">Edit</a>
+                                    <form style="display: inline;"
+                                        action="/resources/<%= resource._id %>?_method=DELETE" method="POST">
+                                        <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                    </form>
+                                    <% } %>
+                                        <br></br>
+                            </div>
+                            <div class="card-footer text-muted">
+                                <%= resource.created.toDateString() %>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+            <hr>
+            <a class="btn btn-outline-dark" href="/resources/new" role="button"><i class="fas fa-plus-square"></i> Add
+                Topic</a>
+            <h2 class="my-4">Topics</h2>
+        </div>
+    </div>
+</div>

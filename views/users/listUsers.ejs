@@ -1,0 +1,43 @@
+<style>
+  .fit-image {
+    width: 100%;
+    object-fit: cover;
+    height: 300px; /* only if you want fixed height */
+  }
+</style>
+<div class="container">
+    <div class="row">
+        <!-- Searched users -->
+        <div class="col-md-8">
+            <br>
+            <br>
+            
+            <h2 class="my-4"> <%=user.length%> Users Found </h2>
+            <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+                <!-- <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;"> -->
+                    <% user.slice().reverse().forEach((user)=> { %>
+                    <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;"></div>
+                        <div class="card bg-light mb-3" style="width: 21rem;">
+                            <img class="card-img-top fit-image" src="<%= user.display_picture %>"  alt="user image">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <%=user.name%>
+                                </h5>
+                                <a href="/users/<%=user._id%>" class="btn btn-primary">Check profile</a>
+                                
+                        
+                            </div>
+                            
+                        </div>
+
+                        <% }) %>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+
+

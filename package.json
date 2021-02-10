@@ -1,7 +1,7 @@
 {
   "name": "passport-login",
   "version": "1.0.0",
-  "description": "",
+  "description": "Project Description:",
   "main": "app.js",
   "dependencies": {
     "-": "0.0.1",
@@ -10,7 +10,7 @@
     "cloudinary": "^1.23.0",
     "connect-flash": "^0.1.1",
     "dotenv": "^8.2.0",
-    "ejs": "^3.1.5",
+    "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-ejs-layouts": "^2.5.0",
     "express-session": "^1.17.1",
@@ -33,5 +33,13 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nehashah2898/seecube.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nehashah2898/seecube/issues"
+  },
+  "homepage": "https://github.com/nehashah2898/seecube#readme"
 }

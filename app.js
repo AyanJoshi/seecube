@@ -61,6 +61,7 @@ app.use('', require('./routes/post'));
 app.use('', require('./routes/problems'));
 app.use('', require('./routes/comment'));
 app.use('', require('./routes/jobs'));
+app.use('', require('./routes/resource'));
 app.use('', require('./routes/employer'));
 
 //Versus route

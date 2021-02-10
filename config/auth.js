@@ -10,7 +10,7 @@ module.exports = {
         }else{
             // req.flash('error_msg', req.body.title);
             req.flash('error_msg', 'You\'re not the admin!');
-            res.redirect('/problems');
+            res.redirect('/home');
         }
     },
     ensureStudent: function(req, res, next){

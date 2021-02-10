@@ -25,9 +25,10 @@
         <a class="nav-link" href="/jobs">Jobs</a>
       </li>
 
-    <!-- <div class="container"> -->
-
-
+      <li class="nav-item">
+        <a class="nav-link" href="/resources">Resources</a>
+      </li>
+      
       <!-- <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
         <div class="dropdown-menu">
@@ -53,10 +54,10 @@
             <li class="nav-item"><a class="nav-link" href="/register">Sign Up<span class="sr-only">(current)</span></a></li>
             <li class="nav-item"><a class="nav-link" href="/login">Login<span class="sr-only">(current)</span></a></li>
         <%}else if(currentUser && currentUser.userType.localeCompare("employer")==0) {%>
-          <li class="nav-item"><a class="nav-link" href="#" > Employer <%=currentUser.name%></a></li>
+          <li class="nav-item"><a class="nav-link" href="#" > <%=currentUser.name%></a></li>
           <li class="nav-item"><a class="nav-link" href="/employer/logout">Log out<span class="sr-only">(current)</span></a></li>    
         <%}else if(currentUser && currentUser.userType.localeCompare("employer")!=0){%>
-            <li class="nav-item"><a class="nav-link" href="/users/<%= currentUser._id %>" > User <%=currentUser.name%></a></li>
+            <li class="nav-item"><a class="nav-link" href="/users/<%= currentUser._id %>" > <%=currentUser.name%></a></li>
             <li class="nav-item"><a class="nav-link" href="/users/logout">Log out<span class="sr-only">(current)</span></a></li>
         <%}%>
     </ul>

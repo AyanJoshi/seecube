@@ -67,7 +67,8 @@ app.use('', require('./routes/employer'));
 //Versus route
 app.get('/versus', (req, res) => {
     //res.sendFile(__dirname + '/views/versus/index.html');
-    res.render('./versus/showVersus')
+    // res.render('./versus/showVersus') //original (uncomment it for coding versus)
+    res.render('./coming_soon/comingSoon')
 });
 
 const server = app.listen(PORT, console.log(`Server started on port ${PORT}`));

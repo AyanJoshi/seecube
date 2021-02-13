@@ -228,26 +228,33 @@ router.get('/users/reset/:token', function(req, res) {
 });
 
 router.post('/users/reset/:token', function(req, res) {
+    
     async.waterfall([
       function(done) {
         User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
-          if (!user) {
+            if (!user) {
             req.flash('error_msg', 'Password reset token is invalid or has expired.');
             return res.redirect('back');
           }
-          console.log(req.body.password)
-          console.log(req.body.confirm)
+          
           if(req.body.password === req.body.confirm) {
-            user.setPassword(req.body.password, function(err) {
-              user.resetPasswordToken = undefined;
-              user.resetPasswordExpires = undefined;
-  
-              user.save(function(err) {
-                req.logIn(user, function(err) {
-                  done(err, user);
-                });
-              });
-            });
+            //Hash password
+            user.password = req.body.password;
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(user.password, salt, (err, hash) => {
+                    if(err) throw err;
+                    //set password to hashed password
+                    user.password = hash;
+                    user.resetPasswordToken = undefined;
+                    user.resetPasswordExpires = undefined;
+                    user.save(function(err) {
+                        req.logIn(user, function(err) {
+                        done(err, user);
+                        });
+                    });
+                })
+            })
+            
           } else {
               req.flash("error_msg", "Passwords do not match.");
               return res.redirect('back');
@@ -304,17 +311,6 @@ router.get("/users/:id", (req, res) => {
         }
     });
 })
-
-// router.get('/users/:id/edit', ensureAuthenticated, ensureStudent, (req, res) => {
-//     User.findById(req.params.id, (err, foundUser)=>{
-//         if(err){
-//             alert('Cannot find the User');
-//             res.redirect("/users/:id");
-//         }else{
-//             res.render("./users/edit", {user: foundUser});
-//         }
-//     });
-// });
 
 router.put('/users/:id/edit', ensureAuthenticated, ensureStudent, async (req, res) => {
     // console.log(req.body);

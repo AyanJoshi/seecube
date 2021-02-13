@@ -4,7 +4,8 @@ const localMongoDBUri = 'mongodb://localhost:27017/CrudDB';
 mongoose.connect(mongoDBAtlasUri, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-    useFindAndModify: false
+    useFindAndModify: false,
+    useCreateIndex: true
 } , (err) => {
     if(!err){
         console.log('MongoDB connection succesfull.');

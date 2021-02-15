@@ -202,7 +202,7 @@ router.post('/users/forgot', function(req, res, next) {
           subject: 'Ccube Account Password Reset',
           text: 'Hello Seecuber,\n\nYou are recieving this because you (or someone else) have requested the reset of the password for your seecube account.\n\n' +
             'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-            'http://' + req.headers.host + '/users/reset/' + token + '\n\n' +
+            'https://seecube.herokuapp.com/users/reset/' + token + '\n\n' +
             'If you did not request this, please ignore this email and your password will remain unchanged.\n'+
             '\n\nThank You,\nCcube Team'
         };

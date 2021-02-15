@@ -24,9 +24,11 @@
       <li class="nav-item">
         <a class="nav-link" href="/jobs">Jobs</a>
       </li>
+
       <li class="nav-item">
         <a class="nav-link" href="/resources">Resources</a>
       </li>
+      
       <!-- <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
         <div class="dropdown-menu">
@@ -38,18 +40,16 @@
         </div>
       </li> -->
     </ul>
-    <!-- <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search">
-      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-    </form> -->
 
-  </div>
+    <!-- </div> -->
+
   <div class="collapse navbar-collapse" id="navbarColor03">
     <ul class="navbar-nav ml-auto">
-      <!-- <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search">
-        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-      </form> -->
+      <form class="form-inline my-2 my-lg-0" action="/users" method="get">
+        <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search Users">
+        <br></br>
+        <!-- <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button> -->
+      </form>
         <%if(!currentUser){%>
             <li class="nav-item"><a class="nav-link" href="/register">Sign Up<span class="sr-only">(current)</span></a></li>
             <li class="nav-item"><a class="nav-link" href="/login">Login<span class="sr-only">(current)</span></a></li>

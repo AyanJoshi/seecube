@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const Post = require('../models/Post');
 const Problem = require('../models/Problem');
+//const user_search = require('../views/partials')
 const { ensureAuthenticated, ensureStudent } = require('../config/auth');
 const async = require('async')
 const nodemailer = require('nodemailer')
@@ -418,4 +419,29 @@ router.put('/users/:id/submitResume', ensureStudent, ensureAuthenticated, upload
     }
 });
 
+router.get('/users', (req, res) => {
+    if(req.query.search){
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+        User.find({name: regex}, (err, foundUser) => {
+            if (err) {
+                req.flash('error_msg', 'Something went wrong');
+                res.redirect('/');
+            } else {
+                res.render('./users/listUsers', { user:foundUser });
+            }
+        })
+    }else{
+        User.find({}, (err, foundUser) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.render('./users/listUsers', { user: foundUser });
+            }
+        })
+    }
+});
+function escapeRegex(text) 
+{
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
 module.exports = router;

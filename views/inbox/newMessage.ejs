@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-6 m-auto">
+            <div class="card card-body">
+                <h1 class="text-center mb-3"><i class="fas fa-inbox"></i> Send Message</h1>
+                <form action="/users/<%=userReceiver._id%>/sendMessage/<%=userSender._id%>" method="POST">
+                    <div class="form-group">
+                        <textarea class="form-control" id="mytextarea" name="text" rows="20" required>
+                </textarea>
+                    </div>
+                    <button type="submit" class="btn btn-dark btn-block">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

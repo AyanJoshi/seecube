@@ -20,8 +20,15 @@
         <div class="col-md-6">
             <div class="profile-head">
                 <h5>
-                    <%= user.name %>
+                    <%= user.name 
+                    %>
                 </h5>
+                <%if(currentUser && currentUser._id.toString()==user._id.toString()) {%>
+                    <a href="/users/<%=user._id%>/inbox" type="button" class="btn btn-info ml-1" style="float: right;"><i class="fa fa-inbox"></i> Inbox</a>
+                <%} if(currentUser) {%>
+                    <a href="/users/<%=user._id%>/sendMessage/<%=currentUser._id%>" type="button" class="btn btn-info" style="float: right;"><i class="fa fa-envelope"></i> Message</a>
+                <%}%>
+                <!-- <input type="button" value="Inbox" style="float: right;"> -->
                 <h6>
                     <%=user.major%>
                 </h6>

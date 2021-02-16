@@ -329,7 +329,8 @@ router.put('/users/:id/edit', ensureAuthenticated, ensureStudent, async (req, re
             foundUser.github = github;
             foundUser.standing = standing;
             foundUser.summary = summary;
-
+            // foundUser.incoming_message = [];
+            // foundUser.outgoing_message = [];
             foundUser.save();
             req.flash('success_msg', 'Succesfully edited the user');
             res.redirect('/users/'+ req.params.id);

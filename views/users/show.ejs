@@ -38,13 +38,13 @@
                             aria-controls="profile" aria-selected="false">Timeline</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" id="problems-tab" data-toggle="tab" href="#problems" role="tab"
+                            aria-controls="problems" aria-selected="false">Contribution</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" id="posts-tab" data-toggle="tab" href="#posts" role="tab"
                             aria-controls="posts" aria-selected="false">My Posts</a>
                     </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" id="problems-tab" data-toggle="tab" href="#problems" role="tab"
-                            aria-controls="problems" aria-selected="false">Contribution</a>
-                    </li> -->
                     <%if(currentUser && user._id.equals(currentUser._id)) {%>
                         <li class="nav-item">
                             <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab"
@@ -201,20 +201,17 @@
                     </div>
                 </div>
 
-                <!-- <div class="tab-pane fade" id="problems" role="tabpanel" aria-labelledby="problems-tab">
-                    <% problems.slice().reverse().forEach(function(problem){ %>
-                        <div class="row text-center" style="display:flex; flex-wrap: wrap;">
-
+                <div class="tab-pane fade" id="problems" role="tabpanel" aria-labelledby="problems-tab">
+                    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+                        <% problems.slice().reverse().forEach(function(problem){ %>
                             <div class="card-deck" style="padding-right: 0.5em; padding-bottom: 0.5em;">
                                 <div class="card" style="width: 19rem;">
                                     <div class="card-body">
                                         <p style="font-weight: 1000; font-size: large;" class="card-title">
                                             <%= problem.title%>
                                         </p>
-                                        <% if(problem.body.description.length>= 150){ %>
-                                            <p class="card-text">
-                                                <%- problem.body.description.substring(0, 145) %>...
-                                            </p>
+                                        <% if(problem.body.description.length>=110) { %>
+                                            <p class="card-text"><%-problem.body.description.substring(0, 110)%>...</p>
                                             <% if(problem.approved){ %>
                                                 <a class="btn btn-sm btn-success">Approved</a>
                                                 <% }else{ %>
@@ -242,10 +239,10 @@
                                     </div>
                                 </div>
                             </div>
-
-                        </div>
-                        <% }) %>
-                </div> -->
+                            <% }) %>
+                    </div>
+                   
+                </div>
 
                 <%if(currentUser && user._id.equals(currentUser._id)) {%>
                     <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">

@@ -12,7 +12,8 @@ const JobSchema = new mongoose.Schema({
     author: {
         id: mongoose.Schema.Types.ObjectId,
         name: String
-    }
+    },
+    apply: String
 });
 
 const Job = mongoose.model('Job', JobSchema);

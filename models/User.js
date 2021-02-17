@@ -45,7 +45,15 @@ const UserSchema = new mongoose.Schema({
             description: String,
             link: String
         }
-    ]
+    ],
+    incoming_message: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Inbox"
+    }],
+    outgoing_message: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Inbox"
+    }]
 });
 
 UserSchema.plugin(passportLocalMongoose);

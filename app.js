@@ -13,6 +13,8 @@ const methodOverride = require('method-override');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const Problem = require('./models/Problem');
+// const _ = require('lodash');
+const _ = require("underscore");
 
 //Passport config
 require('./config/passport')(passport);
@@ -63,6 +65,7 @@ app.use('', require('./routes/comment'));
 app.use('', require('./routes/jobs'));
 app.use('', require('./routes/resource'));
 app.use('', require('./routes/employer'));
+app.use('', require('./routes/inbox'));
 
 //Versus route
 app.get('/versus', (req, res) => {

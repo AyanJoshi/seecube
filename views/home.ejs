@@ -9,11 +9,21 @@
             </a></p>
         <hr>
         
-        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-            <div style="background-color: #D0CBCB;" class="card">
-                <canvas style="padding-top: 0.5em;" id="pieChart" height="300%"></canvas>
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                <div style="border-color: black; background-color: #F0F0EB;" class="card">
+                    <canvas style="padding-top: 0.5em;" id="pieChart" height="330%"></canvas>
+                </div>
+                
+            </div>
+
+            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                <div style="border-color: black;background-color: #F0F0EB;" class="card">
+                    <canvas style="padding-top: 0.5em;" id="pieChart2" height="330%"></canvas>
+                </div>
             </div>
         </div>
+        
 
         <hr>
     <%}%>
@@ -26,19 +36,15 @@
 <script>
     
     let ctx = document.getElementById('pieChart').getContext('2d');
-    let labels = ['Solved', 'Un-solved'];
-    let colorHex = ['#00CC00', '#CC0000'];
+    let ctx2 = document.getElementById('pieChart2').getContext('2d');
 
-    let myChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-        datasets: [{
-        data: ['<%- solved %>', '<%- unsolved %>'],
-        backgroundColor: colorHex
-        }],
-        labels: labels
-    },
-    options: {
+    let labels = ['Solved', 'Un-solved'];
+    let labels2 = ['Easy', 'Medium', 'Hard'];
+
+    let colorHex = ['#00CC00', '#CC0000'];
+    let colorHex2 = ['#00CC00', '#DBDB2E', '#CC0000']
+
+    let options = {
         responsive: true,
         legend: {
             position: 'bottom'
@@ -51,16 +57,40 @@
             offset: 10,
             borderWidth: 2,
             borderColor: '#fff',
-            borderRadius: 25,
+            borderRadius: 20,
             backgroundColor: (context) => {
                 return context.dataset.backgroundColor;
             },
             font: {
             weight: 'bold',
-            size: '20'
+            size: '12'
             }
         }
         }
     }
+
+    let myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            datasets: [{
+            data: ['<%- solved %>', '<%- unsolved %>'],
+            backgroundColor: colorHex
+            }],
+            labels: labels
+        },
+        options: options
     })
+
+    let myChart2 = new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+            data: ['<%- easy %>', '<%- medium %>', '<%- hard %>'],
+            backgroundColor: colorHex2
+            }],
+            labels: labels2
+        },
+        options: options
+    })
+
 </script>

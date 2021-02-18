@@ -49,7 +49,9 @@ router.get('/home', async (req, res) => {
 
     }else{
         res.render('home', {
-            name: undefined
+            name: undefined,
+            solved: undefined,
+            unsolved: undefined
         })
     }
 });

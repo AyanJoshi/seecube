@@ -21,9 +21,9 @@ const RedisStore = require('connect-redis')(session);
 let redisClient
 if(process.env.REDISCLOUD_URL){
     let redisURL = url.parse(process.env.REDISCLOUD_URL);
-    redisClient = redis.createClient(redisURL)
+    redisClient = redis.createClient(redisURL.PORT, redisURL.host);
 } else {
-    redisClient = redis.createClient()
+    redisClient = redis.createClient();
 }
 
 //Passport config

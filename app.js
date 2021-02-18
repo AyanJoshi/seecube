@@ -16,6 +16,9 @@ const Problem = require('./models/Problem');
 // const _ = require('lodash');
 const _ = require("underscore");
 
+const MemoryStore = require('memorystore')(session)
+
+
 //Passport config
 require('./config/passport')(passport);
 
@@ -38,7 +41,11 @@ app.use(bodyParser.json());
 app.use(session({
     secret: 'secret',
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: { secure: true },
+    store: new MemoryStore({
+        checkPeriod: 86400000 // prune expired entries every 24h
+    })
 }));
 
 //Passport middleware

@@ -19,7 +19,7 @@ const _ = require("underscore");
 const redis = require('redis');
 const redisClient = redis.createClient();
 const redisStore = require('connect-redis')(session);
-
+let redisClient = redis.createClient()
 
 //Passport config
 require('./config/passport')(passport);
@@ -41,10 +41,11 @@ app.use(bodyParser.json());
 
 //Express Session
 app.use(session({
+    store: new RedisStore({ client: redisClient }),
     secret: 'secret',
     resave: true,
     saveUninitialized: true,
-     cookie: { secure: true }
+    cookie: { secure: true }
 }));
 
 //Passport middleware

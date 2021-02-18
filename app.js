@@ -15,16 +15,11 @@ const PORT = process.env.PORT || 5000;
 const Problem = require('./models/Problem');
 // const _ = require('lodash');
 const _ = require("underscore");
+var url = require('url');
 
 const redis = require('redis');
 const RedisStore = require('connect-redis')(session);
-let redisClient
-if(process.env.REDISCLOUD_URL){
-    let redisURL = url.parse(process.env.REDISCLOUD_URL);
-    redisClient = redis.createClient(redisURL.PORT, redisURL.host);
-} else {
-    redisClient = redis.createClient();
-}
+const redisClient = redis.createClient(process.env.REDISCLOUD_URL, {no_ready_check: true});
 
 //Passport config
 require('./config/passport')(passport);

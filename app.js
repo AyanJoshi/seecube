@@ -17,8 +17,7 @@ const Problem = require('./models/Problem');
 const _ = require("underscore");
 
 const redis = require('redis');
-const redisClient = redis.createClient();
-const redisStore = require('connect-redis')(session);
+const RedisStore = require('connect-redis')(session);
 let redisClient = redis.createClient()
 
 //Passport config

@@ -18,7 +18,13 @@ const _ = require("underscore");
 
 const redis = require('redis');
 const RedisStore = require('connect-redis')(session);
-let redisClient = redis.createClient()
+let redisClient
+if(process.env.REDISCLOUD_URL){
+    let redisURL = url.parse(process.env.REDISCLOUD_URL);
+    redisClient = redis.createClient(redisURL)
+} else {
+    redisClient = redis.createClient()
+}
 
 //Passport config
 require('./config/passport')(passport);

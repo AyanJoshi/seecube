@@ -5,33 +5,33 @@ const passport = require('passport');
 const { ensureAuthenticated } = require('../config/auth');
 
 const { route } = require('.');
-const Employer = require('../models/Employer');
+const Professor = require('../models/Professor');
 
 //Login Page
-router.get('/employer/login', (req, res) => {
+router.get('/professor/login', (req, res) => {
     if (req.user) {
         res.send('Please logout to login from a different account');
     } else {
-        res.render('login_employer');
+        res.render('login_professor');
     }
 });
 
 //Register page
-router.get('/employer/register', (req, res) => {
+router.get('/professor/register', (req, res) => {
     if (req.user) {
         res.send('Please logout to register for a new account');
     } else {
-        res.render('register_employer');
+        res.render('register_professor');
     }
 });
 
 //Register Handle
-router.post('/employer/register', (req, res) => {
-    const { name, email, password, password2, current_company, position } = req.body;
+router.post('/professor/register', (req, res) => {
+    const { name, email, password, password2, department } = req.body;
     let errors = [];
 
     //check required fields
-    if (!name || !email || !password || !password2 || !current_company || !position) {
+    if (!name || !email || !password || !password2 || !department) {
         errors.push({ msg: 'Please fill in all fields' });
     }
 
@@ -46,52 +46,49 @@ router.post('/employer/register', (req, res) => {
     }
 
     if (errors.length > 0) {
-        res.render('register_employer', {
+        res.render('register_professor', {
             errors,
             name,
             email,
             password,
             password2,
-            current_company,
-            position
+            department
         });
     } else {
         //validaton passed
-        Employer.findOne({ email: email })
-            .then(employer => {
-                if (employer) {
+        Professor.findOne({ email: email })
+            .then(professor => {
+                if (professor) {
                     //User exists
                     errors.push({ msg: 'Email is already registered' });
-                    res.render('register_employer', {
+                    res.render('register_professor', {
                         errors,
                         name,
                         email,
                         password,
                         password2,
-                        current_company,
-                        position
+                        department
                     });
                 } else {
-                    const newEmployer = new Employer({
+                    const newProfessor = new Professor({
                         name: name,
                         email: email,
                         password: password,
-                        current_company: current_company,
-                        position: position,
-                        userType: "employer"
+                        department: department,
+                        userType: "professor"
                     });
 
                     //Hash password
                     bcrypt.genSalt(10, (err, salt) => {
-                        bcrypt.hash(newEmployer.password, salt, (err, hash) => {
+                        bcrypt.hash(newProfessor.password, salt, (err, hash) => {
                             if (err) throw err;
 
                             //set password to hashed password
-                            newEmployer.password = hash;
-                            newEmployer.save()
+                            newProfessor.password = hash;
+                            newProfessor.save()
                                 .then(user => {
                                     req.flash('success_msg', 'You are now registered and can login');
-                                    res.redirect('/employer/login');
+                                    res.redirect('/professor/login');
                                 })
                                 .catch(err => console.log(err));
                         })
@@ -102,19 +99,19 @@ router.post('/employer/register', (req, res) => {
 });
 
 //Login Handle
-router.post('/employer/login', (req, res, next) => {
-    passport.authenticate('employer-signup', {
+router.post('/professor/login', (req, res, next) => {
+    passport.authenticate('professor-signup', {
         successRedirect: '/home',
-        failureRedirect: '/employer/login',
+        failureRedirect: '/professor/login',
         failureFlash: true
     })(req, res, next);
 });
 
 //Logout handle
-router.get('/employer/logout', (req, res) => {
+router.get('/professor/logout', (req, res) => {
     req.logout();
     req.flash('success_msg', 'You are logged out');
-    res.redirect('/employer/login');
+    res.redirect('/professor/login');
 })
 
 

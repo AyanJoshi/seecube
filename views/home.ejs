@@ -7,11 +7,90 @@
         <p class="lead" style="font-size:20px; overflow-wrap: break-word;">Profile: <a href="/users/<%= currentUser._id %>">
                 <%=currentUser.name%>
             </a></p>
-        <!-- <img src="<%= currentUser.display_picture %> " alt="" /> -->
         <hr>
-        <%}%>
-            <h4 class="mt-4">Help us improve our app by filling out this short form: </h3>
-            <a href="https://bit.ly/2TnlB7w" class="btn btn-secondary">Fill out Survey</a>
-            <br></br>
-            <br></br>
+        
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                <div style="border-color: black; background-color: #F0F0EB;" class="card">
+                    <canvas style="padding-top: 0.5em;" id="pieChart" height="330%"></canvas>
+                </div>
+                
+            </div>
+
+            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                <div style="border-color: black;background-color: #F0F0EB;" class="card">
+                    <canvas style="padding-top: 0.5em;" id="pieChart2" height="330%"></canvas>
+                </div>
+            </div>
+        </div>
+        
+
+        <hr>
+    <%}%>
+        <h4 class="mt-4">Help us improve our app by filling out this short form: </h3>
+        <a href="https://bit.ly/2TnlB7w" class="btn btn-secondary">Fill out Survey</a>
+        <br></br>
+        <br></br>
 </div>
+
+<script>
+    
+    let ctx = document.getElementById('pieChart').getContext('2d');
+    let ctx2 = document.getElementById('pieChart2').getContext('2d');
+
+    let labels = ['Solved', 'Un-solved'];
+    let labels2 = ['Easy', 'Medium', 'Hard'];
+
+    let colorHex = ['#00CC00', '#CC0000'];
+    let colorHex2 = ['#00CC00', '#DBDB2E', '#CC0000']
+
+    let options = {
+        responsive: true,
+        legend: {
+            position: 'bottom'
+        },
+        plugins: {
+        datalabels: {
+            color: '#fff',
+            anchor: 'end',
+            align: 'start',
+            offset: 10,
+            borderWidth: 2,
+            borderColor: '#fff',
+            borderRadius: 20,
+            backgroundColor: (context) => {
+                return context.dataset.backgroundColor;
+            },
+            font: {
+            weight: 'bold',
+            size: '12'
+            }
+        }
+        }
+    }
+
+    let myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            datasets: [{
+            data: ['<%- solved %>', '<%- unsolved %>'],
+            backgroundColor: colorHex
+            }],
+            labels: labels
+        },
+        options: options
+    })
+
+    let myChart2 = new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+            data: ['<%- easy %>', '<%- medium %>', '<%- hard %>'],
+            backgroundColor: colorHex2
+            }],
+            labels: labels2
+        },
+        options: options
+    })
+
+</script>

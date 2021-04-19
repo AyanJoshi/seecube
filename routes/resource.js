@@ -11,7 +11,7 @@ const Resource = require('../models/Resource')
 const { route } = require('.');
 const { ensureAuthenticated, ensureAdmin, ensureStudent } = require('../config/auth');
 
-router.get('/resources', (req, res) => {
+router.get('/resources', ensureAuthenticated, ensureStudent, (req, res) => {
     if (req.query.search) {
         const regex = new RegExp(escapeRegex(req.query.search), 'gi');
         Resource.find({ title: regex }, (err, resources) => {

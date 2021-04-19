@@ -7,7 +7,7 @@ const Solution = require('../models/Solution')
 router.get('/', (req, res) => res.render('welcome.ejs'));
 
 //Dasboard Handle
-router.get('/home', async (req, res) => {
+router.get('/home', ensureAuthenticated, async (req, res) => {
     if(req.user){
         let solved = 0;
         let numProblems = 0;

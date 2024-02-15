@@ -78,7 +78,8 @@ app.get('/versus', (req, res) => {
 const server = app.listen(PORT, console.log(`Server started on port ${PORT}`));
 
 //Socket.io
-var io = require('socket.io').listen(server);
+// var io = require('socket.io').listen(server);
+const io = require('socket.io')(server);
 
 io.on('connection', (socket) => {
     console.log('A user connected');
